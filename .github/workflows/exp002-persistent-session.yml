@@ -35,57 +35,22 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Require private VNC bootstrap secret
-        shell: bash
-        env:
-          CB_VNC_PASSWORD: ${{ secrets.CB_VNC_PASSWORD }}
-        run: |
-          set -euo pipefail
-          if [ -z "${CB_VNC_PASSWORD:-}" ]; then
-            echo "::error title=BOOTSTRAP_REQUIRED::Create repository secret CB_VNC_PASSWORD with a random VNC-only password. Do not reuse a Naver or other account password."
-            exit 78
-          fi
-          echo "VNC bootstrap secret is configured; its value will not be printed."
-
-      - name: Install persistent browser bridge dependencies
+      - name: Install persistent browser dependencies
         shell: bash
         run: |
           set -euo pipefail
           sudo apt-get update
-          sudo apt-get install -y xvfb x11vnc novnc websockify
+          sudo apt-get install -y xvfb
           python -m pip install --upgrade pip
           python -m pip install selenium
           google-chrome --version
 
-      - name: Start protected persistent browser surface
+      - name: Start persistent Chrome
         shell: bash
-        env:
-          CB_VNC_PASSWORD: ${{ secrets.CB_VNC_PASSWORD }}
         run: |
           set -euo pipefail
           Xvfb :99 -screen 0 1280x900x24 -ac > /tmp/xvfb.log 2>&1 &
           sleep 2
-
-          x11vnc -storepasswd "$CB_VNC_PASSWORD" /tmp/vnc.pass >/dev/null
-          x11vnc -display :99 -rfbauth /tmp/vnc.pass -forever -shared -rfbport 5900 > /tmp/x11vnc.log 2>&1 &
-          websockify --web=/usr/share/novnc/ 6080 localhost:5900 > /tmp/novnc.log 2>&1 &
-
-          curl -L --fail --silent --show-error \
-            -o /tmp/cloudflared.deb \
-            https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
-          sudo dpkg -i /tmp/cloudflared.deb >/dev/null
-          cloudflared tunnel --no-autoupdate --url http://127.0.0.1:6080 > /tmp/cloudflared.log 2>&1 &
-
-          URL=""
-          for _ in $(seq 1 45); do
-            URL="$(grep -oE 'https://[-a-z0-9]+\.trycloudflare\.com' /tmp/cloudflared.log | head -n 1 || true)"
-            [ -n "$URL" ] && break
-            sleep 1
-          done
-          if [ -z "$URL" ]; then
-            echo "Could not obtain interactive browser tunnel URL."
-            exit 1
-          fi
 
           google-chrome \
             --no-sandbox \
@@ -98,18 +63,33 @@ jobs:
             --remote-debugging-port=9222 \
             --no-first-run \
             --no-default-browser-check \
-            https://m.calendar.naver.com/ > /tmp/chrome.log 2>&1 &
+            about:blank > /tmp/chrome.log 2>&1 &
 
           for _ in $(seq 1 45); do
             curl --silent --fail http://127.0.0.1:9222/json/version >/dev/null && break
             sleep 1
           done
           curl --silent --fail http://127.0.0.1:9222/json/version >/dev/null
+          echo "Persistent Chrome is ready; it will remain alive across adapter retries."
 
-          echo "INTERACTIVE_BROWSER_URL=$URL/vnc.html?autoconnect=1&resize=scale" >> "$GITHUB_ENV"
-          echo "::notice title=Persistent browser ready::Open $URL/vnc.html?autoconnect=1&resize=scale. Enter the repository secret CB_VNC_PASSWORD. Authenticate Naver once; the same browser stays alive across adapter retries and new commands."
-          echo "Interactive browser: $URL/vnc.html?autoconnect=1&resize=scale"
-          echo "VNC password is the repository secret CB_VNC_PASSWORD and is intentionally not logged."
+      - name: Prepare Naver QR authentication handoff
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/exp002-auth
+          python scripts/naver_qr_bootstrap.py \
+            --debugger-address 127.0.0.1:9222 \
+            --output artifacts/exp002-auth/naver-qr-login.png
+          echo "::notice title=QR authentication ready::Download the exp002-naver-qr-auth artifact and scan the QR with the Naver app. The same Chrome will remain alive after authentication and across adapter retries."
+
+      - name: Publish QR authentication image
+        uses: actions/upload-artifact@v4
+        with:
+          name: exp002-naver-qr-auth-${{ github.run_id }}
+          path: artifacts/exp002-auth/naver-qr-login.png
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
 
       - name: Keep authenticated browser alive and consume commands
         shell: bash
