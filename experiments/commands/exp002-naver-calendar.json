@@ -1,0 +1,20 @@
+{
+  "protocol_version": "0.1",
+  "command_id": "exp002-naver-calendar-20260830-01",
+  "adapter_id": "naver-calendar",
+  "action": "create_verify_delete_event",
+  "arguments": {
+    "title": "CB-EXP002-20260830-K7M4Q2",
+    "cleanup": true
+  },
+  "nonce": "20260830-K7M4Q2",
+  "verification": {
+    "required": true,
+    "expected": "The exact nonce-bearing event title is observed after creation and is absent after browser-UI deletion."
+  },
+  "experiment": {
+    "reversible": true,
+    "cleanup_requested": true,
+    "core_freeze": "0.1"
+  }
+}
