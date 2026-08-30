@@ -1,23 +1,21 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-cleanup-20260830-08",
+  "command_id": "exp002-persistent-diagnose-card-20260830-09",
   "adapter_id": "naver-calendar",
-  "action": "recover_verify_delete_event",
+  "action": "diagnose_event_card",
   "arguments": {
-    "title": "CB-EXP002-PERSIST-20260830-T4H7K9",
-    "cleanup": true
+    "title": "CB-EXP002-PERSIST-20260830-T4H7K9"
   },
   "nonce": "20260830-T4H7K9",
   "verification": {
     "required": true,
-    "expected": "Open the existing synthetic event via its clickable event-card ancestor, follow the mobile-web edit-to-trash deletion flow, and verify the title is absent afterward."
+    "expected": "Capture only structural tag/class/role/href/data attributes for the synthetic event title and ancestors without mutating calendar data."
   },
   "experiment": {
     "reversible": true,
-    "cleanup_requested": true,
+    "cleanup_requested": false,
     "core_freeze": "0.1",
     "persistent_browser_session": true,
-    "cleanup_only": true,
-    "retry": 8
+    "diagnostic_only": true
   }
 }
