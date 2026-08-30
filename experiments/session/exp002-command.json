@@ -1,23 +1,21 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-cleanup-20260830-14",
+  "command_id": "exp002-persistent-diagnose-daily-matches-20260830-15",
   "adapter_id": "naver-calendar",
-  "action": "recover_verify_delete_event",
+  "action": "diagnose_daily_matches",
   "arguments": {
-    "title": "CB-EXP002-PERSIST-20260830-T4H7K9",
-    "cleanup": true
+    "title": "CB-EXP002-PERSIST-20260830-T4H7K9"
   },
   "nonce": "20260830-T4H7K9",
   "verification": {
     "required": true,
-    "expected": "Use trusted touch input for month -> daily -> detail/edit navigation, delete the existing synthetic event, and verify exact-title absence."
+    "expected": "Open daily view and compare all visible exact-title nodes using only structural attributes and geometry."
   },
   "experiment": {
     "reversible": true,
-    "cleanup_requested": true,
+    "cleanup_requested": false,
     "core_freeze": "0.1",
     "persistent_browser_session": true,
-    "cleanup_only": true,
-    "retry": 14
+    "diagnostic_only": true
   }
 }
