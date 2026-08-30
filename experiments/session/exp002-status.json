@@ -1,6 +1,8 @@
 {
-  "session_state": "COMMAND_RUNNING",
-  "updated_at_epoch": 1788075657,
-  "command_id": "exp002-persistent-20260830-01",
+  "session_state": "SESSION_IDLE",
+  "updated_at_epoch": 1788075683,
+  "last_command_id": "exp002-persistent-20260830-01",
+  "last_result_status": "FAILED",
+  "last_failure_class": "VERIFY_FAILED",
   "browser_retained": true
 }
