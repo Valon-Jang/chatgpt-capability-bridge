@@ -1,8 +1,8 @@
 {
-  "session_id": "exp002-persistent-20260830-04",
+  "session_id": "exp002-persistent-20260830-05",
   "requested_mode": "persistent_authenticated_browser",
   "authentication_mode": "naver_qr_once",
   "auto_exit_after_command": false,
   "hosted_runner_soft_limit_seconds": 20700,
-  "note": "Persistent Chrome with one-time Naver QR authentication; keep browser alive across adapter retries and new commands."
+  "note": "Retry persistent Chrome after adding English Naver QR login support; keep browser alive across adapter retries and new commands."
 }
