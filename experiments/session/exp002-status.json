@@ -1,6 +1,8 @@
 {
-  "session_state": "COMMAND_RUNNING",
-  "updated_at_epoch": 1788077352,
-  "command_id": "exp002-persistent-cleanup-20260830-11",
+  "session_state": "SESSION_IDLE",
+  "updated_at_epoch": 1788077354,
+  "last_command_id": "exp002-persistent-cleanup-20260830-11",
+  "last_result_status": "FAILED",
+  "last_failure_class": "SUBSTRATE_BOUNDARY",
   "browser_retained": true
 }
