@@ -1,90 +1,1431 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-cleanup-20260830-14",
+  "command_id": "exp002-persistent-diagnose-daily-matches-20260830-15",
   "adapter_id": "naver-calendar",
-  "action": "recover_verify_delete_event",
-  "status": "FAILED",
-  "failure_class": "ADAPTER_ERROR",
+  "action": "diagnose_daily_matches",
+  "status": "VERIFIED_SUCCESS",
+  "failure_class": null,
   "execution": {
     "attempted": true,
-    "completed": false
+    "completed": true
   },
   "verification": {
     "performed": true,
-    "passed": false,
+    "passed": true,
     "evidence": {
       "created_title_observed": true,
       "cleanup_absence_observed": false
     }
   },
   "cleanup": {
-    "requested": true,
-    "attempted": true,
-    "completed": false
+    "requested": false,
+    "attempted": false,
+    "completed": true
   },
-  "message": "Trusted two-stage touch completed, but delete control was not found.",
   "diagnostics": {
     "url": "https://m.calendar.naver.com/daily?date=2026-08-30",
-    "controls": [
+    "match_count": 9,
+    "matches": [
       {
-        "tag": "a",
-        "class": "logo_link",
-        "aria_label": null,
-        "title": "",
-        "ui_text": "네이버"
+        "index": 0,
+        "chain": [
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule period1"
+            },
+            "rect": {
+              "h": 14,
+              "w": 179.71875,
+              "x": 3,
+              "y": 682.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 0
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule_wrap"
+            },
+            "rect": {
+              "h": 46,
+              "w": 179.71875,
+              "x": 3,
+              "y": 666.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 1
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "col_area"
+            },
+            "rect": {
+              "h": 111.109375,
+              "w": 179.71875,
+              "x": 3,
+              "y": 644.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 2
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "col1 today selected"
+            },
+            "rect": {
+              "h": 112.109375,
+              "w": 182.71875,
+              "x": 0,
+              "y": 643.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 3
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "row"
+            },
+            "rect": {
+              "h": 112.109375,
+              "w": 1264,
+              "x": 0,
+              "y": 643.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 4
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "month_wrap custom_month_wrap",
+              "data-month-label": "2026-08"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1264,
+              "x": 0,
+              "y": 83
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 5
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "scroll_area"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1279,
+              "x": 0,
+              "y": 83
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 6
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "month_cont custom_month_cont"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1279,
+              "x": 0,
+              "y": 83
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 7
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "calender_area"
+            },
+            "rect": {
+              "h": 700,
+              "w": 1279,
+              "x": 0,
+              "y": 56
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 8
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "contents",
+              "id": "contents"
+            },
+            "rect": {
+              "h": 700,
+              "w": 1279,
+              "x": 0,
+              "y": 56
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 9
+          }
+        ]
       },
       {
-        "tag": "button",
-        "class": "btn_date",
-        "aria_label": null,
-        "title": "",
-        "ui_text": "2026. 8."
+        "index": 1,
+        "chain": [
+          {
+            "tag": "p",
+            "attrs": {
+              "class": "time_schedule color_blue2"
+            },
+            "rect": {
+              "h": 14,
+              "w": 173.71875,
+              "x": 6,
+              "y": 682.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 0
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule period1"
+            },
+            "rect": {
+              "h": 14,
+              "w": 179.71875,
+              "x": 3,
+              "y": 682.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 1
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule_wrap"
+            },
+            "rect": {
+              "h": 46,
+              "w": 179.71875,
+              "x": 3,
+              "y": 666.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 2
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "col_area"
+            },
+            "rect": {
+              "h": 111.109375,
+              "w": 179.71875,
+              "x": 3,
+              "y": 644.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 3
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "col1 today selected"
+            },
+            "rect": {
+              "h": 112.109375,
+              "w": 182.71875,
+              "x": 0,
+              "y": 643.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 4
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "row"
+            },
+            "rect": {
+              "h": 112.109375,
+              "w": 1264,
+              "x": 0,
+              "y": 643.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 5
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "month_wrap custom_month_wrap",
+              "data-month-label": "2026-08"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1264,
+              "x": 0,
+              "y": 83
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 6
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "scroll_area"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1279,
+              "x": 0,
+              "y": 83
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 7
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "month_cont custom_month_cont"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1279,
+              "x": 0,
+              "y": 83
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 8
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "calender_area"
+            },
+            "rect": {
+              "h": 700,
+              "w": 1279,
+              "x": 0,
+              "y": 56
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 9
+          }
+        ]
       },
       {
-        "tag": "button",
-        "class": "btn_menu",
-        "aria_label": null,
-        "title": "",
-        "ui_text": "메뉴"
+        "index": 2,
+        "chain": [
+          {
+            "tag": "span",
+            "attrs": {
+              "class": "text"
+            },
+            "rect": {
+              "h": 12,
+              "w": 206.0625,
+              "x": 10,
+              "y": 683.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 0
+          },
+          {
+            "tag": "p",
+            "attrs": {
+              "class": "time_schedule color_blue2"
+            },
+            "rect": {
+              "h": 14,
+              "w": 173.71875,
+              "x": 6,
+              "y": 682.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 1
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule period1"
+            },
+            "rect": {
+              "h": 14,
+              "w": 179.71875,
+              "x": 3,
+              "y": 682.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 2
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule_wrap"
+            },
+            "rect": {
+              "h": 46,
+              "w": 179.71875,
+              "x": 3,
+              "y": 666.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 3
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "col_area"
+            },
+            "rect": {
+              "h": 111.109375,
+              "w": 179.71875,
+              "x": 3,
+              "y": 644.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 4
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "col1 today selected"
+            },
+            "rect": {
+              "h": 112.109375,
+              "w": 182.71875,
+              "x": 0,
+              "y": 643.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 5
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "row"
+            },
+            "rect": {
+              "h": 112.109375,
+              "w": 1264,
+              "x": 0,
+              "y": 643.546875
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 6
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "month_wrap custom_month_wrap",
+              "data-month-label": "2026-08"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1264,
+              "x": 0,
+              "y": 83
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 7
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "scroll_area"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1279,
+              "x": 0,
+              "y": 83
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 8
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "month_cont custom_month_cont"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1279,
+              "x": 0,
+              "y": 83
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 9
+          }
+        ]
       },
       {
-        "tag": "button",
-        "class": "btn_add_schedule",
-        "aria_label": null,
-        "title": "",
-        "ui_text": "일정 추가"
+        "index": 3,
+        "chain": [
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule period1"
+            },
+            "rect": {
+              "h": 14,
+              "w": 179.71875,
+              "x": 3,
+              "y": 795
+            },
+            "element_from_point": null,
+            "depth": 0
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule_wrap"
+            },
+            "rect": {
+              "h": 46,
+              "w": 179.71875,
+              "x": 3,
+              "y": 779
+            },
+            "element_from_point": null,
+            "depth": 1
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "col_area prev"
+            },
+            "rect": {
+              "h": 133.59375,
+              "w": 179.71875,
+              "x": 3,
+              "y": 757
+            },
+            "element_from_point": null,
+            "depth": 2
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "col1"
+            },
+            "rect": {
+              "h": 134.59375,
+              "w": 182.71875,
+              "x": 0,
+              "y": 756
+            },
+            "element_from_point": null,
+            "depth": 3
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "row custom_row5"
+            },
+            "rect": {
+              "h": 134.59375,
+              "w": 1264,
+              "x": 0,
+              "y": 756
+            },
+            "element_from_point": null,
+            "depth": 4
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "month_wrap custom_month_wrap",
+              "data-month-label": "2026-09"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1264,
+              "x": 0,
+              "y": 756
+            },
+            "element_from_point": null,
+            "depth": 5
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "scroll_area"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1279,
+              "x": 0,
+              "y": 83
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 6
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "month_cont custom_month_cont"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1279,
+              "x": 0,
+              "y": 83
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 7
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "calender_area"
+            },
+            "rect": {
+              "h": 700,
+              "w": 1279,
+              "x": 0,
+              "y": 56
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 8
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "contents",
+              "id": "contents"
+            },
+            "rect": {
+              "h": 700,
+              "w": 1279,
+              "x": 0,
+              "y": 56
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 9
+          }
+        ]
       },
       {
-        "tag": "button",
-        "class": "btn_back",
-        "aria_label": null,
-        "title": "",
-        "ui_text": "이전 화면으로"
+        "index": 4,
+        "chain": [
+          {
+            "tag": "p",
+            "attrs": {
+              "class": "time_schedule color_blue2"
+            },
+            "rect": {
+              "h": 14,
+              "w": 173.71875,
+              "x": 6,
+              "y": 795
+            },
+            "element_from_point": null,
+            "depth": 0
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule period1"
+            },
+            "rect": {
+              "h": 14,
+              "w": 179.71875,
+              "x": 3,
+              "y": 795
+            },
+            "element_from_point": null,
+            "depth": 1
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule_wrap"
+            },
+            "rect": {
+              "h": 46,
+              "w": 179.71875,
+              "x": 3,
+              "y": 779
+            },
+            "element_from_point": null,
+            "depth": 2
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "col_area prev"
+            },
+            "rect": {
+              "h": 133.59375,
+              "w": 179.71875,
+              "x": 3,
+              "y": 757
+            },
+            "element_from_point": null,
+            "depth": 3
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "col1"
+            },
+            "rect": {
+              "h": 134.59375,
+              "w": 182.71875,
+              "x": 0,
+              "y": 756
+            },
+            "element_from_point": null,
+            "depth": 4
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "row custom_row5"
+            },
+            "rect": {
+              "h": 134.59375,
+              "w": 1264,
+              "x": 0,
+              "y": 756
+            },
+            "element_from_point": null,
+            "depth": 5
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "month_wrap custom_month_wrap",
+              "data-month-label": "2026-09"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1264,
+              "x": 0,
+              "y": 756
+            },
+            "element_from_point": null,
+            "depth": 6
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "scroll_area"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1279,
+              "x": 0,
+              "y": 83
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 7
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "month_cont custom_month_cont"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1279,
+              "x": 0,
+              "y": 83
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 8
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "calender_area"
+            },
+            "rect": {
+              "h": 700,
+              "w": 1279,
+              "x": 0,
+              "y": 56
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 9
+          }
+        ]
       },
       {
-        "tag": "button",
-        "class": "btn_prev",
-        "aria_label": null,
-        "title": "",
-        "ui_text": "어제"
+        "index": 5,
+        "chain": [
+          {
+            "tag": "span",
+            "attrs": {
+              "class": "text"
+            },
+            "rect": {
+              "h": 12,
+              "w": 206.0625,
+              "x": 10,
+              "y": 796
+            },
+            "element_from_point": null,
+            "depth": 0
+          },
+          {
+            "tag": "p",
+            "attrs": {
+              "class": "time_schedule color_blue2"
+            },
+            "rect": {
+              "h": 14,
+              "w": 173.71875,
+              "x": 6,
+              "y": 795
+            },
+            "element_from_point": null,
+            "depth": 1
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule period1"
+            },
+            "rect": {
+              "h": 14,
+              "w": 179.71875,
+              "x": 3,
+              "y": 795
+            },
+            "element_from_point": null,
+            "depth": 2
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule_wrap"
+            },
+            "rect": {
+              "h": 46,
+              "w": 179.71875,
+              "x": 3,
+              "y": 779
+            },
+            "element_from_point": null,
+            "depth": 3
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "col_area prev"
+            },
+            "rect": {
+              "h": 133.59375,
+              "w": 179.71875,
+              "x": 3,
+              "y": 757
+            },
+            "element_from_point": null,
+            "depth": 4
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "col1"
+            },
+            "rect": {
+              "h": 134.59375,
+              "w": 182.71875,
+              "x": 0,
+              "y": 756
+            },
+            "element_from_point": null,
+            "depth": 5
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "row custom_row5"
+            },
+            "rect": {
+              "h": 134.59375,
+              "w": 1264,
+              "x": 0,
+              "y": 756
+            },
+            "element_from_point": null,
+            "depth": 6
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "month_wrap custom_month_wrap",
+              "data-month-label": "2026-09"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1264,
+              "x": 0,
+              "y": 756
+            },
+            "element_from_point": null,
+            "depth": 7
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "scroll_area"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1279,
+              "x": 0,
+              "y": 83
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 8
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "month_cont custom_month_cont"
+            },
+            "rect": {
+              "h": 673,
+              "w": 1279,
+              "x": 0,
+              "y": 83
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 9
+          }
+        ]
       },
       {
-        "tag": "button",
-        "class": "btn_next",
-        "aria_label": null,
-        "title": "",
-        "ui_text": "다음날"
+        "index": 6,
+        "chain": [
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule_info color_blue2"
+            },
+            "rect": {
+              "h": 39,
+              "w": 1131,
+              "x": 112,
+              "y": 157
+            },
+            "element_from_point": {
+              "class": "schedule_info color_blue2",
+              "id": "",
+              "tag": "div"
+            },
+            "depth": 0
+          },
+          {
+            "tag": "li",
+            "attrs": {
+              "class": "schedule_item"
+            },
+            "rect": {
+              "h": 59,
+              "w": 1207,
+              "x": 36,
+              "y": 147
+            },
+            "element_from_point": {
+              "class": "schedule_info color_blue2",
+              "id": "",
+              "tag": "div"
+            },
+            "depth": 1
+          },
+          {
+            "tag": "ul",
+            "attrs": {
+              "class": "schedule_list"
+            },
+            "rect": {
+              "h": 247,
+              "w": 1279,
+              "x": 0,
+              "y": 88
+            },
+            "element_from_point": {
+              "class": "schedule_item",
+              "id": "",
+              "tag": "li"
+            },
+            "depth": 2
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "id": "daily_list_scroll_element"
+            },
+            "rect": {
+              "h": 668,
+              "w": 1279,
+              "x": 0,
+              "y": 88
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 3
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "flicking-camera"
+            },
+            "rect": {
+              "h": 668,
+              "w": 1279,
+              "x": -1279,
+              "y": 88
+            },
+            "element_from_point": null,
+            "depth": 4
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "flicking-viewport"
+            },
+            "rect": {
+              "h": 668,
+              "w": 1279,
+              "x": 0,
+              "y": 88
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 5
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule_area has_button"
+            },
+            "rect": {
+              "h": 700,
+              "w": 1279,
+              "x": 0,
+              "y": 56
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 6
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "layer_contents"
+            },
+            "rect": {
+              "h": 756,
+              "w": 1279,
+              "x": 0,
+              "y": 0
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 7
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "layer_inner"
+            },
+            "rect": {
+              "h": 756,
+              "w": 1279,
+              "x": 0,
+              "y": 0
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 8
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "layer_view"
+            },
+            "rect": {
+              "h": 756,
+              "w": 1279,
+              "x": 0,
+              "y": 0
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 9
+          }
+        ]
       },
       {
-        "tag": "button",
-        "class": "btn_add_schedule",
-        "aria_label": null,
-        "title": "",
-        "ui_text": "일정 추가"
+        "index": 7,
+        "chain": [
+          {
+            "tag": "strong",
+            "attrs": {
+              "class": "title"
+            },
+            "rect": {
+              "h": 22,
+              "w": 299.71875,
+              "x": 128,
+              "y": 157
+            },
+            "element_from_point": {
+              "class": "text",
+              "id": "",
+              "tag": "span"
+            },
+            "depth": 0
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule_info color_blue2"
+            },
+            "rect": {
+              "h": 39,
+              "w": 1131,
+              "x": 112,
+              "y": 157
+            },
+            "element_from_point": {
+              "class": "schedule_info color_blue2",
+              "id": "",
+              "tag": "div"
+            },
+            "depth": 1
+          },
+          {
+            "tag": "li",
+            "attrs": {
+              "class": "schedule_item"
+            },
+            "rect": {
+              "h": 59,
+              "w": 1207,
+              "x": 36,
+              "y": 147
+            },
+            "element_from_point": {
+              "class": "schedule_info color_blue2",
+              "id": "",
+              "tag": "div"
+            },
+            "depth": 2
+          },
+          {
+            "tag": "ul",
+            "attrs": {
+              "class": "schedule_list"
+            },
+            "rect": {
+              "h": 247,
+              "w": 1279,
+              "x": 0,
+              "y": 88
+            },
+            "element_from_point": {
+              "class": "schedule_item",
+              "id": "",
+              "tag": "li"
+            },
+            "depth": 3
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "id": "daily_list_scroll_element"
+            },
+            "rect": {
+              "h": 668,
+              "w": 1279,
+              "x": 0,
+              "y": 88
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 4
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "flicking-camera"
+            },
+            "rect": {
+              "h": 668,
+              "w": 1279,
+              "x": -1279,
+              "y": 88
+            },
+            "element_from_point": null,
+            "depth": 5
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "flicking-viewport"
+            },
+            "rect": {
+              "h": 668,
+              "w": 1279,
+              "x": 0,
+              "y": 88
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 6
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "schedule_area has_button"
+            },
+            "rect": {
+              "h": 700,
+              "w": 1279,
+              "x": 0,
+              "y": 56
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 7
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "layer_contents"
+            },
+            "rect": {
+              "h": 756,
+              "w": 1279,
+              "x": 0,
+              "y": 0
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 8
+          },
+          {
+            "tag": "div",
+            "attrs": {
+              "class": "layer_inner"
+            },
+            "rect": {
+              "h": 756,
+              "w": 1279,
+              "x": 0,
+              "y": 0
+            },
+            "element_from_point": {
+              "class": "",
+              "id": "daily_list_scroll_element",
+              "tag": "div"
+            },
+            "depth": 9
+          }
+        ]
       }
     ]
   },
-  "session_adapter_exit_code": 9,
+  "message": "All visible exact-title nodes in daily view captured structurally.",
+  "session_adapter_exit_code": 0,
   "persistent_browser_retained": true,
-  "session_command_id": "exp002-persistent-cleanup-20260830-14"
+  "session_command_id": "exp002-persistent-diagnose-daily-matches-20260830-15"
 }
