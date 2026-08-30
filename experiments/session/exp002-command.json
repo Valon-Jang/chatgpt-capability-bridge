@@ -1,19 +1,22 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-diagnose-20260830-04",
+  "command_id": "exp002-persistent-create-20260830-05",
   "adapter_id": "naver-calendar",
-  "action": "diagnose_schedule_form",
-  "arguments": {},
-  "nonce": "20260830-DIAG04",
+  "action": "create_verify_delete_event",
+  "arguments": {
+    "title": "CB-EXP002-PERSIST-20260830-T4H7K9",
+    "cleanup": true
+  },
+  "nonce": "20260830-T4H7K9",
   "verification": {
     "required": true,
-    "expected": "Capture only safe structural metadata for the schedule-writing form and selected title candidate without mutating calendar data."
+    "expected": "Create the exact nonce-bearing event using the confirmed schedule-title textarea, reload the calendar, observe it, delete it, and verify absence."
   },
   "experiment": {
     "reversible": true,
-    "cleanup_requested": false,
+    "cleanup_requested": true,
     "core_freeze": "0.1",
     "persistent_browser_session": true,
-    "diagnostic_only": true
+    "confirmed_title_control": "textarea[placeholder='일정을 입력하세요.']"
   }
 }
