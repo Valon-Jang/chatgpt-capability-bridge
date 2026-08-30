@@ -1,6 +1,8 @@
 {
-  "session_state": "HOSTED_RUNNER_LIMIT_APPROACHING",
-  "updated_at_epoch": 1788095223,
+  "session_state": "SESSION_IDLE",
+  "updated_at_epoch": 1788095802,
   "last_command_id": "exp002-persistent-20260830-01",
+  "last_result_status": "FAILED",
+  "last_failure_class": "AUTH_BOUNDARY",
   "browser_retained": true
 }
