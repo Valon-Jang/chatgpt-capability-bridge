@@ -1,21 +1,23 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-probe-card-20260830-10",
+  "command_id": "exp002-persistent-cleanup-20260830-11",
   "adapter_id": "naver-calendar",
-  "action": "probe_event_card_click",
+  "action": "recover_verify_delete_event",
   "arguments": {
-    "title": "CB-EXP002-PERSIST-20260830-T4H7K9"
+    "title": "CB-EXP002-PERSIST-20260830-T4H7K9",
+    "cleanup": true
   },
   "nonce": "20260830-T4H7K9",
   "verification": {
     "required": true,
-    "expected": "Click exactly the synthetic schedule card once and capture only post-click URL/action/layer structure."
+    "expected": "Navigate month event -> daily event -> detail/edit, delete the existing synthetic event, and verify exact-title absence."
   },
   "experiment": {
     "reversible": true,
-    "cleanup_requested": false,
+    "cleanup_requested": true,
     "core_freeze": "0.1",
     "persistent_browser_session": true,
-    "diagnostic_only": true
+    "cleanup_only": true,
+    "retry": 11
   }
 }
