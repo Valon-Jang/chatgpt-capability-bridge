@@ -18,6 +18,7 @@ from pathlib import Path
 
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -60,6 +61,23 @@ def safe_element_descriptor(el) -> dict | None:
         }
     except WebDriverException:
         return {"unavailable": True}
+
+
+def find_real_title_input(driver, base):
+    """Prefer the title textarea observed on Naver Calendar /add."""
+    driver.switch_to.default_content()
+    selectors = [
+        "textarea[placeholder='일정을 입력하세요.']",
+        "textarea[placeholder*='일정']",
+    ]
+    for selector in selectors:
+        try:
+            for el in driver.find_elements(By.CSS_SELECTOR, selector):
+                if el.is_displayed():
+                    return el
+        except WebDriverException:
+            continue
+    return base.find_title_input(driver)
 
 
 def delete_observed_title(driver, base, title: str, result: dict, result_path: Path) -> int:
@@ -117,7 +135,7 @@ def diagnose_form(driver, base, command: dict, output_dir: Path, auth_timeout: i
 
     time.sleep(0.8)
     structure = base.form_metadata(driver)
-    candidate = base.find_title_input(driver)
+    candidate = find_real_title_input(driver, base)
     result["diagnostics"] = {
         "page_url_without_query": (driver.current_url or "").split("?", 1)[0],
         "form_structure": structure,
@@ -203,10 +221,10 @@ def create_verify_delete(driver, base, command: dict, output_dir: Path, auth_tim
 
     time.sleep(0.5)
     base.write_json(diagnostics_path, base.form_metadata(driver))
-    title_input = base.find_title_input(driver)
+    title_input = find_real_title_input(driver, base)
     if title_input is None:
         result["failure_class"] = "ADAPTER_ERROR"
-        result["message"] = "Could not identify a visible event-title input after entering schedule-writing UI."
+        result["message"] = "Could not identify the actual schedule-title textarea."
         base.write_json(result_path, result)
         return 5
 
@@ -230,7 +248,7 @@ def create_verify_delete(driver, base, command: dict, output_dir: Path, auth_tim
     result["verification"]["evidence"]["created_title_observed"] = created
     if not created:
         result["failure_class"] = "VERIFY_FAILED"
-        result["message"] = "Save was attempted, then the calendar was reloaded, but the nonce-bearing event title was not observed."
+        result["message"] = "Save was attempted using the observed title textarea, then the calendar was reloaded, but the nonce-bearing event title was not observed."
         base.write_json(result_path, result)
         return 7
 
