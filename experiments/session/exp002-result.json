@@ -1,41 +1,174 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-create-20260830-05",
+  "command_id": "exp002-persistent-diagnose-detail-20260830-06",
   "adapter_id": "naver-calendar",
-  "action": "create_verify_delete_event",
-  "status": "FAILED",
-  "failure_class": "ADAPTER_ERROR",
+  "action": "diagnose_event_detail",
+  "status": "VERIFIED_SUCCESS",
+  "failure_class": null,
   "execution": {
     "attempted": true,
     "completed": true
   },
   "verification": {
     "performed": true,
-    "passed": false,
+    "passed": true,
     "evidence": {
       "created_title_observed": true,
       "cleanup_absence_observed": false
     }
   },
   "cleanup": {
-    "requested": true,
-    "attempted": true,
-    "completed": false
+    "requested": false,
+    "attempted": false,
+    "completed": true
   },
   "diagnostics": {
-    "selected_title_candidate": {
-      "tag": "textarea",
-      "type": "textarea",
-      "name": "",
-      "id": "",
-      "class": "input_textarea",
-      "placeholder": "일정을 입력하세요.",
-      "aria_label": null,
-      "contenteditable": null
-    }
+    "page_url_without_query": "https://m.calendar.naver.com/daily",
+    "detail_form_structure": {
+      "default_controls": [
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": "2026. 8."
+        },
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": "메뉴"
+        },
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": "일정 추가"
+        },
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": "이전 화면으로"
+        },
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": "어제"
+        },
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": "다음날"
+        },
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": "일정 추가"
+        }
+      ],
+      "frames": []
+    },
+    "detail_action_controls": [
+      {
+        "tag": "a",
+        "type": "",
+        "id": "",
+        "class": "logo_link",
+        "title": "",
+        "aria_label": null,
+        "ui_text": "네이버"
+      },
+      {
+        "tag": "button",
+        "type": "button",
+        "id": "",
+        "class": "btn_date",
+        "title": "",
+        "aria_label": null,
+        "ui_text": "2026. 8."
+      },
+      {
+        "tag": "button",
+        "type": "button",
+        "id": "",
+        "class": "btn_menu",
+        "title": "",
+        "aria_label": null,
+        "ui_text": "메뉴"
+      },
+      {
+        "tag": "button",
+        "type": "button",
+        "id": "",
+        "class": "btn_add_schedule",
+        "title": "",
+        "aria_label": null,
+        "ui_text": "일정 추가"
+      },
+      {
+        "tag": "button",
+        "type": "button",
+        "id": "",
+        "class": "btn_back",
+        "title": "",
+        "aria_label": null,
+        "ui_text": "이전 화면으로"
+      },
+      {
+        "tag": "button",
+        "type": "button",
+        "id": "",
+        "class": "btn_prev",
+        "title": "",
+        "aria_label": null,
+        "ui_text": "어제"
+      },
+      {
+        "tag": "button",
+        "type": "button",
+        "id": "",
+        "class": "btn_next",
+        "title": "",
+        "aria_label": null,
+        "ui_text": "다음날"
+      },
+      {
+        "tag": "button",
+        "type": "button",
+        "id": "",
+        "class": "btn_add_schedule",
+        "title": "",
+        "aria_label": null,
+        "ui_text": "일정 추가"
+      }
+    ]
   },
-  "message": "Synthetic event could not be deleted through the visible UI.",
-  "session_adapter_exit_code": 9,
+  "message": "Non-mutating event-detail diagnostics captured.",
+  "session_adapter_exit_code": 0,
   "persistent_browser_retained": true,
-  "session_command_id": "exp002-persistent-create-20260830-05"
+  "session_command_id": "exp002-persistent-diagnose-detail-20260830-06"
 }
