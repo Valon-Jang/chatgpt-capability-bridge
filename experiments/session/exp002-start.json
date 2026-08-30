@@ -1,0 +1,7 @@
+{
+  "session_id": "exp002-persistent-20260830-01",
+  "requested_mode": "persistent_authenticated_browser",
+  "auto_exit_after_command": false,
+  "hosted_runner_soft_limit_seconds": 20700,
+  "note": "Keep the same Chrome profile and authenticated browser alive across adapter retries and new commands."
+}
