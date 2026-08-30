@@ -1,8 +1,6 @@
 {
-  "session_state": "SESSION_IDLE",
-  "updated_at_epoch": 1788077765,
-  "last_command_id": "exp002-persistent-classify-daily-20260830-16",
-  "last_result_status": "VERIFIED_SUCCESS",
-  "last_failure_class": null,
+  "session_state": "COMMAND_RUNNING",
+  "updated_at_epoch": 1788077823,
+  "command_id": "exp002-persistent-cleanup-20260830-17",
   "browser_retained": true
 }
