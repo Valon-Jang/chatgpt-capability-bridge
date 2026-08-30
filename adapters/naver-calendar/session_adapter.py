@@ -44,6 +44,24 @@ def observe_title_on_calendar(driver, base, title: str, timeout: float = 15.0) -
     return base.wait_for_exact_text(driver, title, timeout=timeout)
 
 
+def safe_element_descriptor(el) -> dict | None:
+    if el is None:
+        return None
+    try:
+        return {
+            "tag": el.tag_name,
+            "type": el.get_attribute("type"),
+            "name": el.get_attribute("name"),
+            "id": el.get_attribute("id"),
+            "class": el.get_attribute("class"),
+            "placeholder": el.get_attribute("placeholder"),
+            "aria_label": el.get_attribute("aria-label"),
+            "contenteditable": el.get_attribute("contenteditable"),
+        }
+    except WebDriverException:
+        return {"unavailable": True}
+
+
 def delete_observed_title(driver, base, title: str, result: dict, result_path: Path) -> int:
     result["cleanup"]["attempted"] = True
     if not base.click_text(driver, [title], timeout=8):
@@ -74,6 +92,44 @@ def delete_observed_title(driver, base, title: str, result: dict, result_path: P
         result["message"] = "Synthetic event was opened for deletion, but absence could not be verified afterward."
         base.write_json(result_path, result)
         return 10
+    return 0
+
+
+def diagnose_form(driver, base, command: dict, output_dir: Path, auth_timeout: int) -> int:
+    result = base.result_template(command)
+    result_path = output_dir / "result.json"
+    diagnostics_path = output_dir / "form-structure.json"
+    result["cleanup"] = {"requested": False, "attempted": False, "completed": True}
+    result["execution"]["attempted"] = True
+
+    goto_calendar(driver, base)
+    if not base.wait_for_auth(driver, auth_timeout):
+        result["failure_class"] = "AUTH_BOUNDARY"
+        result["message"] = "Authenticated persistent session was not detected."
+        base.write_json(result_path, result)
+        return 3
+
+    if not base.open_schedule_write_ui(driver, diagnostics_path):
+        result["failure_class"] = "ADAPTER_ERROR"
+        result["message"] = "Could not enter the schedule-writing UI for diagnostics."
+        base.write_json(result_path, result)
+        return 4
+
+    time.sleep(0.8)
+    structure = base.form_metadata(driver)
+    candidate = base.find_title_input(driver)
+    result["diagnostics"] = {
+        "page_url_without_query": (driver.current_url or "").split("?", 1)[0],
+        "form_structure": structure,
+        "selected_title_candidate": safe_element_descriptor(candidate),
+    }
+    result["execution"]["completed"] = True
+    result["verification"]["performed"] = True
+    result["verification"]["passed"] = True
+    result["status"] = "VERIFIED_SUCCESS"
+    result["failure_class"] = None
+    result["message"] = "Non-mutating schedule-form diagnostics captured without field values or session secrets."
+    base.write_json(result_path, result)
     return 0
 
 
@@ -154,6 +210,7 @@ def create_verify_delete(driver, base, command: dict, output_dir: Path, auth_tim
         base.write_json(result_path, result)
         return 5
 
+    result["diagnostics"] = {"selected_title_candidate": safe_element_descriptor(title_input)}
     title_input.click()
     title_input.send_keys(Keys.CONTROL, "a")
     title_input.send_keys(title)
@@ -169,7 +226,6 @@ def create_verify_delete(driver, base, command: dict, output_dir: Path, auth_tim
     result["execution"]["completed"] = True
     result["verification"]["performed"] = True
 
-    # Verify from the target's calendar surface, not from the post-save form route.
     created = observe_title_on_calendar(driver, base, title, timeout=15)
     result["verification"]["evidence"]["created_title_observed"] = created
     if not created:
@@ -194,6 +250,8 @@ def create_verify_delete(driver, base, command: dict, output_dir: Path, auth_tim
 def execute(driver, base, command: dict, output_dir: Path, auth_timeout: int) -> int:
     try:
         action = command.get("action")
+        if action == "diagnose_schedule_form":
+            return diagnose_form(driver, base, command, output_dir, auth_timeout)
         if action == "recover_verify_delete_event":
             return recover_existing(driver, base, command, output_dir, auth_timeout)
         if action == "create_verify_delete_event":
@@ -232,7 +290,6 @@ def main() -> int:
     options = webdriver.ChromeOptions()
     options.add_experimental_option("debuggerAddress", args.debugger_address)
     driver = webdriver.Chrome(options=options)
-    # Intentionally do NOT call driver.quit(): Chrome is owned by the session workflow.
     return execute(driver, base, command, Path(args.output_dir), args.auth_timeout)
 
 
