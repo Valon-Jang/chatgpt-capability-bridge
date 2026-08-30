@@ -128,7 +128,7 @@ Protocol v0.1 defines:
 
 Target-specific UI flows, selectors, browser orchestration, service completion signals, and session behavior remain outside the core.
 
-The Naver Mail reference flow was refit to Protocol v0.1 without a core change. EXP-002 then reached a verified Naver Calendar mutation while the core remained frozen.
+The Naver Mail reference flow was refit to Protocol v0.1 without a core change. EXP-002 then completed a fully reversible Naver Calendar mutation while the core remained frozen.
 
 A core change is allowed only after a documented target-independent `CORE_GAP`.
 
@@ -238,14 +238,14 @@ EXP-001 Mail
 compose -> send -> completion
 
 EXP-002 Calendar
-create object -> observe exact identity -> cleanup workflow
+create object -> observe exact identity -> delete object -> verify absence
 ```
 
 The Naver Calendar API exists, but EXP-002 deliberately uses the browser UI instead.
 
-### Current verified result
+### Verified result
 
-**Status: ACTION VERIFIED / CLEANUP PENDING**
+**Status: VERIFIED_SUCCESS**
 
 The live experiment verified:
 
@@ -257,25 +257,38 @@ The live experiment verified:
 - target save action;
 - exact nonce-bearing synthetic event observable after calendar reload;
 - user-side Naver Calendar notification for the created event;
+- actual daily-list event selection through `#daily_list_scroll_element > ... > li.schedule_item`;
+- deletion through the visible `일정 삭제` control;
+- explicit confirmation through `button.btn_confirm`;
+- exact-title absence after calendar reload;
 - no Protocol v0.1 changes.
 
-Machine-readable creation evidence reached:
-
-```json
-{
-  "created_title_observed": true
-}
-```
-
-### Why the experiment is not marked full PASS yet
-
-The original EXP-002 contract requires:
+The original EXP-002 contract is therefore fully satisfied:
 
 ```text
 create -> observe -> delete -> verify absence
 ```
 
-Creation is proven, but automated event-card/detail navigation has not yet reliably completed deletion of the current synthetic event. Cleanup therefore remains explicit rather than inferred.
+Final machine-readable cleanup evidence reached:
+
+```json
+{
+  "status": "VERIFIED_SUCCESS",
+  "verification": {
+    "passed": true,
+    "evidence": {
+      "cleanup_absence_observed": true
+    }
+  },
+  "cleanup": {
+    "requested": true,
+    "attempted": true,
+    "completed": true
+  }
+}
+```
+
+A key target-specific lesson was that `/daily` retained hidden/covered month-view copies of the same synthetic title. Nine exact-title DOM matches were observed; only the matches inside `#daily_list_scroll_element` represented the actionable daily list. This remained an adapter-level problem and did not require a protocol-core change.
 
 See:
 
@@ -319,7 +332,7 @@ The evidence now supports these claims:
 2. **Bootstrap Boundary** — capability composition cannot create absent permissions; minimal human bootstrap may still be required.
 3. **Capability Composition** — a general GitHub execution substrate can host target-specific browser adapters controlled from ordinary Chat.
 4. **Human Authentication Handoff** — authentication can stay outside model-visible credentials while automation acts through the authenticated state.
-5. **Cross-action / cross-service portability inside one authentication ecosystem** — frozen Protocol v0.1 reached both Naver Mail send and Naver Calendar create mutation without a core change.
+5. **Cross-action / cross-service portability inside one authentication ecosystem** — frozen Protocol v0.1 completed Naver Mail send and the full reversible Naver Calendar create/observe/delete/absence flow without a core change.
 6. **Retained-session retry** — adapter code can fail, be patched, and run again against the same authenticated browser during one runner lifetime.
 
 The evidence does **not** yet support:
@@ -347,9 +360,9 @@ Protocol v0.1 distinguishes:
 - `VERIFY_FAILED`
 - `CORE_GAP`
 
-`CORE_GAP` is intentionally hard to claim. Target UI friction, selectors, QR orchestration, event-card behavior, and service-specific navigation belong in adapters unless a genuinely reusable missing protocol concept is demonstrated.
+`CORE_GAP` is intentionally hard to claim. Target UI friction, selectors, QR orchestration, duplicate DOM nodes, event-card behavior, and service-specific navigation belong in adapters unless a genuinely reusable missing protocol concept is demonstrated.
 
-EXP-002 has not demonstrated a `CORE_GAP`.
+EXP-002 did not demonstrate a `CORE_GAP`.
 
 ---
 
