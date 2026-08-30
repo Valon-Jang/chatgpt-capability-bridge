@@ -1,0 +1,29 @@
+{
+  "protocol_version": "0.1",
+  "command_id": "exp002-persistent-20260830-01",
+  "adapter_id": "naver-calendar",
+  "action": "create_verify_delete_event",
+  "status": "FAILED",
+  "failure_class": "VERIFY_FAILED",
+  "execution": {
+    "attempted": true,
+    "completed": true
+  },
+  "verification": {
+    "performed": true,
+    "passed": false,
+    "evidence": {
+      "created_title_observed": false,
+      "cleanup_absence_observed": false
+    }
+  },
+  "cleanup": {
+    "requested": true,
+    "attempted": false,
+    "completed": false
+  },
+  "message": "Save was attempted but the nonce-bearing event title was not observed.",
+  "session_adapter_exit_code": 7,
+  "persistent_browser_retained": true,
+  "session_command_id": "exp002-persistent-20260830-01"
+}
