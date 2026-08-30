@@ -6,6 +6,10 @@ on:
     paths:
       - "experiments/session/exp002-start.json"
 
+concurrency:
+  group: exp002-persistent-naver-calendar
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -24,7 +28,7 @@ jobs:
       CB_DEBUGGER_ADDRESS: 127.0.0.1:9222
       CB_POLL_SECONDS: "5"
       CB_SOFT_LIMIT_SECONDS: "20700"
-      CB_AUTH_TIMEOUT_SECONDS: "20700"
+      CB_AUTH_TIMEOUT_SECONDS: "60"
 
     steps:
       - name: Checkout
@@ -80,7 +84,7 @@ jobs:
           python scripts/naver_qr_bootstrap.py \
             --debugger-address 127.0.0.1:9222 \
             --output artifacts/exp002-auth/naver-qr-login.png
-          echo "::notice title=QR authentication ready::Download the exp002-naver-qr-auth artifact and scan the QR with the Naver app. The same Chrome will remain alive after authentication and across adapter retries."
+          echo "::notice title=QR authentication ready::Download the exp002-naver-qr-auth artifact and scan the QR with the Naver app. The QR page remains open until authentication succeeds."
 
       - name: Publish QR authentication image
         uses: actions/upload-artifact@v4
@@ -90,6 +94,14 @@ jobs:
           if-no-files-found: error
           retention-days: 1
           compression-level: 0
+
+      - name: Wait for Naver QR authentication
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/wait_for_naver_qr_auth.py \
+            --debugger-address 127.0.0.1:9222 \
+            --timeout 600
 
       - name: Keep authenticated browser alive and consume commands
         shell: bash
