@@ -1,15 +1,15 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-diagnose-card-20260830-09",
+  "command_id": "exp002-persistent-probe-card-20260830-10",
   "adapter_id": "naver-calendar",
-  "action": "diagnose_event_card",
+  "action": "probe_event_card_click",
   "arguments": {
     "title": "CB-EXP002-PERSIST-20260830-T4H7K9"
   },
   "nonce": "20260830-T4H7K9",
   "verification": {
     "required": true,
-    "expected": "Capture only structural tag/class/role/href/data attributes for the synthetic event title and ancestors without mutating calendar data."
+    "expected": "Click exactly the synthetic schedule card once and capture only post-click URL/action/layer structure."
   },
   "experiment": {
     "reversible": true,
