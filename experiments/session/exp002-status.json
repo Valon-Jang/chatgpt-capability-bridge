@@ -1,6 +1,8 @@
 {
-  "session_state": "COMMAND_RUNNING",
-  "updated_at_epoch": 1788076184,
-  "command_id": "exp002-persistent-diagnose-detail-20260830-06",
+  "session_state": "SESSION_IDLE",
+  "updated_at_epoch": 1788076194,
+  "last_command_id": "exp002-persistent-diagnose-detail-20260830-06",
+  "last_result_status": "VERIFIED_SUCCESS",
+  "last_failure_class": null,
   "browser_retained": true
 }
