@@ -4,178 +4,100 @@
 
 `chatgpt-capability-bridge` is an experimental methodology for discovering, composing, and extending the **effective capabilities of ordinary ChatGPT Chat** when richer execution surfaces or target-specific integrations are unavailable.
 
-The project does **not** claim that ChatGPT uses zero integrations. A permitted general-purpose connected tool may still be used — GitHub was the first execution substrate in this experiment.
+The project does **not** claim that ChatGPT uses zero integrations. A permitted general-purpose connected tool may still be used — GitHub is the first execution substrate in this research.
 
-The more precise claim is:
+The narrower claim is:
 
 > **A target service does not necessarily need its own ChatGPT plugin, native integration, MCP server, or dedicated API if ordinary Chat can compose an already-available general-purpose capability into a controlled execution path.**
 
+This is capability composition, not unrestricted access and not a security bypass.
+
 ---
 
-## Origin: why ordinary Chat mattered
+## Why ordinary Chat matters
 
-This research started from a practical constraint: **the work had to remain inside ordinary ChatGPT Chat**.
+The research starts from a practical constraint: the work must remain inside ordinary ChatGPT Chat even when richer execution surfaces such as Work, Codex, or Cloud Browser are unavailable, separated from the approved workflow, or undesirable for the current environment.
 
-There are environments where Chat is available but richer execution surfaces such as Work, Codex, or Cloud Browser are unavailable, disabled, separated from the approved workflow, or undesirable because of product access, organizational policy, workspace permissions, or security constraints.
-
-The goal was therefore not to replace Work or Codex when they are available. The question was narrower:
+The core question is:
 
 > **How far can ordinary Chat extend its own action boundary using only capabilities that are actually available and permitted in the current runtime?**
 
-This distinction matters because a model may fully understand the user's intent while still lacking a direct execution path for the requested action.
-
-For example, ordinary Chat may understand how a webmail service works, but understanding alone does not provide a signed-in browser session, a DOM-control surface, or a target-specific send-mail integration.
-
-This project investigates how to bridge that gap without pretending that unavailable tools are available.
+A model may understand a task while still lacking the direct action path required to complete it. Capability Bridge treats that mismatch as an engineering problem rather than pretending the missing tool exists.
 
 ---
 
-## The documented capability gap
+## Observation #1 — documented capability vs effective runtime capability
 
-OpenAI currently separates **Chat**, **Work**, and **Codex** into different product surfaces.
+In the runtime used for this research, the available GitHub tool surface exposed mutation actions for existing repositories, including file creation/update and Actions-related operations.
 
-Official documentation describes the fast conversational Chat experience separately from Work and Codex, while browser-based signed-in execution is exposed through richer execution surfaces:
+That was notable because general public descriptions of a GitHub connection can emphasize read/search use.
 
-- ChatGPT Work and Codex: https://help.openai.com/en/articles/20001275
-- Built-in browser: https://help.openai.com/en/articles/20001277-using-the-built-in-browser-in-the-chatgpt-desktop-app
-- Cloud browser: https://help.openai.com/en/articles/20001280-using-cloud-browser-in-chatgpt
+The repository therefore records the result narrowly:
 
-The built-in browser is opened from a **Work or Codex** chat, and the cloud browser is documented as a **Work** capability.
+> **This is an environment-specific runtime observation, not a claim that every ordinary ChatGPT session universally has GitHub write access.**
 
-The GitHub integration provides another useful example. OpenAI's standard GitHub documentation says that the GitHub app is used to **read repositories for analysis and search**, while direct code editing and pushing are associated with Codex:
+The first step of the methodology is therefore **Capability Discovery**: inspect the actions actually exposed in the current runtime, then stay within those permissions.
 
-- GitHub connection documentation: https://help.openai.com/en/articles/11145903-connecting-github-to-chatgpt-deep-research
+---
 
-So the practical problem is not that ordinary Chat has no tools at all. It is that **the action surface exposed to ordinary Chat may be narrower than the task requires**.
+## Bootstrap boundary
+
+The same runtime did not expose repository creation.
+
+The user created this repository once in the GitHub UI. After that human bootstrap step, ordinary Chat could mutate the existing repository and construct the experimental bridge.
 
 ```text
-User intent
-   |
-   v
-Ordinary Chat understands the task
-   |
-   |  missing direct action path
-   v
-Capability gap
+No repository
+   -> create-repository action unavailable
+   -> Human bootstrap
+   -> Existing repository
+   -> Chat-visible GitHub mutation actions become usable
 ```
 
----
+This establishes a hard principle:
 
-## Observation #1: documented capability vs effective runtime capability
-
-The first important observation was that **the capabilities documented for a product integration and the capabilities actually exposed to a specific Chat runtime are not always identical**.
-
-In the runtime used for this experiment, the available GitHub tool surface exposed mutation actions for existing repositories, including operations such as:
-
-- creating files;
-- updating files;
-- creating branches;
-- modifying pull-request state or metadata;
-- interacting with GitHub Actions-related resources.
-
-Those actions were actually used from ordinary Chat to modify repositories and construct experimental workflows.
-
-This was notable because the standard public GitHub-app documentation describes the normal ChatGPT GitHub connection as read-only for repository analysis and search.
-
-This repository therefore records the difference carefully:
-
-> **This is an environment-specific runtime observation, not a claim that every ordinary ChatGPT session universally has GitHub write access, and not a claim that a security control was bypassed.**
-
-A core lesson is:
-
-> **Do not infer the full effective capability boundary only from a product label or a general integration description. Inspect the actions actually exposed in the current runtime, then stay within those actions and permissions.**
-
-This became the first step of the methodology: **Capability Discovery**.
-
----
-
-## Bootstrap boundary: the repository-creation limitation
-
-The GitHub experiment also exposed an equally important limitation.
-
-Although the active runtime exposed write actions **inside an existing repository**, it did **not** expose a `create repository` action.
-
-The available mutation operations required an already-existing repository identifier such as `owner/repository`. As a result, Chat could modify files after a repository existed, but it could not create the initial repository itself through the exposed GitHub tool surface.
-
-The user therefore created this repository manually in the GitHub UI. Once that bootstrap step existed, ordinary Chat could continue modifying the README and other repository contents through the available actions.
-
-```text
-No repository exists
-        |
-        |  no create-repository capability exposed
-        v
-Human bootstrap
-(create repository once)
-        |
-        v
-Existing repository
-        |
-        v
-Chat runtime GitHub mutations become usable
-```
-
-This defines an important architectural boundary:
-
-> **Capability composition cannot create a permission or action that is absent from every reachable substrate.**
-
-A Capability Bridge can discover and compose available abilities into a new path, but some workflows still require a **human bootstrap step** or another explicitly permitted tool to create the initial substrate.
-
-This limitation is part of the methodology, not an exception to hide.
+> **Capability composition cannot synthesize a permission or action that is absent from every reachable substrate.**
 
 ---
 
 ## Capability Bridge lifecycle
 
-The experiments suggest a reusable lifecycle.
+```text
+Discover
+   -> Identify capability gap
+   -> Bootstrap if required
+   -> Compose available capabilities
+   -> Human authentication handoff
+   -> Act
+   -> Verify
+```
 
 ### 1. Discover
-Inspect the tools and actions actually exposed to the current Chat runtime.
+Inspect effective runtime capabilities.
 
 ### 2. Identify the gap
-Define the action the user needs but ordinary Chat cannot directly perform.
+Define the action ordinary Chat cannot perform directly.
 
 ### 3. Bootstrap when necessary
-If the required substrate does not yet exist and no creation action is exposed, use a human or another permitted channel for the minimum setup step.
+Use the smallest human/permitted setup step only when the required substrate cannot be created through exposed actions.
 
 ### 4. Compose
 Combine available capabilities into a narrow execution path.
 
 ### 5. Authenticate
-When sensitive authentication is required, hand control to the human rather than asking the model to receive passwords or MFA secrets.
+Keep sensitive login under human control.
 
 ### 6. Act
-Execute the target action through the constructed bridge.
+Execute the target action through the bridge.
 
 ### 7. Verify
-Return evidence or a machine-readable result to Chat so the loop closes.
-
-```text
-Discover
-   |
-   v
-Identify capability gap
-   |
-   v
-Bootstrap if required
-   |
-   v
-Compose available capabilities
-   |
-   v
-Human authentication handoff
-   |
-   v
-Execute action
-   |
-   v
-Verify result back in Chat
-```
+Return machine-readable and target-observable evidence to Chat.
 
 ---
 
-## Protocol v0.1 and Core Freeze
+## Protocol v0.1 — Core Freeze
 
-The first reference experiment has now been separated into a **target-independent protocol core** and a **target-specific adapter**.
+The project separates a target-independent protocol core from target-specific adapters.
 
 ```text
 chatgpt-capability-bridge/
@@ -187,41 +109,38 @@ chatgpt-capability-bridge/
 │  ├─ AUTH_HANDOFF.md
 │  └─ RESULT_ENVELOPE.md
 ├─ adapters/
-│  └─ naver-mail/
-│     └─ ADAPTER.md
+│  ├─ naver-mail/
+│  └─ naver-calendar/
 └─ experiments/
-   └─ EXP-001-NAVER-MAIL.md
+   ├─ EXP-001-NAVER-MAIL.md
+   └─ EXP-002-NAVER-CALENDAR.md
 ```
 
-The protocol core defines:
+Protocol v0.1 defines:
 
 - runtime capability discovery;
 - capability-gap and bootstrap classification;
-- target-independent command semantics;
+- structured command semantics;
 - human authentication handoff;
-- machine-readable verification results;
+- structured verification results;
 - failure classes;
-- a portability-test rule for distinguishing adapter problems from genuine protocol gaps.
+- a portability rule for separating adapter problems from genuine protocol gaps.
 
-Naver-specific mail fields, UI behavior, QR authentication details, browser selectors, browser automation implementation, target completion signals, and IP/session behavior remain outside the generic core.
+Target-specific UI flows, selectors, browser orchestration, service completion signals, and session behavior remain outside the core.
 
-The Naver reference flow was refit to Protocol v0.1 **without requiring a core change**.
+The Naver Mail reference flow was refit to Protocol v0.1 without a core change. EXP-002 then reached a verified Naver Calendar mutation while the core remained frozen.
 
-Protocol v0.1 is therefore treated as **Core Freeze v0.1** for the next portability experiment. A second target must first be attempted by adding only a new adapter and target-specific execution details. The core should change only when a documented `CORE_GAP` demonstrates that a missing concept is genuinely target-independent.
+A core change is allowed only after a documented target-independent `CORE_GAP`.
 
-- Generic protocol: [`protocol/PROTOCOL.md`](protocol/PROTOCOL.md)
-- Capability discovery contract: [`protocol/CAPABILITY_MANIFEST.md`](protocol/CAPABILITY_MANIFEST.md)
-- Command contract: [`protocol/COMMAND_ENVELOPE.md`](protocol/COMMAND_ENVELOPE.md)
-- Authentication handoff: [`protocol/AUTH_HANDOFF.md`](protocol/AUTH_HANDOFF.md)
-- Verification/result contract: [`protocol/RESULT_ENVELOPE.md`](protocol/RESULT_ENVELOPE.md)
-- Adapter #1: [`adapters/naver-mail/ADAPTER.md`](adapters/naver-mail/ADAPTER.md)
-- Experiment #1: [`experiments/EXP-001-NAVER-MAIL.md`](experiments/EXP-001-NAVER-MAIL.md)
+- [`protocol/PROTOCOL.md`](protocol/PROTOCOL.md)
+- [`protocol/CAPABILITY_MANIFEST.md`](protocol/CAPABILITY_MANIFEST.md)
+- [`protocol/COMMAND_ENVELOPE.md`](protocol/COMMAND_ENVELOPE.md)
+- [`protocol/AUTH_HANDOFF.md`](protocol/AUTH_HANDOFF.md)
+- [`protocol/RESULT_ENVELOPE.md`](protocol/RESULT_ENVELOPE.md)
 
 ---
 
-## Core idea
-
-Instead of waiting for every target service to expose a dedicated ChatGPT integration:
+## Core architecture
 
 ```text
 Ordinary ChatGPT Chat
@@ -236,256 +155,253 @@ External execution bridge
 Human-authenticated browser/session
         |
         v
-Unsupported target web service
+Target web service
         |
         v
-Verified real-world action
+Target-observable result
+        |
+        v
+Structured verification back to Chat
 ```
 
-The connected tool becomes a **capability substrate**: ChatGPT uses a capability it already has access to in order to construct another controlled capability it did not directly expose before.
-
-This is **capability composition**, not a claim of unrestricted access.
-
----
-
-## What makes this different
-
-This project does **not** claim that ChatGPT can act without any external tool at all.
-
-It demonstrates a narrower and more practical claim:
-
-- no target-specific ChatGPT plugin is required;
-- no target-specific MCP server is required;
-- no target-service API is required when the browser UI is sufficient;
-- the user can remain in ordinary ChatGPT Chat;
-- a permitted general-purpose execution channel can be repurposed into an action bridge;
-- human authentication can be handed off without giving credentials to the model;
-- structured commands can drive repeatable browser actions after authentication;
-- results can be returned to Chat and verified;
-- unavailable actions remain unavailable unless a human or another permitted substrate bootstraps them.
+GitHub is the first substrate, not a required permanent dependency of the methodology.
 
 ---
 
 ## Human authentication handoff
 
-Authentication remains human-controlled.
+Authentication stays human-controlled.
 
-The model should not ask the user to paste passwords, MFA secrets, or session tokens into the chat. Instead, control is temporarily handed to the user for authentication and returned to automation afterward.
+The model should not ask the user to paste passwords, MFA secrets, raw cookies, recovery codes, or bearer tokens into Chat.
 
-Two patterns were explored in the first prototype.
+Two useful patterns have been tested:
 
-### 1. QR-code handoff
-
-```text
-Chat -> remote browser -> QR login page
-                       -> user scans QR
-                       -> user confirms authentication
-                       -> authenticated browser session
-                       -> automated action resumes
-```
-
-This worked well for services that support QR authentication.
-
-### 2. Interactive login-screen handoff
+### QR handoff
 
 ```text
-Chat -> remote browser -> live login UI shown to user
-                       -> user enters credentials / MFA directly
-                       -> authenticated browser session
-                       -> automated action resumes
+Bridge opens target QR login
+   -> human scans/confirms
+   -> authenticated browser session
+   -> automation resumes
 ```
 
-This generalizes the pattern to services that do not provide QR login.
+### Interactive login-screen handoff
 
-The design principle is:
+```text
+Bridge exposes live login UI
+   -> human enters credentials/MFA directly
+   -> authenticated browser session
+   -> automation resumes
+```
 
-> **The human authenticates. The bridge acts through the authenticated session.**
+Design principle:
+
+> **The human authenticates. The bridge acts through the authenticated state.**
 
 ---
 
-## Reference implementation #1: Naver Mail
+## Reference implementation #1 — Naver Mail
 
-Naver Mail was used as the first real-world validation target.
+EXP-001 demonstrated the first complete real-world action loop.
 
-The experiment intentionally used a service that did not have a target-specific ChatGPT integration in the test path.
-
-### Test conditions
-
-- ordinary ChatGPT Chat was the control surface;
-- ChatGPT Work was not used for the browser action;
-- Codex was not used for the browser action;
-- no Naver Mail-specific ChatGPT plugin was used;
-- no Naver Mail API was used;
-- GitHub was reused as the general-purpose execution substrate;
-- GitHub Actions created the browser execution environment;
-- Chrome + Selenium performed browser interaction;
-- the user authenticated Naver directly through a human authentication handoff;
-- QR-code authentication was used in the successful reference flow;
-- an interactive login-screen handoff was also explored as a more general authentication pattern;
-- subsequent email composition and sending were driven by structured commands rather than repeated full-screen visual interpretation.
-
-### Verified action flow
+Execution path:
 
 ```text
-Ordinary ChatGPT Chat
-        |
-        v
-GitHub command channel
-        |
-        v
-Browser execution environment
-        |
-        v
-Human authentication
-        |
-        v
-Authenticated Naver Mail session
-        |
-        v
-Structured send-mail command
-        |
-        v
-DOM interaction / compose / send
-        |
-        v
-Result verification
+Ordinary Chat
+   -> GitHub command channel
+   -> GitHub Actions browser runtime
+   -> human Naver authentication
+   -> structured mail command
+   -> browser compose/send
+   -> target completion observation
+   -> result returned to Chat
 ```
 
-The prototype successfully sent real test email and detected Naver Mail's completion state after sending.
+Verified result:
 
-The useful result was not merely that a browser could be opened. The complete loop was demonstrated:
+- no Naver Mail-specific ChatGPT plugin in the execution path;
+- no Naver Mail API in the execution path;
+- real test email sent;
+- target send completion detected;
+- Protocol v0.1 refit required no core change.
 
-> **Chat intent -> capability composition -> external execution -> human authentication -> web action -> result verification -> status returned to Chat.**
+See [`experiments/EXP-001-NAVER-MAIL.md`](experiments/EXP-001-NAVER-MAIL.md).
 
 ---
 
-## Why this can matter
+## Reference implementation #2 — Naver Calendar
 
-### 1. Ordinary Chat can remain the control surface
-
-In constrained environments, the user may be able to use ordinary Chat while Work, Codex, Cloud Browser, or other richer execution modes are unavailable or not permitted.
-
-A bridge can provide a narrower and explicit action capability while preserving the existing Chat workflow.
-
-This is **not** a claim that the pattern bypasses organizational security policy. The bridge and its underlying tools must themselves be permitted.
-
-### 2. Unsupported services become candidates for controlled automation
-
-A target does not necessarily need to ship a ChatGPT integration first. If its browser UI can be safely and reliably automated, it may be reachable through a bridge adapter.
-
-### 3. Capability discovery can reveal useful runtime affordances
-
-The GitHub experiment showed that the current runtime's effective tool surface can be worth inspecting directly rather than assuming it exactly matches the most general public description of an integration.
-
-This makes **capability discovery** a first-class part of the methodology.
-
-### 4. One generic execution channel can support multiple targets
-
-Instead of building a completely new ChatGPT integration for every service, the same execution substrate can host multiple target adapters.
+EXP-002 tests portability with a different service and different mutation semantics.
 
 ```text
-                  +-> Webmail adapter
-Chat -> Bridge ---+-> Internal web app adapter
-                  +-> Form / portal adapter
-                  +-> Other browser-action adapters
+EXP-001 Mail
+compose -> send -> completion
+
+EXP-002 Calendar
+create object -> observe exact identity -> cleanup workflow
 ```
 
-### 5. Human authentication stays separable from AI control
+The Naver Calendar API exists, but EXP-002 deliberately uses the browser UI instead.
 
-The user can authenticate directly into the browser while the model receives neither the password nor the MFA secret. Automation begins only after the authenticated session exists.
+### Current verified result
 
-### 6. Screen interpretation is not required for every action
+**Status: ACTION VERIFIED / CLEANUP PENDING**
 
-A browser may be used interactively for bootstrap and authentication, then switched to stable DOM selectors and structured commands for routine operations. This can reduce latency and improve repeatability compared with visually re-interpreting the whole page for every action.
+The live experiment verified:
+
+- one-time human QR authentication;
+- authenticated Chrome retained across adapter failures and patches;
+- command retries without repeated human authentication inside the same runner lifetime;
+- entry into Naver Calendar's mobile schedule-writing UI;
+- exact mapping of the title field to `textarea[placeholder="일정을 입력하세요."]`;
+- target save action;
+- exact nonce-bearing synthetic event observable after calendar reload;
+- user-side Naver Calendar notification for the created event;
+- no Protocol v0.1 changes.
+
+Machine-readable creation evidence reached:
+
+```json
+{
+  "created_title_observed": true
+}
+```
+
+### Why the experiment is not marked full PASS yet
+
+The original EXP-002 contract requires:
+
+```text
+create -> observe -> delete -> verify absence
+```
+
+Creation is proven, but automated event-card/detail navigation has not yet reliably completed deletion of the current synthetic event. Cleanup therefore remains explicit rather than inferred.
+
+See:
+
+- [`adapters/naver-calendar/ADAPTER.md`](adapters/naver-calendar/ADAPTER.md)
+- [`experiments/EXP-002-NAVER-CALENDAR.md`](experiments/EXP-002-NAVER-CALENDAR.md)
 
 ---
 
-## Persistence experiments
+## Persistent Authentication Pattern
 
-The Naver Mail prototype also explored persistent authenticated sessions.
+EXP-002 produced a reusable execution pattern that is stronger than a one-shot Action:
 
-A first design attempted to hand an encrypted browser state from one GitHub-hosted runner to the next before the runner timeout. The browser state transfer itself worked, but Naver Mail detected the changed runner IP and required reauthentication because of its IP-security behavior.
+```text
+Human auth once
+   -> persistent Chrome owned by workflow
+   -> adapter attaches
+   -> command succeeds or fails
+   -> browser remains alive
+   -> adapter code patched
+   -> next command hot-loaded
+   -> same authenticated session reused
+```
 
-That failure clarified an architectural boundary:
+This was observed working across multiple live diagnostics and retries.
 
-> **Cookie persistence is not always session persistence. Network identity can be part of authentication state.**
+Important boundary:
 
-For services with IP-bound sessions, a more durable architecture is a persistent browser on a stable machine or self-hosted runner rather than rotating ephemeral hosted runners.
+> **Retained browser state within one hosted runner is not the same as durable session persistence across new runners.**
+
+Earlier Naver Mail persistence tests already showed that transferring cookies/profile state to a new GitHub-hosted runner can still trigger reauthentication when network identity changes.
+
+For long-lived or IP-bound services, a stable self-hosted runner or persistent machine is the stronger architecture.
 
 ---
 
-## Limits and non-goals
+## What the experiments currently support
 
-This methodology has explicit limits.
+The evidence now supports these claims:
 
-- It cannot invoke actions that are not exposed by any reachable and permitted tool.
-- It cannot turn read permission into write permission by assertion.
-- It may require a human bootstrap step, as repository creation did in this experiment.
-- It does not guarantee that every website is automatable.
-- CAPTCHA, hardware-backed authentication, device binding, IP binding, anti-bot systems, service policy, or unstable interfaces can prevent automation.
-- Runtime capabilities may vary by plan, workspace, installed plugins/apps, permissions, rollout state, and product surface.
-- An environment-specific observation should not be presented as a universal ChatGPT capability.
+1. **Capability Discovery** — effective runtime actions can differ from a general integration description and should be inspected directly.
+2. **Bootstrap Boundary** — capability composition cannot create absent permissions; minimal human bootstrap may still be required.
+3. **Capability Composition** — a general GitHub execution substrate can host target-specific browser adapters controlled from ordinary Chat.
+4. **Human Authentication Handoff** — authentication can stay outside model-visible credentials while automation acts through the authenticated state.
+5. **Cross-action / cross-service portability inside one authentication ecosystem** — frozen Protocol v0.1 reached both Naver Mail send and Naver Calendar create mutation without a core change.
+6. **Retained-session retry** — adapter code can fail, be patched, and run again against the same authenticated browser during one runner lifetime.
 
-The project is about **composing allowed capabilities**, not bypassing disabled ones.
+The evidence does **not** yet support:
+
+- universal ordinary-Chat GitHub write access;
+- every website being automatable;
+- zero external integrations;
+- a security-policy bypass;
+- durable authentication across arbitrary hosts/IPs;
+- full cross-vendor portability.
+
+---
+
+## Failure classes
+
+Protocol v0.1 distinguishes:
+
+- `CAPABILITY_GAP`
+- `BOOTSTRAP_REQUIRED`
+- `AUTH_REQUIRED`
+- `AUTH_BOUNDARY`
+- `SUBSTRATE_BOUNDARY`
+- `TARGET_BOUNDARY`
+- `ADAPTER_ERROR`
+- `VERIFY_FAILED`
+- `CORE_GAP`
+
+`CORE_GAP` is intentionally hard to claim. Target UI friction, selectors, QR orchestration, event-card behavior, and service-specific navigation belong in adapters unless a genuinely reusable missing protocol concept is demonstrated.
+
+EXP-002 has not demonstrated a `CORE_GAP`.
 
 ---
 
 ## Security principles
 
-This repository should preserve the following boundaries as it evolves:
+This repository preserves these boundaries:
 
 - never store user passwords in source code;
-- never commit private encryption keys;
+- never commit private encryption keys or raw session values;
+- keep MFA/recovery secrets outside Chat and command envelopes;
 - prefer human-in-the-loop authentication;
-- keep target credentials outside model-visible command payloads;
-- encrypt commands or session-transfer material when they cross an untrusted storage channel;
-- expose only the minimum browser/action surface needed for the task;
-- verify high-impact actions before execution when appropriate;
-- respect the target service's security controls, terms, and automation restrictions;
-- do not treat the absence of a tool action as permission to bypass platform policy;
-- do not describe this pattern as a way to bypass organizational security policy.
+- expose only the minimum browser/action surface required;
+- keep public diagnostics structural and synthetic;
+- verify target state rather than trusting transport/process success;
+- respect target security controls, terms, and automation restrictions;
+- never interpret a missing action as permission to bypass policy.
 
 ---
 
-## Terminology
+## Limits
 
-### Effective runtime capability
-An action that is actually exposed and usable in the current Chat runtime, regardless of whether a more general product description emphasizes or omits it.
+Capability Bridge cannot:
 
-### Capability discovery
-The process of inspecting the current runtime to determine what actions are truly available before designing a bridge.
+- invoke a permission that no reachable tool has;
+- convert read access into write access by assertion;
+- guarantee browser automation against CAPTCHA, hardware authentication, device binding, IP binding, anti-bot systems, or unstable UIs;
+- guarantee that runtime tools are identical across plans, workspaces, sessions, or rollouts.
 
-### Human bootstrap
-A minimal setup action performed by the user when the required initial substrate cannot be created through the exposed runtime capabilities.
-
-### Target-specific integration
-An integration designed specifically for the service being controlled, such as a dedicated plugin, app, MCP server, or API adapter.
-
-### General-purpose execution bridge
-A tool ChatGPT can already reach that can host, trigger, or communicate with another execution environment. GitHub was used in the first experiment, but the pattern is not intended to be GitHub-specific.
-
-### Authentication handoff
-A temporary transfer of browser control to the human for login or MFA, followed by return of control to the automated bridge.
-
-### Capability bridge
-The overall pattern of discovering and composing existing ChatGPT-accessible capabilities into a new controlled execution path.
+All findings should be described as observations from the tested runtime and target path.
 
 ---
 
-## Current status
+## Next research gate
 
-**Experimental / proof of concept.**
+The next major portability test should leave the Naver authentication ecosystem.
 
-Three findings are currently documented:
+> **EXP-003 — cross-vendor portability**
 
-1. **Capability Discovery:** the active Chat runtime exposed more GitHub mutation capability for existing repositories than the standard public GitHub-app description suggested, while still lacking repository-creation capability.
-2. **Capability Composition:** those available GitHub actions were composed into a browser execution bridge that successfully performed and verified a real Naver Mail send from ordinary Chat.
-3. **Core/Adapter separation:** the Naver reference flow was refit into frozen Protocol v0.1 without moving target-specific mail, authentication, browser, or session details into the generic core.
+A strong EXP-003 target should:
 
-The next research gate is **EXP-002: Adapter Portability**. A meaningfully different target/action should be implemented with a new adapter while keeping Protocol v0.1 unchanged. If a core change is required, it must be justified as a documented `CORE_GAP` rather than silently added during the test.
+- use a different vendor/authentication environment;
+- keep Protocol v0.1 frozen initially;
+- add only a new target adapter;
+- perform a harmless, reversible mutation;
+- use human-controlled authentication;
+- produce target-observable verification;
+- classify any failure before considering a core change.
+
+Only after that experiment should the project make a stronger cross-vendor portability claim.
 
 ---
 
-### One-sentence summary
+## One-sentence summary
 
-**Discover the capabilities ordinary Chat actually has, bootstrap only what is genuinely missing, and compose the available pieces into controlled actions on services that have no target-specific ChatGPT plugin or API — while keeping authentication human-controlled.**
+**Discover the capabilities ordinary Chat actually has, bootstrap only what is genuinely missing, compose those capabilities into a controlled external action path, keep authentication human-controlled, and verify the real target state rather than pretending unavailable tools exist.**
