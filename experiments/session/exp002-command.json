@@ -1,15 +1,15 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-diagnose-daily-matches-20260830-15",
+  "command_id": "exp002-persistent-classify-daily-20260830-16",
   "adapter_id": "naver-calendar",
-  "action": "diagnose_daily_matches",
+  "action": "classify_daily_matches",
   "arguments": {
     "title": "CB-EXP002-PERSIST-20260830-T4H7K9"
   },
   "nonce": "20260830-T4H7K9",
   "verification": {
     "required": true,
-    "expected": "Open daily view and compare all visible exact-title nodes using only structural attributes and geometry."
+    "expected": "Identify which exact-title node is actually contained within the daily-list scroll surface without mutating calendar data."
   },
   "experiment": {
     "reversible": true,
