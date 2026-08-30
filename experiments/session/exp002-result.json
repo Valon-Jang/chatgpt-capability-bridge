@@ -1,29 +1,29 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-confirm-delete-20260830-19",
+  "command_id": "exp002-persistent-20260830-01",
   "adapter_id": "naver-calendar",
-  "action": "confirm_pending_delete",
-  "status": "VERIFIED_SUCCESS",
-  "failure_class": null,
+  "action": "create_verify_delete_event",
+  "status": "FAILED",
+  "failure_class": "AUTH_BOUNDARY",
   "execution": {
     "attempted": true,
-    "completed": true
+    "completed": false
   },
   "verification": {
-    "performed": true,
-    "passed": true,
+    "performed": false,
+    "passed": false,
     "evidence": {
       "created_title_observed": false,
-      "cleanup_absence_observed": true
+      "cleanup_absence_observed": false
     }
   },
   "cleanup": {
     "requested": true,
-    "attempted": true,
-    "completed": true
+    "attempted": false,
+    "completed": false
   },
-  "message": "Pending delete was confirmed and exact-title absence verified.",
-  "session_adapter_exit_code": 0,
+  "message": "Authentication was not completed before the handoff timeout.",
+  "session_adapter_exit_code": 3,
   "persistent_browser_retained": true,
-  "session_command_id": "exp002-persistent-confirm-delete-20260830-19"
+  "session_command_id": "exp002-persistent-20260830-01"
 }
