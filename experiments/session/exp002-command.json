@@ -1,21 +1,23 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-diagnose-daily-20260830-13",
+  "command_id": "exp002-persistent-cleanup-20260830-14",
   "adapter_id": "naver-calendar",
-  "action": "diagnose_daily_event_card",
+  "action": "recover_verify_delete_event",
   "arguments": {
-    "title": "CB-EXP002-PERSIST-20260830-T4H7K9"
+    "title": "CB-EXP002-PERSIST-20260830-T4H7K9",
+    "cleanup": true
   },
   "nonce": "20260830-T4H7K9",
   "verification": {
     "required": true,
-    "expected": "Open the daily view and capture only structural attributes for the synthetic event title and its ancestors."
+    "expected": "Use trusted touch input for month -> daily -> detail/edit navigation, delete the existing synthetic event, and verify exact-title absence."
   },
   "experiment": {
     "reversible": true,
-    "cleanup_requested": false,
+    "cleanup_requested": true,
     "core_freeze": "0.1",
     "persistent_browser_session": true,
-    "diagnostic_only": true
+    "cleanup_only": true,
+    "retry": 14
   }
 }
