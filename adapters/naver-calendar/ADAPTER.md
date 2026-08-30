@@ -2,11 +2,15 @@
 
 **Adapter ID:** `naver-calendar`  
 **Protocol target:** Capability Bridge Protocol v0.1 (Core Freeze)  
-**Status:** ACTION VERIFIED / CLEANUP PATH EXPERIMENTAL
+**Status:** VERIFIED_SUCCESS
 
 This adapter demonstrates that the frozen Capability Bridge core can drive a second browser-based service/action without introducing target-specific concepts into the protocol core.
 
-The verified mutation is Naver Calendar event creation through the mobile web UI. Full create/verify/delete/absence completion remains pending because the deletion navigation is still being mapped.
+The verified operation is a full reversible mutation through Naver Calendar mobile web UI:
+
+```text
+create -> observe -> delete -> verify absence
+```
 
 ---
 
@@ -29,7 +33,7 @@ Naver publishes a Calendar API, but this adapter intentionally does not use it.
 
 ---
 
-## 2. Supported actions
+## 2. Supported experiment action
 
 ### `create_verify_delete_event`
 
@@ -42,7 +46,7 @@ Arguments:
 }
 ```
 
-Current behavior:
+Verified behavior:
 
 ```text
 authenticated calendar
@@ -51,32 +55,25 @@ authenticated calendar
    -> save
    -> reload calendar
    -> observe exact synthetic title
-   -> attempt cleanup
-   -> return structured result
+   -> open actual daily-list schedule item
+   -> activate delete control
+   -> confirm deletion
+   -> reload calendar
+   -> verify exact-title absence
+   -> return VERIFIED_SUCCESS
 ```
 
-Creation and exact-title observation are verified. Cleanup remains experimental until event-card/detail navigation and deletion are target-observably verified.
+### Recovery / diagnostic actions
 
-### `recover_verify_delete_event`
+During the live experiment, temporary recovery and non-mutating diagnostic actions were used to map target-specific DOM behavior. They are implementation/research helpers, not new protocol concepts.
 
-Used only for safe cleanup/recovery of a known synthetic title from an earlier attempt.
-
-It must not create a new event. It checks whether the exact title remains observable and, when possible, deletes it and verifies absence.
-
-### Diagnostic actions
-
-The persistent adapter may use non-mutating diagnostic actions such as:
-
-- `diagnose_schedule_form`
-- `diagnose_event_detail`
-
-Diagnostics must expose only safe structural metadata and must not return field values, private calendar text, passwords, cookie values, or session tokens.
+Diagnostics expose only safe structural metadata and never field values, private calendar text, passwords, cookie values, or session tokens.
 
 ---
 
 ## 3. Authentication handoff
 
-The current verified pattern is QR-based one-time human authentication into a Chrome process retained by the workflow.
+The verified pattern is QR-based one-time human authentication into a Chrome process retained by the workflow.
 
 ```text
 Start persistent Chrome
@@ -97,11 +94,11 @@ Wait until authenticated state is detected
 Only then start adapter commands
 ```
 
-The important ordering constraint is:
+Ordering rule:
 
 > **Do not navigate away from the QR login page until authentication has been detected.**
 
-Earlier orchestration that started commands before authentication completion invalidated the QR handoff.
+The human authenticates; the bridge acts through the authenticated state.
 
 ---
 
@@ -109,9 +106,9 @@ Earlier orchestration that started commands before authentication completion inv
 
 Chrome is owned by the persistent-session workflow, not by each individual adapter command.
 
-Adapters attach through Chrome remote debugging, execute one command, then return **without calling `driver.quit()`**.
+Adapters attach through Chrome remote debugging, execute one command, then return without closing the browser.
 
-This enables:
+This produced the observed pattern:
 
 ```text
 human auth once
@@ -122,7 +119,7 @@ human auth once
    -> same authenticated browser
 ```
 
-The pattern is only guaranteed inside the lifetime of the same hosted runner. It does not imply authenticated-session portability to a new runner/IP.
+This pattern is verified only inside the lifetime of the same hosted runner. It does not imply authenticated-session portability to a new runner/IP.
 
 ---
 
@@ -160,50 +157,81 @@ A previous heuristic incorrectly selected:
 input.input_date
 ```
 
-That failure produced save attempts without real event creation. The adapter must prefer the confirmed title textarea and must not fall back to arbitrary text/date inputs when the Naver Calendar `/add` structure is available.
+The adapter must prefer the confirmed title textarea and must not fall back to arbitrary date/text inputs on the `/add` surface.
 
 ---
 
 ## 6. Creation verification
 
-Creation is verified from the calendar surface after save, not merely from the post-save route or process exit code.
+Creation must be verified from the target calendar surface after save, not from a process exit code or post-save route.
 
-Required evidence for a verified mutation:
+The live experiment reached:
 
 ```json
 {
-  "execution": {
-    "attempted": true,
-    "completed": true
-  },
-  "verification": {
-    "performed": true,
-    "evidence": {
-      "created_title_observed": true
-    }
-  }
+  "created_title_observed": true
 }
 ```
 
-The live experiment reached `created_title_observed: true` for a nonce-bearing synthetic event after calendar reload.
+for a nonce-bearing synthetic event after calendar reload.
 
-The human also reported receiving the corresponding Naver Calendar notification, which is useful external corroboration but is not a substitute for machine-readable target observation.
+The user also reported receiving the corresponding Naver Calendar notification. That external notification is useful corroboration but is not a substitute for machine-readable target observation.
 
 ---
 
-## 7. Cleanup contract
+## 7. Daily-view node selection
 
-The target experiment ultimately requires:
+A major cleanup bug came from assuming every exact-title DOM match represented the same clickable event.
 
-```text
-open exact synthetic event
-   -> reach edit/detail action
-   -> delete through visible browser UI
-   -> return to calendar
-   -> verify exact title absence
+After switching to the daily route, the synthetic title appeared **9 times** in the DOM. Hidden/covered month-view copies remained present while the actual daily list was rendered above them.
+
+Only elements contained within:
+
+```css
+#daily_list_scroll_element
 ```
 
-A complete pass requires:
+were actionable daily-list entries.
+
+The verified actionable structure was:
+
+```text
+li.schedule_item
+  -> div.schedule_info
+     -> strong.title
+        -> span.text
+```
+
+The adapter must therefore scope cleanup/event-detail navigation to the actual daily-list container instead of selecting the first exact-title match globally.
+
+---
+
+## 8. Verified deletion mapping
+
+Once the actual `li.schedule_item` was opened, the detail/delete flow exposed:
+
+```text
+button.btn_floating_delete  -> 일정 삭제
+button.btn_cancel           -> 취소
+button.btn_confirm          -> 확인
+```
+
+Deletion was not complete after activating `btn_floating_delete`; the explicit `button.btn_confirm` confirmation was required.
+
+Final verified cleanup sequence:
+
+```text
+month event copy
+   -> daily route
+   -> actual li.schedule_item inside #daily_list_scroll_element
+   -> event detail
+   -> button.btn_floating_delete
+   -> button.btn_confirm
+   -> calendar reload
+   -> exact title absent
+```
+
+Final Result Envelope evidence:
 
 ```json
 {
@@ -212,35 +240,33 @@ A complete pass requires:
     "performed": true,
     "passed": true,
     "evidence": {
-      "created_title_observed": true,
       "cleanup_absence_observed": true
     }
   },
   "cleanup": {
+    "requested": true,
     "attempted": true,
     "completed": true
   }
 }
 ```
 
-Current live state: the synthetic event is observable, but automated event-card/detail navigation has not yet reliably reached the deletion control. Therefore cleanup must remain explicitly pending rather than being inferred.
-
 ---
 
-## 8. Failure mapping
+## 9. Failure mapping
 
 - Human cannot complete authentication → `AUTH_BOUNDARY`.
 - Hosted browser/session cannot be sustained → `SUBSTRATE_BOUNDARY`.
 - Naver prevents a safe browser-UI path → `TARGET_BOUNDARY`.
-- Target selectors, routing, or event-card behavior are wrong → `ADAPTER_ERROR`.
+- Target selectors, routing, duplicate nodes, or event-card behavior are wrong → `ADAPTER_ERROR`.
 - A mutation may have happened but target state cannot be proven → `VERIFY_FAILED`.
 - Only a genuinely target-independent missing contract may be classified as `CORE_GAP`.
 
-The observed EXP-002 failures were adapter/session-orchestration failures. None justified changing Protocol v0.1.
+All observed EXP-002 implementation failures were adapter/session-orchestration failures. None justified changing Protocol v0.1.
 
 ---
 
-## 9. Privacy rule
+## 10. Privacy rule
 
 Because the repository is public, diagnostics must not upload or commit:
 
@@ -259,11 +285,12 @@ Safe structural diagnostics may include:
 - aria-label/title;
 - fixed target UI action labels;
 - synthetic nonce-bearing titles;
+- bounded geometry/containment metadata needed to distinguish duplicate synthetic nodes;
 - machine-readable result state.
 
 ---
 
-## 10. Portability significance
+## 11. Portability significance
 
 Adapter 001 and Adapter 002 now cover materially different action semantics:
 
@@ -272,9 +299,13 @@ Adapter 001 — Naver Mail
 compose -> send -> observe completion
 
 Adapter 002 — Naver Calendar
-create object -> observe exact identity -> cleanup workflow
+create object -> observe exact identity -> delete object -> verify absence
 ```
 
-The Naver Calendar mutation was achieved without changing the frozen generic protocol.
+Naver Calendar completed the full reversible contract without changing the frozen generic protocol.
 
-This supports **cross-action / cross-service portability within the Naver authentication ecosystem**. It does not yet prove cross-vendor portability. EXP-003 should use a different vendor and authentication environment.
+This supports **cross-action / cross-service portability within the Naver authentication ecosystem**. It does not yet prove cross-vendor portability.
+
+The next gate is:
+
+> **EXP-003 — a different vendor and authentication ecosystem.**
