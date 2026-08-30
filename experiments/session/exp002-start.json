@@ -1,7 +1,8 @@
 {
-  "session_id": "exp002-persistent-20260830-03",
+  "session_id": "exp002-persistent-20260830-04",
   "requested_mode": "persistent_authenticated_browser",
+  "authentication_mode": "naver_qr_once",
   "auto_exit_after_command": false,
   "hosted_runner_soft_limit_seconds": 20700,
-  "note": "Fresh workflow run after repository secret creation; keep the same Chrome profile and authenticated browser alive across adapter retries and new commands."
+  "note": "Persistent Chrome with one-time Naver QR authentication; keep browser alive across adapter retries and new commands."
 }
