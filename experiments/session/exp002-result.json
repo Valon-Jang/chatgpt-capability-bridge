@@ -1,29 +1,254 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-create-20260830-03",
+  "command_id": "exp002-persistent-diagnose-20260830-04",
   "adapter_id": "naver-calendar",
-  "action": "create_verify_delete_event",
-  "status": "FAILED",
-  "failure_class": "VERIFY_FAILED",
+  "action": "diagnose_schedule_form",
+  "status": "VERIFIED_SUCCESS",
+  "failure_class": null,
   "execution": {
     "attempted": true,
     "completed": true
   },
   "verification": {
     "performed": true,
-    "passed": false,
+    "passed": true,
     "evidence": {
       "created_title_observed": false,
       "cleanup_absence_observed": false
     }
   },
   "cleanup": {
-    "requested": true,
+    "requested": false,
     "attempted": false,
-    "completed": false
+    "completed": true
   },
-  "message": "Save was attempted, then the calendar was reloaded, but the nonce-bearing event title was not observed.",
-  "session_adapter_exit_code": 7,
+  "diagnostics": {
+    "page_url_without_query": "https://m.calendar.naver.com/add",
+    "form_structure": {
+      "default_controls": [
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": "2026. 8."
+        },
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": "메뉴"
+        },
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": "뒤로가기"
+        },
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": "저장"
+        },
+        {
+          "tag": "button",
+          "type": "submit",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": "범주선택"
+        },
+        {
+          "tag": "textarea",
+          "type": "textarea",
+          "name": "",
+          "placeholder": "일정을 입력하세요.",
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": null
+        },
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": null
+        },
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": null
+        },
+        {
+          "tag": "input",
+          "type": "text",
+          "name": "",
+          "placeholder": "",
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": null
+        },
+        {
+          "tag": "input",
+          "type": "text",
+          "name": "",
+          "placeholder": "",
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": null
+        },
+        {
+          "tag": "input",
+          "type": "text",
+          "name": "",
+          "placeholder": "",
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": null
+        },
+        {
+          "tag": "input",
+          "type": "text",
+          "name": "",
+          "placeholder": "",
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": null
+        },
+        {
+          "tag": "input",
+          "type": "text",
+          "name": "",
+          "placeholder": "국가 및 도시명",
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": null
+        },
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": "지우기"
+        },
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": "반복"
+        },
+        {
+          "tag": "input",
+          "type": "text",
+          "name": "",
+          "placeholder": "장소",
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": null
+        },
+        {
+          "tag": "textarea",
+          "type": "textarea",
+          "name": "",
+          "placeholder": "설명",
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": null
+        },
+        {
+          "tag": "input",
+          "type": "text",
+          "name": "",
+          "placeholder": "초대",
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": null
+        },
+        {
+          "tag": "button",
+          "type": "button",
+          "name": "",
+          "placeholder": null,
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": "추가"
+        },
+        {
+          "tag": "input",
+          "type": "radio",
+          "name": "radio_type_popup_0",
+          "placeholder": "",
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": null
+        },
+        {
+          "tag": "input",
+          "type": "radio",
+          "name": "radio_type_mail_0",
+          "placeholder": "",
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": null
+        },
+        {
+          "tag": "input",
+          "type": "radio",
+          "name": "radio_type_popup_1",
+          "placeholder": "",
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": null
+        },
+        {
+          "tag": "input",
+          "type": "radio",
+          "name": "radio_type_mail_1",
+          "placeholder": "",
+          "aria_label": null,
+          "contenteditable": null,
+          "ui_text": null
+        }
+      ],
+      "frames": []
+    },
+    "selected_title_candidate": {
+      "tag": "input",
+      "type": "text",
+      "name": "",
+      "id": "",
+      "class": "input_date",
+      "placeholder": "",
+      "aria_label": null,
+      "contenteditable": null
+    }
+  },
+  "message": "Non-mutating schedule-form diagnostics captured without field values or session secrets.",
+  "session_adapter_exit_code": 0,
   "persistent_browser_retained": true,
-  "session_command_id": "exp002-persistent-create-20260830-03"
+  "session_command_id": "exp002-persistent-diagnose-20260830-04"
 }
