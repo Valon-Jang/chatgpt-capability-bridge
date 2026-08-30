@@ -1,8 +1,8 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-diagnose-daily-matches-20260830-15",
+  "command_id": "exp002-persistent-classify-daily-20260830-16",
   "adapter_id": "naver-calendar",
-  "action": "diagnose_daily_matches",
+  "action": "classify_daily_matches",
   "status": "VERIFIED_SUCCESS",
   "failure_class": null,
   "execution": {
@@ -25,1407 +25,530 @@
   "diagnostics": {
     "url": "https://m.calendar.naver.com/daily?date=2026-08-30",
     "match_count": 9,
-    "matches": [
+    "summaries": [
       {
+        "ancestors": [
+          {
+            "class": "schedule period1",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "schedule_wrap",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "col_area",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "col1 today selected",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "row",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "month_wrap custom_month_wrap",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "scroll_area",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "month_cont custom_month_cont",
+            "id": "",
+            "tag": "div"
+          }
+        ],
+        "class": "schedule period1",
         "index": 0,
-        "chain": [
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule period1"
-            },
-            "rect": {
-              "h": 14,
-              "w": 179.71875,
-              "x": 3,
-              "y": 682.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 0
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule_wrap"
-            },
-            "rect": {
-              "h": 46,
-              "w": 179.71875,
-              "x": 3,
-              "y": 666.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 1
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "col_area"
-            },
-            "rect": {
-              "h": 111.109375,
-              "w": 179.71875,
-              "x": 3,
-              "y": 644.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 2
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "col1 today selected"
-            },
-            "rect": {
-              "h": 112.109375,
-              "w": 182.71875,
-              "x": 0,
-              "y": 643.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 3
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "row"
-            },
-            "rect": {
-              "h": 112.109375,
-              "w": 1264,
-              "x": 0,
-              "y": 643.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 4
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "month_wrap custom_month_wrap",
-              "data-month-label": "2026-08"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1264,
-              "x": 0,
-              "y": 83
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 5
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "scroll_area"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1279,
-              "x": 0,
-              "y": 83
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 6
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "month_cont custom_month_cont"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1279,
-              "x": 0,
-              "y": 83
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 7
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "calender_area"
-            },
-            "rect": {
-              "h": 700,
-              "w": 1279,
-              "x": 0,
-              "y": 56
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 8
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "contents",
-              "id": "contents"
-            },
-            "rect": {
-              "h": 700,
-              "w": 1279,
-              "x": 0,
-              "y": 56
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 9
-          }
-        ]
+        "rect": {
+          "h": 14,
+          "w": 179.71875,
+          "x": 3,
+          "y": 682.546875
+        },
+        "tag": "div",
+        "top_at_center": {
+          "class": "",
+          "id": "daily_list_scroll_element",
+          "tag": "div"
+        },
+        "within_daily_list": false
       },
       {
+        "ancestors": [
+          {
+            "class": "time_schedule color_blue2",
+            "id": "",
+            "tag": "p"
+          },
+          {
+            "class": "schedule period1",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "schedule_wrap",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "col_area",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "col1 today selected",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "row",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "month_wrap custom_month_wrap",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "scroll_area",
+            "id": "",
+            "tag": "div"
+          }
+        ],
+        "class": "time_schedule color_blue2",
         "index": 1,
-        "chain": [
-          {
-            "tag": "p",
-            "attrs": {
-              "class": "time_schedule color_blue2"
-            },
-            "rect": {
-              "h": 14,
-              "w": 173.71875,
-              "x": 6,
-              "y": 682.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 0
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule period1"
-            },
-            "rect": {
-              "h": 14,
-              "w": 179.71875,
-              "x": 3,
-              "y": 682.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 1
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule_wrap"
-            },
-            "rect": {
-              "h": 46,
-              "w": 179.71875,
-              "x": 3,
-              "y": 666.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 2
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "col_area"
-            },
-            "rect": {
-              "h": 111.109375,
-              "w": 179.71875,
-              "x": 3,
-              "y": 644.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 3
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "col1 today selected"
-            },
-            "rect": {
-              "h": 112.109375,
-              "w": 182.71875,
-              "x": 0,
-              "y": 643.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 4
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "row"
-            },
-            "rect": {
-              "h": 112.109375,
-              "w": 1264,
-              "x": 0,
-              "y": 643.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 5
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "month_wrap custom_month_wrap",
-              "data-month-label": "2026-08"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1264,
-              "x": 0,
-              "y": 83
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 6
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "scroll_area"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1279,
-              "x": 0,
-              "y": 83
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 7
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "month_cont custom_month_cont"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1279,
-              "x": 0,
-              "y": 83
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 8
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "calender_area"
-            },
-            "rect": {
-              "h": 700,
-              "w": 1279,
-              "x": 0,
-              "y": 56
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 9
-          }
-        ]
+        "rect": {
+          "h": 14,
+          "w": 173.71875,
+          "x": 6,
+          "y": 682.546875
+        },
+        "tag": "p",
+        "top_at_center": {
+          "class": "",
+          "id": "daily_list_scroll_element",
+          "tag": "div"
+        },
+        "within_daily_list": false
       },
       {
+        "ancestors": [
+          {
+            "class": "text",
+            "id": "",
+            "tag": "span"
+          },
+          {
+            "class": "time_schedule color_blue2",
+            "id": "",
+            "tag": "p"
+          },
+          {
+            "class": "schedule period1",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "schedule_wrap",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "col_area",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "col1 today selected",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "row",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "month_wrap custom_month_wrap",
+            "id": "",
+            "tag": "div"
+          }
+        ],
+        "class": "text",
         "index": 2,
-        "chain": [
-          {
-            "tag": "span",
-            "attrs": {
-              "class": "text"
-            },
-            "rect": {
-              "h": 12,
-              "w": 206.0625,
-              "x": 10,
-              "y": 683.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 0
-          },
-          {
-            "tag": "p",
-            "attrs": {
-              "class": "time_schedule color_blue2"
-            },
-            "rect": {
-              "h": 14,
-              "w": 173.71875,
-              "x": 6,
-              "y": 682.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 1
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule period1"
-            },
-            "rect": {
-              "h": 14,
-              "w": 179.71875,
-              "x": 3,
-              "y": 682.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 2
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule_wrap"
-            },
-            "rect": {
-              "h": 46,
-              "w": 179.71875,
-              "x": 3,
-              "y": 666.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 3
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "col_area"
-            },
-            "rect": {
-              "h": 111.109375,
-              "w": 179.71875,
-              "x": 3,
-              "y": 644.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 4
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "col1 today selected"
-            },
-            "rect": {
-              "h": 112.109375,
-              "w": 182.71875,
-              "x": 0,
-              "y": 643.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 5
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "row"
-            },
-            "rect": {
-              "h": 112.109375,
-              "w": 1264,
-              "x": 0,
-              "y": 643.546875
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 6
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "month_wrap custom_month_wrap",
-              "data-month-label": "2026-08"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1264,
-              "x": 0,
-              "y": 83
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 7
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "scroll_area"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1279,
-              "x": 0,
-              "y": 83
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 8
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "month_cont custom_month_cont"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1279,
-              "x": 0,
-              "y": 83
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 9
-          }
-        ]
+        "rect": {
+          "h": 12,
+          "w": 206.0625,
+          "x": 10,
+          "y": 683.546875
+        },
+        "tag": "span",
+        "top_at_center": {
+          "class": "",
+          "id": "daily_list_scroll_element",
+          "tag": "div"
+        },
+        "within_daily_list": false
       },
       {
+        "ancestors": [
+          {
+            "class": "schedule period1",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "schedule_wrap",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "col_area prev",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "col1",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "row custom_row5",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "month_wrap custom_month_wrap",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "scroll_area",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "month_cont custom_month_cont",
+            "id": "",
+            "tag": "div"
+          }
+        ],
+        "class": "schedule period1",
         "index": 3,
-        "chain": [
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule period1"
-            },
-            "rect": {
-              "h": 14,
-              "w": 179.71875,
-              "x": 3,
-              "y": 795
-            },
-            "element_from_point": null,
-            "depth": 0
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule_wrap"
-            },
-            "rect": {
-              "h": 46,
-              "w": 179.71875,
-              "x": 3,
-              "y": 779
-            },
-            "element_from_point": null,
-            "depth": 1
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "col_area prev"
-            },
-            "rect": {
-              "h": 133.59375,
-              "w": 179.71875,
-              "x": 3,
-              "y": 757
-            },
-            "element_from_point": null,
-            "depth": 2
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "col1"
-            },
-            "rect": {
-              "h": 134.59375,
-              "w": 182.71875,
-              "x": 0,
-              "y": 756
-            },
-            "element_from_point": null,
-            "depth": 3
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "row custom_row5"
-            },
-            "rect": {
-              "h": 134.59375,
-              "w": 1264,
-              "x": 0,
-              "y": 756
-            },
-            "element_from_point": null,
-            "depth": 4
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "month_wrap custom_month_wrap",
-              "data-month-label": "2026-09"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1264,
-              "x": 0,
-              "y": 756
-            },
-            "element_from_point": null,
-            "depth": 5
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "scroll_area"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1279,
-              "x": 0,
-              "y": 83
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 6
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "month_cont custom_month_cont"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1279,
-              "x": 0,
-              "y": 83
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 7
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "calender_area"
-            },
-            "rect": {
-              "h": 700,
-              "w": 1279,
-              "x": 0,
-              "y": 56
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 8
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "contents",
-              "id": "contents"
-            },
-            "rect": {
-              "h": 700,
-              "w": 1279,
-              "x": 0,
-              "y": 56
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 9
-          }
-        ]
+        "rect": {
+          "h": 14,
+          "w": 179.71875,
+          "x": 3,
+          "y": 795
+        },
+        "tag": "div",
+        "top_at_center": null,
+        "within_daily_list": false
       },
       {
+        "ancestors": [
+          {
+            "class": "time_schedule color_blue2",
+            "id": "",
+            "tag": "p"
+          },
+          {
+            "class": "schedule period1",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "schedule_wrap",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "col_area prev",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "col1",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "row custom_row5",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "month_wrap custom_month_wrap",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "scroll_area",
+            "id": "",
+            "tag": "div"
+          }
+        ],
+        "class": "time_schedule color_blue2",
         "index": 4,
-        "chain": [
-          {
-            "tag": "p",
-            "attrs": {
-              "class": "time_schedule color_blue2"
-            },
-            "rect": {
-              "h": 14,
-              "w": 173.71875,
-              "x": 6,
-              "y": 795
-            },
-            "element_from_point": null,
-            "depth": 0
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule period1"
-            },
-            "rect": {
-              "h": 14,
-              "w": 179.71875,
-              "x": 3,
-              "y": 795
-            },
-            "element_from_point": null,
-            "depth": 1
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule_wrap"
-            },
-            "rect": {
-              "h": 46,
-              "w": 179.71875,
-              "x": 3,
-              "y": 779
-            },
-            "element_from_point": null,
-            "depth": 2
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "col_area prev"
-            },
-            "rect": {
-              "h": 133.59375,
-              "w": 179.71875,
-              "x": 3,
-              "y": 757
-            },
-            "element_from_point": null,
-            "depth": 3
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "col1"
-            },
-            "rect": {
-              "h": 134.59375,
-              "w": 182.71875,
-              "x": 0,
-              "y": 756
-            },
-            "element_from_point": null,
-            "depth": 4
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "row custom_row5"
-            },
-            "rect": {
-              "h": 134.59375,
-              "w": 1264,
-              "x": 0,
-              "y": 756
-            },
-            "element_from_point": null,
-            "depth": 5
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "month_wrap custom_month_wrap",
-              "data-month-label": "2026-09"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1264,
-              "x": 0,
-              "y": 756
-            },
-            "element_from_point": null,
-            "depth": 6
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "scroll_area"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1279,
-              "x": 0,
-              "y": 83
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 7
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "month_cont custom_month_cont"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1279,
-              "x": 0,
-              "y": 83
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 8
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "calender_area"
-            },
-            "rect": {
-              "h": 700,
-              "w": 1279,
-              "x": 0,
-              "y": 56
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 9
-          }
-        ]
+        "rect": {
+          "h": 14,
+          "w": 173.71875,
+          "x": 6,
+          "y": 795
+        },
+        "tag": "p",
+        "top_at_center": null,
+        "within_daily_list": false
       },
       {
+        "ancestors": [
+          {
+            "class": "text",
+            "id": "",
+            "tag": "span"
+          },
+          {
+            "class": "time_schedule color_blue2",
+            "id": "",
+            "tag": "p"
+          },
+          {
+            "class": "schedule period1",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "schedule_wrap",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "col_area prev",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "col1",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "row custom_row5",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "month_wrap custom_month_wrap",
+            "id": "",
+            "tag": "div"
+          }
+        ],
+        "class": "text",
         "index": 5,
-        "chain": [
-          {
-            "tag": "span",
-            "attrs": {
-              "class": "text"
-            },
-            "rect": {
-              "h": 12,
-              "w": 206.0625,
-              "x": 10,
-              "y": 796
-            },
-            "element_from_point": null,
-            "depth": 0
-          },
-          {
-            "tag": "p",
-            "attrs": {
-              "class": "time_schedule color_blue2"
-            },
-            "rect": {
-              "h": 14,
-              "w": 173.71875,
-              "x": 6,
-              "y": 795
-            },
-            "element_from_point": null,
-            "depth": 1
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule period1"
-            },
-            "rect": {
-              "h": 14,
-              "w": 179.71875,
-              "x": 3,
-              "y": 795
-            },
-            "element_from_point": null,
-            "depth": 2
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule_wrap"
-            },
-            "rect": {
-              "h": 46,
-              "w": 179.71875,
-              "x": 3,
-              "y": 779
-            },
-            "element_from_point": null,
-            "depth": 3
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "col_area prev"
-            },
-            "rect": {
-              "h": 133.59375,
-              "w": 179.71875,
-              "x": 3,
-              "y": 757
-            },
-            "element_from_point": null,
-            "depth": 4
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "col1"
-            },
-            "rect": {
-              "h": 134.59375,
-              "w": 182.71875,
-              "x": 0,
-              "y": 756
-            },
-            "element_from_point": null,
-            "depth": 5
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "row custom_row5"
-            },
-            "rect": {
-              "h": 134.59375,
-              "w": 1264,
-              "x": 0,
-              "y": 756
-            },
-            "element_from_point": null,
-            "depth": 6
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "month_wrap custom_month_wrap",
-              "data-month-label": "2026-09"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1264,
-              "x": 0,
-              "y": 756
-            },
-            "element_from_point": null,
-            "depth": 7
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "scroll_area"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1279,
-              "x": 0,
-              "y": 83
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 8
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "month_cont custom_month_cont"
-            },
-            "rect": {
-              "h": 673,
-              "w": 1279,
-              "x": 0,
-              "y": 83
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 9
-          }
-        ]
+        "rect": {
+          "h": 12,
+          "w": 206.0625,
+          "x": 10,
+          "y": 796
+        },
+        "tag": "span",
+        "top_at_center": null,
+        "within_daily_list": false
       },
       {
+        "ancestors": [
+          {
+            "class": "schedule_info color_blue2",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "schedule_item",
+            "id": "",
+            "tag": "li"
+          },
+          {
+            "class": "schedule_list",
+            "id": "",
+            "tag": "ul"
+          },
+          {
+            "class": "",
+            "id": "daily_list_scroll_element",
+            "tag": "div"
+          },
+          {
+            "class": "flicking-camera",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "flicking-viewport",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "schedule_area has_button",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "layer_contents",
+            "id": "",
+            "tag": "div"
+          }
+        ],
+        "class": "schedule_info color_blue2",
         "index": 6,
-        "chain": [
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule_info color_blue2"
-            },
-            "rect": {
-              "h": 39,
-              "w": 1131,
-              "x": 112,
-              "y": 157
-            },
-            "element_from_point": {
-              "class": "schedule_info color_blue2",
-              "id": "",
-              "tag": "div"
-            },
-            "depth": 0
-          },
-          {
-            "tag": "li",
-            "attrs": {
-              "class": "schedule_item"
-            },
-            "rect": {
-              "h": 59,
-              "w": 1207,
-              "x": 36,
-              "y": 147
-            },
-            "element_from_point": {
-              "class": "schedule_info color_blue2",
-              "id": "",
-              "tag": "div"
-            },
-            "depth": 1
-          },
-          {
-            "tag": "ul",
-            "attrs": {
-              "class": "schedule_list"
-            },
-            "rect": {
-              "h": 247,
-              "w": 1279,
-              "x": 0,
-              "y": 88
-            },
-            "element_from_point": {
-              "class": "schedule_item",
-              "id": "",
-              "tag": "li"
-            },
-            "depth": 2
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "id": "daily_list_scroll_element"
-            },
-            "rect": {
-              "h": 668,
-              "w": 1279,
-              "x": 0,
-              "y": 88
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 3
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "flicking-camera"
-            },
-            "rect": {
-              "h": 668,
-              "w": 1279,
-              "x": -1279,
-              "y": 88
-            },
-            "element_from_point": null,
-            "depth": 4
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "flicking-viewport"
-            },
-            "rect": {
-              "h": 668,
-              "w": 1279,
-              "x": 0,
-              "y": 88
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 5
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule_area has_button"
-            },
-            "rect": {
-              "h": 700,
-              "w": 1279,
-              "x": 0,
-              "y": 56
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 6
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "layer_contents"
-            },
-            "rect": {
-              "h": 756,
-              "w": 1279,
-              "x": 0,
-              "y": 0
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 7
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "layer_inner"
-            },
-            "rect": {
-              "h": 756,
-              "w": 1279,
-              "x": 0,
-              "y": 0
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 8
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "layer_view"
-            },
-            "rect": {
-              "h": 756,
-              "w": 1279,
-              "x": 0,
-              "y": 0
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 9
-          }
-        ]
+        "rect": {
+          "h": 39,
+          "w": 1131,
+          "x": 112,
+          "y": 157
+        },
+        "tag": "div",
+        "top_at_center": {
+          "class": "schedule_info color_blue2",
+          "id": "",
+          "tag": "div"
+        },
+        "within_daily_list": true
       },
       {
-        "index": 7,
-        "chain": [
+        "ancestors": [
           {
-            "tag": "strong",
-            "attrs": {
-              "class": "title"
-            },
-            "rect": {
-              "h": 22,
-              "w": 299.71875,
-              "x": 128,
-              "y": 157
-            },
-            "element_from_point": {
-              "class": "text",
-              "id": "",
-              "tag": "span"
-            },
-            "depth": 0
+            "class": "title",
+            "id": "",
+            "tag": "strong"
           },
           {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule_info color_blue2"
-            },
-            "rect": {
-              "h": 39,
-              "w": 1131,
-              "x": 112,
-              "y": 157
-            },
-            "element_from_point": {
-              "class": "schedule_info color_blue2",
-              "id": "",
-              "tag": "div"
-            },
-            "depth": 1
+            "class": "schedule_info color_blue2",
+            "id": "",
+            "tag": "div"
           },
           {
-            "tag": "li",
-            "attrs": {
-              "class": "schedule_item"
-            },
-            "rect": {
-              "h": 59,
-              "w": 1207,
-              "x": 36,
-              "y": 147
-            },
-            "element_from_point": {
-              "class": "schedule_info color_blue2",
-              "id": "",
-              "tag": "div"
-            },
-            "depth": 2
+            "class": "schedule_item",
+            "id": "",
+            "tag": "li"
           },
           {
-            "tag": "ul",
-            "attrs": {
-              "class": "schedule_list"
-            },
-            "rect": {
-              "h": 247,
-              "w": 1279,
-              "x": 0,
-              "y": 88
-            },
-            "element_from_point": {
-              "class": "schedule_item",
-              "id": "",
-              "tag": "li"
-            },
-            "depth": 3
+            "class": "schedule_list",
+            "id": "",
+            "tag": "ul"
           },
           {
-            "tag": "div",
-            "attrs": {
-              "id": "daily_list_scroll_element"
-            },
-            "rect": {
-              "h": 668,
-              "w": 1279,
-              "x": 0,
-              "y": 88
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 4
+            "class": "",
+            "id": "daily_list_scroll_element",
+            "tag": "div"
           },
           {
-            "tag": "div",
-            "attrs": {
-              "class": "flicking-camera"
-            },
-            "rect": {
-              "h": 668,
-              "w": 1279,
-              "x": -1279,
-              "y": 88
-            },
-            "element_from_point": null,
-            "depth": 5
+            "class": "flicking-camera",
+            "id": "",
+            "tag": "div"
           },
           {
-            "tag": "div",
-            "attrs": {
-              "class": "flicking-viewport"
-            },
-            "rect": {
-              "h": 668,
-              "w": 1279,
-              "x": 0,
-              "y": 88
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 6
+            "class": "flicking-viewport",
+            "id": "",
+            "tag": "div"
           },
           {
-            "tag": "div",
-            "attrs": {
-              "class": "schedule_area has_button"
-            },
-            "rect": {
-              "h": 700,
-              "w": 1279,
-              "x": 0,
-              "y": 56
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 7
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "layer_contents"
-            },
-            "rect": {
-              "h": 756,
-              "w": 1279,
-              "x": 0,
-              "y": 0
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 8
-          },
-          {
-            "tag": "div",
-            "attrs": {
-              "class": "layer_inner"
-            },
-            "rect": {
-              "h": 756,
-              "w": 1279,
-              "x": 0,
-              "y": 0
-            },
-            "element_from_point": {
-              "class": "",
-              "id": "daily_list_scroll_element",
-              "tag": "div"
-            },
-            "depth": 9
+            "class": "schedule_area has_button",
+            "id": "",
+            "tag": "div"
           }
-        ]
+        ],
+        "class": "title",
+        "index": 7,
+        "rect": {
+          "h": 22,
+          "w": 299.71875,
+          "x": 128,
+          "y": 157
+        },
+        "tag": "strong",
+        "top_at_center": {
+          "class": "text",
+          "id": "",
+          "tag": "span"
+        },
+        "within_daily_list": true
+      },
+      {
+        "ancestors": [
+          {
+            "class": "text",
+            "id": "",
+            "tag": "span"
+          },
+          {
+            "class": "title",
+            "id": "",
+            "tag": "strong"
+          },
+          {
+            "class": "schedule_info color_blue2",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "schedule_item",
+            "id": "",
+            "tag": "li"
+          },
+          {
+            "class": "schedule_list",
+            "id": "",
+            "tag": "ul"
+          },
+          {
+            "class": "",
+            "id": "daily_list_scroll_element",
+            "tag": "div"
+          },
+          {
+            "class": "flicking-camera",
+            "id": "",
+            "tag": "div"
+          },
+          {
+            "class": "flicking-viewport",
+            "id": "",
+            "tag": "div"
+          }
+        ],
+        "class": "text",
+        "index": 8,
+        "rect": {
+          "h": 22,
+          "w": 299.71875,
+          "x": 128,
+          "y": 157
+        },
+        "tag": "span",
+        "top_at_center": {
+          "class": "text",
+          "id": "",
+          "tag": "span"
+        },
+        "within_daily_list": true
       }
     ]
   },
-  "message": "All visible exact-title nodes in daily view captured structurally.",
+  "message": "Daily exact-title matches classified by actual daily-list containment.",
   "session_adapter_exit_code": 0,
   "persistent_browser_retained": true,
-  "session_command_id": "exp002-persistent-diagnose-daily-matches-20260830-15"
+  "session_command_id": "exp002-persistent-classify-daily-20260830-16"
 }
