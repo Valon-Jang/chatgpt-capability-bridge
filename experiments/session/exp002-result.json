@@ -1,6 +1,6 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-cleanup-20260830-07",
+  "command_id": "exp002-persistent-cleanup-20260830-08",
   "adapter_id": "naver-calendar",
   "action": "recover_verify_delete_event",
   "status": "FAILED",
@@ -101,5 +101,5 @@
   },
   "session_adapter_exit_code": 8,
   "persistent_browser_retained": true,
-  "session_command_id": "exp002-persistent-cleanup-20260830-07"
+  "session_command_id": "exp002-persistent-cleanup-20260830-08"
 }
