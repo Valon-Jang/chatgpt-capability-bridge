@@ -1,17 +1,17 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-cleanup-20260830-17",
+  "command_id": "exp002-persistent-probe-delete-confirm-20260830-18",
   "adapter_id": "naver-calendar",
-  "action": "recover_verify_delete_event",
-  "status": "FAILED",
-  "failure_class": "VERIFY_FAILED",
+  "action": "probe_delete_confirmation",
+  "status": "VERIFIED_SUCCESS",
+  "failure_class": null,
   "execution": {
     "attempted": true,
     "completed": true
   },
   "verification": {
     "performed": true,
-    "passed": false,
+    "passed": true,
     "evidence": {
       "created_title_observed": true,
       "cleanup_absence_observed": false
@@ -22,8 +22,76 @@
     "attempted": true,
     "completed": false
   },
-  "message": "Deletion was attempted but exact-title absence was not verified.",
-  "session_adapter_exit_code": 10,
+  "diagnostics": {
+    "url_after_delete_control": "https://m.calendar.naver.com/detail?date=2026-08-30&scheduleId=20260830T074729Z-125%40naver07&calendarId=46748108",
+    "confirmation_controls": [
+      {
+        "tag": "a",
+        "class": "logo_link",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "네이버"
+      },
+      {
+        "tag": "button",
+        "class": "btn_date",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "2026. 8."
+      },
+      {
+        "tag": "button",
+        "class": "btn_menu",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "메뉴"
+      },
+      {
+        "tag": "button",
+        "class": "btn_back",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "뒤로가기"
+      },
+      {
+        "tag": "button",
+        "class": "btn_save",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "수정"
+      },
+      {
+        "tag": "button",
+        "class": "btn_cate color_blue2",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "범주선택"
+      },
+      {
+        "tag": "button",
+        "class": "btn_floating_delete",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "일정 삭제"
+      },
+      {
+        "tag": "button",
+        "class": "btn_cancel",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "취소"
+      },
+      {
+        "tag": "button",
+        "class": "btn_confirm",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "확인"
+      }
+    ]
+  },
+  "message": "Delete control activated; confirmation controls captured without confirming deletion.",
+  "session_adapter_exit_code": 0,
   "persistent_browser_retained": true,
-  "session_command_id": "exp002-persistent-cleanup-20260830-17"
+  "session_command_id": "exp002-persistent-probe-delete-confirm-20260830-18"
 }
