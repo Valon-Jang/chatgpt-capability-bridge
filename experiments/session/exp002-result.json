@@ -1,8 +1,90 @@
 {
+  "protocol_version": "0.1",
+  "command_id": "exp002-persistent-cleanup-20260830-12",
+  "adapter_id": "naver-calendar",
+  "action": "recover_verify_delete_event",
   "status": "FAILED",
-  "failure_class": "SUBSTRATE_BOUNDARY",
-  "message": "Session adapter exited 1 without a Result Envelope.",
-  "session_adapter_exit_code": 1,
+  "failure_class": "ADAPTER_ERROR",
+  "execution": {
+    "attempted": true,
+    "completed": false
+  },
+  "verification": {
+    "performed": true,
+    "passed": false,
+    "evidence": {
+      "created_title_observed": true,
+      "cleanup_absence_observed": false
+    }
+  },
+  "cleanup": {
+    "requested": true,
+    "attempted": true,
+    "completed": false
+  },
+  "message": "Two-stage event navigation completed, but delete control was not found.",
+  "diagnostics": {
+    "url": "https://m.calendar.naver.com/daily?date=2026-08-30",
+    "controls": [
+      {
+        "tag": "a",
+        "class": "logo_link",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "네이버"
+      },
+      {
+        "tag": "button",
+        "class": "btn_date",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "2026. 8."
+      },
+      {
+        "tag": "button",
+        "class": "btn_menu",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "메뉴"
+      },
+      {
+        "tag": "button",
+        "class": "btn_add_schedule",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "일정 추가"
+      },
+      {
+        "tag": "button",
+        "class": "btn_back",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "이전 화면으로"
+      },
+      {
+        "tag": "button",
+        "class": "btn_prev",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "어제"
+      },
+      {
+        "tag": "button",
+        "class": "btn_next",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "다음날"
+      },
+      {
+        "tag": "button",
+        "class": "btn_add_schedule",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "일정 추가"
+      }
+    ]
+  },
+  "session_adapter_exit_code": 9,
   "persistent_browser_retained": true,
-  "session_command_id": "exp002-persistent-cleanup-20260830-11"
+  "session_command_id": "exp002-persistent-cleanup-20260830-12"
 }
