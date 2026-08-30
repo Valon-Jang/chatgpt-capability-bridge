@@ -12,6 +12,47 @@ The important distinction is:
 
 This can be useful when ChatGPT Work, Codex, Cloud Browser, or other advanced execution surfaces are unavailable because of product access, organizational policy, security constraints, or environment limitations — while an approved general-purpose execution channel is still available.
 
+## Why this exists: the ordinary Chat capability gap
+
+ChatGPT now separates **Chat**, **Work**, and **Codex** into different execution surfaces.
+
+OpenAI documents ordinary Chat as the fast conversational environment, while browser-based agentic execution is exposed through Work and Codex. The built-in browser is opened from a Work or Codex chat, and the cloud browser is a Work capability.
+
+- ChatGPT Work and Codex: https://help.openai.com/en/articles/20001275
+- Built-in browser: https://help.openai.com/en/articles/20001277-using-the-built-in-browser-in-the-chatgpt-desktop-app
+- Cloud browser: https://help.openai.com/en/articles/20001280-using-cloud-browser-in-chatgpt
+
+The practical gap is therefore not that ordinary Chat cannot reason about a website or use connected tools. The gap is that **ordinary Chat does not expose the same general-purpose authenticated browser execution surface**.
+
+That matters when all of the following are true:
+
+- the user is staying in ordinary Chat;
+- Work or Codex is unavailable, disallowed, or undesirable for the environment;
+- the target service has no supported ChatGPT integration for the required action;
+- the target service has no usable API or the browser UI is the only practical control surface;
+- a permitted general-purpose connected tool can still reach an external execution environment.
+
+Without a bridge, ordinary Chat may understand the user's intent but still have no native path to open an unsupported target's login UI, let the human authenticate, continue through the authenticated session, and verify the resulting action.
+
+`chatgpt-capability-bridge` targets that specific capability gap.
+
+```text
+Ordinary Chat
+  can reason / search / use allowed connected tools
+                  |
+                  | missing native arbitrary authenticated browser action
+                  v
+          Capability Bridge
+                  |
+                  v
+      Human-authenticated execution
+                  |
+                  v
+       Unsupported web service
+```
+
+This project is therefore not a replacement for Work or Codex. It is a pattern for creating a **narrow, explicit action path from ordinary Chat when those richer execution surfaces are not available or not permitted**.
+
 ## Core idea
 
 Instead of waiting for every target service to expose a dedicated ChatGPT integration:
