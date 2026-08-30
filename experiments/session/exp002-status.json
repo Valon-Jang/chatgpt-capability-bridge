@@ -1,6 +1,6 @@
 {
-  "session_state": "SESSION_STARTING",
-  "updated_at_epoch": 1788075656,
-  "browser_retained": true,
-  "hard_platform_limit": "GitHub-hosted job: 6h"
+  "session_state": "COMMAND_RUNNING",
+  "updated_at_epoch": 1788075657,
+  "command_id": "exp002-persistent-20260830-01",
+  "browser_retained": true
 }
