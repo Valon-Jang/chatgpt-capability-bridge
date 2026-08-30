@@ -1,0 +1,130 @@
+name: EXP-002 Naver Calendar Portability
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "experiments/commands/exp002-naver-calendar.json"
+
+permissions:
+  contents: read
+
+jobs:
+  portability-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      DISPLAY: ":99"
+      CHROME_BIN: "/usr/bin/google-chrome"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser bridge dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y xvfb x11vnc novnc websockify
+          python -m pip install --upgrade pip
+          python -m pip install selenium
+          google-chrome --version
+
+      - name: Start protected interactive browser surface
+        id: interactive
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          Xvfb :99 -screen 0 1280x900x24 -ac > /tmp/xvfb.log 2>&1 &
+          sleep 2
+
+          VNC_PASSWORD="$(openssl rand -hex 6)"
+          x11vnc -storepasswd "$VNC_PASSWORD" /tmp/vnc.pass >/dev/null
+          x11vnc -display :99 -rfbauth /tmp/vnc.pass -forever -shared -rfbport 5900 > /tmp/x11vnc.log 2>&1 &
+          websockify --web=/usr/share/novnc/ 6080 localhost:5900 > /tmp/novnc.log 2>&1 &
+
+          curl -L --fail --silent --show-error \
+            -o /tmp/cloudflared.deb \
+            https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+          sudo dpkg -i /tmp/cloudflared.deb >/dev/null
+
+          cloudflared tunnel --no-autoupdate --url http://127.0.0.1:6080 > /tmp/cloudflared.log 2>&1 &
+
+          URL=""
+          for _ in $(seq 1 45); do
+            URL="$(grep -oE 'https://[-a-z0-9]+\.trycloudflare\.com' /tmp/cloudflared.log | head -n 1 || true)"
+            if [ -n "$URL" ]; then
+              break
+            fi
+            sleep 1
+          done
+
+          if [ -z "$URL" ]; then
+            echo "Could not obtain interactive browser tunnel URL."
+            cat /tmp/cloudflared.log
+            exit 1
+          fi
+
+          echo "INTERACTIVE_BROWSER_URL=$URL/vnc.html?autoconnect=1&resize=scale" >> "$GITHUB_ENV"
+          echo "VNC_PASSWORD=$VNC_PASSWORD" >> "$GITHUB_ENV"
+
+          echo "::notice title=EXP-002 interactive authentication::Open $URL/vnc.html?autoconnect=1&resize=scale and enter VNC password $VNC_PASSWORD. Authenticate Naver directly in that browser. Do not paste credentials into Chat or logs."
+          echo "Interactive browser: $URL/vnc.html?autoconnect=1&resize=scale"
+          echo "VNC password: $VNC_PASSWORD"
+
+      - name: Run frozen-core portability test
+        id: run_adapter
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          python adapters/naver-calendar/adapter.py \
+            --command experiments/commands/exp002-naver-calendar.json \
+            --output-dir artifacts/exp002 \
+            --auth-timeout 1200
+          CODE=$?
+          echo "adapter_exit_code=$CODE" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Print machine-readable result
+        if: always()
+        shell: bash
+        run: |
+          if [ -f artifacts/exp002/result.json ]; then
+            cat artifacts/exp002/result.json
+          else
+            echo '{"status":"FAILED","failure_class":"SUBSTRATE_BOUNDARY","message":"No result envelope produced"}'
+          fi
+
+      - name: Upload non-sensitive experiment diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: exp002-naver-calendar-result
+          path: artifacts/exp002
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Enforce experiment outcome
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path('artifacts/exp002/result.json')
+          if not p.exists():
+              raise SystemExit('EXP-002 produced no Result Envelope')
+          result = json.loads(p.read_text(encoding='utf-8'))
+          if result.get('status') != 'VERIFIED_SUCCESS':
+              raise SystemExit(f"EXP-002 not verified: {result.get('failure_class')} - {result.get('message')}")
+          print('EXP-002 VERIFIED_SUCCESS')
+          PY
