@@ -1,105 +1,106 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-cleanup-20260830-08",
+  "command_id": "exp002-persistent-diagnose-card-20260830-09",
   "adapter_id": "naver-calendar",
-  "action": "recover_verify_delete_event",
-  "status": "FAILED",
-  "failure_class": "ADAPTER_ERROR",
+  "action": "diagnose_event_card",
+  "status": "VERIFIED_SUCCESS",
+  "failure_class": null,
   "execution": {
     "attempted": true,
     "completed": true
   },
   "verification": {
     "performed": true,
-    "passed": false,
+    "passed": true,
     "evidence": {
       "created_title_observed": true,
       "cleanup_absence_observed": false
     }
   },
   "cleanup": {
-    "requested": true,
-    "attempted": true,
-    "completed": false
+    "requested": false,
+    "attempted": false,
+    "completed": true
   },
-  "message": "Synthetic event was visible but its detail card could not be opened.",
   "diagnostics": {
-    "calendar_actions": [
+    "page_url_without_query": "https://m.calendar.naver.com/",
+    "title_ancestor_chain": [
       {
-        "tag": "a",
-        "type": "",
-        "id": "",
-        "class": "logo_link",
-        "title": "",
-        "aria_label": null,
-        "ui_text": "네이버"
+        "tag": "div",
+        "attrs": {
+          "class": "schedule period1"
+        },
+        "depth": 0
       },
       {
-        "tag": "button",
-        "type": "button",
-        "id": "",
-        "class": "btn_date",
-        "title": "",
-        "aria_label": null,
-        "ui_text": "2026. 8."
+        "tag": "div",
+        "attrs": {
+          "class": "schedule_wrap"
+        },
+        "depth": 1
       },
       {
-        "tag": "button",
-        "type": "button",
-        "id": "",
-        "class": "btn_menu",
-        "title": "",
-        "aria_label": null,
-        "ui_text": "메뉴"
+        "tag": "div",
+        "attrs": {
+          "class": "col_area"
+        },
+        "depth": 2
       },
       {
-        "tag": "button",
-        "type": "button",
-        "id": "",
-        "class": "btn_add_schedule",
-        "title": "",
-        "aria_label": null,
-        "ui_text": "일정 추가"
+        "tag": "div",
+        "attrs": {
+          "class": "col1 today selected"
+        },
+        "depth": 3
       },
       {
-        "tag": "button",
-        "type": "button",
-        "id": "",
-        "class": "btn_back",
-        "title": "",
-        "aria_label": null,
-        "ui_text": "이전 화면으로"
+        "tag": "div",
+        "attrs": {
+          "class": "row"
+        },
+        "depth": 4
       },
       {
-        "tag": "button",
-        "type": "button",
-        "id": "",
-        "class": "btn_prev",
-        "title": "",
-        "aria_label": null,
-        "ui_text": "어제"
+        "tag": "div",
+        "attrs": {
+          "class": "month_wrap custom_month_wrap",
+          "data-month-label": "2026-08"
+        },
+        "depth": 5
       },
       {
-        "tag": "button",
-        "type": "button",
-        "id": "",
-        "class": "btn_next",
-        "title": "",
-        "aria_label": null,
-        "ui_text": "다음날"
+        "tag": "div",
+        "attrs": {
+          "class": "scroll_area"
+        },
+        "depth": 6
       },
       {
-        "tag": "button",
-        "type": "button",
-        "id": "",
-        "class": "btn_add_schedule",
-        "title": "",
-        "aria_label": null,
-        "ui_text": "일정 추가"
+        "tag": "div",
+        "attrs": {
+          "class": "month_cont custom_month_cont"
+        },
+        "depth": 7
+      },
+      {
+        "tag": "div",
+        "attrs": {
+          "class": "calender_area"
+        },
+        "depth": 8
+      },
+      {
+        "tag": "div",
+        "attrs": {
+          "class": "contents",
+          "id": "contents"
+        },
+        "depth": 9
       }
     ]
   },
-  "session_adapter_exit_code": 8,
+  "message": "Synthetic event card structure captured without private calendar text.",
+  "session_adapter_exit_code": 0,
   "persistent_browser_retained": true,
-  "session_command_id": "exp002-persistent-cleanup-20260830-08"
+  "session_command_id": "exp002-persistent-diagnose-card-20260830-09"
 }
