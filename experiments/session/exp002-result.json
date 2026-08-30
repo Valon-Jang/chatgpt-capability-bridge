@@ -1,29 +1,29 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-recover-20260830-02",
+  "command_id": "exp002-persistent-create-20260830-03",
   "adapter_id": "naver-calendar",
-  "action": "recover_verify_delete_event",
-  "status": "VERIFIED_SUCCESS",
-  "failure_class": null,
+  "action": "create_verify_delete_event",
+  "status": "FAILED",
+  "failure_class": "VERIFY_FAILED",
   "execution": {
     "attempted": true,
     "completed": true
   },
   "verification": {
     "performed": true,
-    "passed": true,
+    "passed": false,
     "evidence": {
       "created_title_observed": false,
-      "cleanup_absence_observed": true
+      "cleanup_absence_observed": false
     }
   },
   "cleanup": {
     "requested": true,
     "attempted": false,
-    "completed": true
+    "completed": false
   },
-  "message": "No residual synthetic event was observable on the calendar; cleanup state is clear.",
-  "session_adapter_exit_code": 0,
+  "message": "Save was attempted, then the calendar was reloaded, but the nonce-bearing event title was not observed.",
+  "session_adapter_exit_code": 7,
   "persistent_browser_retained": true,
-  "session_command_id": "exp002-persistent-recover-20260830-02"
+  "session_command_id": "exp002-persistent-create-20260830-03"
 }
