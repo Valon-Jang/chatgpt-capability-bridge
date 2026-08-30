@@ -130,16 +130,20 @@ def wait_for_auth(driver, timeout_seconds: int) -> bool:
     return False
 
 
-def form_metadata(driver) -> list[dict]:
-    """Safe structural diagnostics: never include field values or page/private text."""
+def control_metadata_current_context(driver) -> list[dict]:
+    """Safe structural diagnostics: no field values and no arbitrary page/private text."""
     data: list[dict] = []
-    for el in driver.find_elements(By.CSS_SELECTOR, "input,textarea,button,[role='button']"):
+    selector = "input,textarea,button,[role='button'],[contenteditable='true']"
+    for el in driver.find_elements(By.CSS_SELECTOR, selector):
         try:
             if not el.is_displayed():
                 continue
             typ = (el.get_attribute("type") or "").lower()
             if typ == "password":
                 continue
+            text = (el.text or "").strip()
+            if len(text) > 40:
+                text = text[:40] + "…"
             data.append(
                 {
                     "tag": el.tag_name,
@@ -147,6 +151,8 @@ def form_metadata(driver) -> list[dict]:
                     "name": el.get_attribute("name"),
                     "placeholder": el.get_attribute("placeholder"),
                     "aria_label": el.get_attribute("aria-label"),
+                    "contenteditable": el.get_attribute("contenteditable"),
+                    "ui_text": text or None,
                 }
             )
         except WebDriverException:
@@ -154,11 +160,37 @@ def form_metadata(driver) -> list[dict]:
     return data[:80]
 
 
-def find_title_input(driver):
-    inputs = visible(driver.find_elements(By.CSS_SELECTOR, "input:not([type='hidden']):not([type='password']), textarea"))
+def form_metadata(driver) -> dict:
+    """Describe form structure in default content and one iframe level without values."""
+    payload: dict = {"default_controls": [], "frames": []}
+    try:
+        driver.switch_to.default_content()
+        payload["default_controls"] = control_metadata_current_context(driver)
+        frames = driver.find_elements(By.CSS_SELECTOR, "iframe,frame")
+        for index, frame in enumerate(frames[:10]):
+            entry = {"index": index, "controls": []}
+            try:
+                driver.switch_to.frame(frame)
+                entry["controls"] = control_metadata_current_context(driver)
+            except WebDriverException:
+                entry["unavailable"] = True
+            finally:
+                driver.switch_to.default_content()
+            payload["frames"].append(entry)
+    except WebDriverException:
+        pass
+    return payload
+
+
+def candidate_inputs_current_context(driver):
+    selector = "input:not([type='hidden']):not([type='password']),textarea,[contenteditable='true']"
+    return visible(driver.find_elements(By.CSS_SELECTOR, selector))
+
+
+def rank_title_inputs(elements):
     preferred = []
     fallback = []
-    for el in inputs:
+    for el in elements:
         try:
             blob = " ".join(
                 filter(
@@ -167,17 +199,72 @@ def find_title_input(driver):
                         el.get_attribute("placeholder"),
                         el.get_attribute("aria-label"),
                         el.get_attribute("name"),
+                        el.get_attribute("id"),
+                        el.get_attribute("class"),
                     ],
                 )
             ).lower()
             typ = (el.get_attribute("type") or "text").lower()
-            if any(token in blob for token in ["제목", "일정", "title", "subject"]):
+            editable = (el.get_attribute("contenteditable") or "").lower() == "true"
+            if any(token in blob for token in ["제목", "일정 제목", "title", "subject", "summary"]):
                 preferred.append(el)
-            elif typ in {"text", "", "search"} and "검색" not in blob and "search" not in blob:
+            elif (typ in {"text", "", "search"} or editable) and not any(
+                token in blob for token in ["검색", "search", "장소", "location", "메모", "memo"]
+            ):
                 fallback.append(el)
         except WebDriverException:
             continue
-    return (preferred or fallback or inputs)[0] if (preferred or fallback or inputs) else None
+    return preferred or fallback or elements
+
+
+def find_title_input(driver):
+    """Find the title control in default content or one iframe level.
+
+    On success the driver remains in the context containing the returned element.
+    """
+    driver.switch_to.default_content()
+    ranked = rank_title_inputs(candidate_inputs_current_context(driver))
+    if ranked:
+        return ranked[0]
+
+    frames = driver.find_elements(By.CSS_SELECTOR, "iframe,frame")
+    for frame in frames[:10]:
+        try:
+            driver.switch_to.default_content()
+            driver.switch_to.frame(frame)
+            ranked = rank_title_inputs(candidate_inputs_current_context(driver))
+            if ranked:
+                return ranked[0]
+        except WebDriverException:
+            continue
+    driver.switch_to.default_content()
+    return None
+
+
+def open_schedule_write_ui(driver, diagnostics_path: Path) -> bool:
+    """Enter Naver Calendar's schedule-writing surface.
+
+    Mobile Calendar uses a two-step launcher: '일정 추가' opens a chooser and the
+    chooser's '일정' button opens the actual schedule-writing form. Some layouts
+    may open the form directly, so the second click is conditional.
+    """
+    driver.switch_to.default_content()
+    if not click_text(driver, ["일정 추가"], timeout=12):
+        return False
+
+    time.sleep(0.7)
+
+    # If a form is already visible, the current layout skipped the chooser.
+    if find_title_input(driver) is not None:
+        return True
+
+    driver.switch_to.default_content()
+    if not click_text(driver, ["일정"], timeout=6):
+        write_json(diagnostics_path, form_metadata(driver))
+        return False
+
+    time.sleep(1.2)
+    return True
 
 
 def open_more_menu(driver) -> bool:
@@ -239,19 +326,19 @@ def run(command_path: Path, output_dir: Path, auth_timeout: int) -> int:
         driver.get(TARGET_URL)
         WebDriverWait(driver, 20).until(lambda d: d.execute_script("return document.readyState") == "complete")
 
-        if not click_text(driver, ["일정 추가"], timeout=12):
+        if not open_schedule_write_ui(driver, diagnostics_path):
             result["failure_class"] = "ADAPTER_ERROR"
-            result["message"] = "Could not locate the schedule-add UI."
+            result["message"] = "Could not enter the schedule-writing UI after opening the schedule launcher."
             write_json(result_path, result)
             return 4
 
-        time.sleep(1.5)
-        write_json(diagnostics_path, {"controls": form_metadata(driver)})
+        time.sleep(0.5)
+        write_json(diagnostics_path, form_metadata(driver))
 
         title_input = find_title_input(driver)
         if title_input is None:
             result["failure_class"] = "ADAPTER_ERROR"
-            result["message"] = "Could not identify a visible event-title input."
+            result["message"] = "Could not identify a visible event-title input after entering schedule-writing UI."
             write_json(result_path, result)
             return 5
 
@@ -260,11 +347,15 @@ def run(command_path: Path, output_dir: Path, auth_timeout: int) -> int:
         title_input.send_keys(title)
 
         if not click_text(driver, ["저장", "완료", "등록"], timeout=12):
-            result["failure_class"] = "ADAPTER_ERROR"
-            result["message"] = "Could not locate the save action."
-            write_json(result_path, result)
-            return 6
+            # The form could live inside an iframe while the save button lives outside it.
+            driver.switch_to.default_content()
+            if not click_text(driver, ["저장", "완료", "등록"], timeout=6):
+                result["failure_class"] = "ADAPTER_ERROR"
+                result["message"] = "Could not locate the save action."
+                write_json(result_path, result)
+                return 6
 
+        driver.switch_to.default_content()
         result["execution"]["completed"] = True
         time.sleep(2)
         result["verification"]["performed"] = True
@@ -277,7 +368,6 @@ def run(command_path: Path, output_dir: Path, auth_timeout: int) -> int:
             write_json(result_path, result)
             return 7
 
-        # Cleanup through the same browser UI.
         result["cleanup"]["attempted"] = True
         if not click_text(driver, [title], timeout=8):
             result["failure_class"] = "ADAPTER_ERROR"
@@ -294,12 +384,10 @@ def run(command_path: Path, output_dir: Path, auth_timeout: int) -> int:
                 write_json(result_path, result)
                 return 9
 
-        # Confirm deletion if the target asks for confirmation.
         time.sleep(0.7)
         click_text(driver, ["삭제", "확인", "예"], timeout=3)
         time.sleep(2)
 
-        # Return to the main calendar if the target leaves us in a detail route.
         if title in driver.page_source:
             try:
                 driver.back()
@@ -325,10 +413,9 @@ def run(command_path: Path, output_dir: Path, auth_timeout: int) -> int:
         log("VERIFIED_SUCCESS: create -> observe -> delete -> absence verified.")
         return 0
 
-    except Exception as exc:  # keep result machine-readable even on unexpected target/runtime failures
+    except Exception as exc:
         result["failure_class"] = result.get("failure_class") or "ADAPTER_ERROR"
         result["message"] = f"Unexpected adapter failure: {type(exc).__name__}: {exc}"
-        # Store traceback locally for Actions diagnostics; it should contain no credentials by design.
         output_dir.mkdir(parents=True, exist_ok=True)
         (output_dir / "traceback.txt").write_text(traceback.format_exc(), encoding="utf-8")
         write_json(result_path, result)
