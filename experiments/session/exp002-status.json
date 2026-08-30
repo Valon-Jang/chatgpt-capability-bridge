@@ -1,8 +1,8 @@
 {
   "session_state": "SESSION_IDLE",
-  "updated_at_epoch": 1788077954,
-  "last_command_id": "exp002-persistent-confirm-delete-20260830-19",
-  "last_result_status": "VERIFIED_SUCCESS",
-  "last_failure_class": null,
+  "updated_at_epoch": 1788095222,
+  "last_command_id": "exp002-persistent-20260830-01",
+  "last_result_status": "FAILED",
+  "last_failure_class": "AUTH_BOUNDARY",
   "browser_retained": true
 }
