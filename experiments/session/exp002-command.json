@@ -1,6 +1,6 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-cleanup-20260830-11",
+  "command_id": "exp002-persistent-cleanup-20260830-12",
   "adapter_id": "naver-calendar",
   "action": "recover_verify_delete_event",
   "arguments": {
@@ -18,6 +18,6 @@
     "core_freeze": "0.1",
     "persistent_browser_session": true,
     "cleanup_only": true,
-    "retry": 11
+    "retry": 12
   }
 }
