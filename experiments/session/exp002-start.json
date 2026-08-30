@@ -1,8 +1,8 @@
 {
-  "session_id": "exp002-persistent-20260830-07",
+  "session_id": "exp002-persistent-20260830-08",
   "requested_mode": "persistent_authenticated_browser",
   "authentication_mode": "naver_qr_once",
   "auto_exit_after_command": false,
   "hosted_runner_soft_limit_seconds": 20700,
-  "note": "Keep QR page open until authentication is detected, then begin commands and retain the same Chrome session."
+  "note": "Fresh QR regeneration; keep QR page open until authentication is detected, then begin commands and retain the same Chrome session."
 }
