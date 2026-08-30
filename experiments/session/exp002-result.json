@@ -1,8 +1,8 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-diagnose-card-20260830-09",
+  "command_id": "exp002-persistent-probe-card-20260830-10",
   "adapter_id": "naver-calendar",
-  "action": "diagnose_event_card",
+  "action": "probe_event_card_click",
   "status": "VERIFIED_SUCCESS",
   "failure_class": null,
   "execution": {
@@ -13,7 +13,7 @@
     "performed": true,
     "passed": true,
     "evidence": {
-      "created_title_observed": true,
+      "created_title_observed": false,
       "cleanup_absence_observed": false
     }
   },
@@ -23,84 +23,550 @@
     "completed": true
   },
   "diagnostics": {
-    "page_url_without_query": "https://m.calendar.naver.com/",
-    "title_ancestor_chain": [
+    "url": "https://m.calendar.naver.com/daily?date=2026-08-30",
+    "controls_after_click": [
+      {
+        "tag": "a",
+        "class": "logo_link",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "네이버"
+      },
+      {
+        "tag": "button",
+        "class": "btn_date",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "2026. 8."
+      },
+      {
+        "tag": "button",
+        "class": "btn_menu",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "메뉴"
+      },
+      {
+        "tag": "button",
+        "class": "btn_add_schedule",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "일정 추가"
+      },
+      {
+        "tag": "button",
+        "class": "btn_back",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "이전 화면으로"
+      },
+      {
+        "tag": "button",
+        "class": "btn_prev",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "어제"
+      },
+      {
+        "tag": "button",
+        "class": "btn_next",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "다음날"
+      },
+      {
+        "tag": "button",
+        "class": "btn_add_schedule",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "일정 추가"
+      }
+    ],
+    "layers_after_click": [
       {
         "tag": "div",
-        "attrs": {
-          "class": "schedule period1"
-        },
-        "depth": 0
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
       },
       {
         "tag": "div",
-        "attrs": {
-          "class": "schedule_wrap"
-        },
-        "depth": 1
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
       },
       {
         "tag": "div",
-        "attrs": {
-          "class": "col_area"
-        },
-        "depth": 2
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
       },
       {
         "tag": "div",
-        "attrs": {
-          "class": "col1 today selected"
-        },
-        "depth": 3
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
       },
       {
         "tag": "div",
-        "attrs": {
-          "class": "row"
-        },
-        "depth": 4
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
       },
       {
         "tag": "div",
-        "attrs": {
-          "class": "month_wrap custom_month_wrap",
-          "data-month-label": "2026-08"
-        },
-        "depth": 5
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
       },
       {
         "tag": "div",
-        "attrs": {
-          "class": "scroll_area"
-        },
-        "depth": 6
+        "class": "schedule period1",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "p",
+        "class": "time_schedule color_red5",
+        "role": null,
+        "aria_label": null
       },
       {
         "tag": "div",
-        "attrs": {
-          "class": "month_cont custom_month_cont"
-        },
-        "depth": 7
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
       },
       {
         "tag": "div",
-        "attrs": {
-          "class": "calender_area"
-        },
-        "depth": 8
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
       },
       {
         "tag": "div",
-        "attrs": {
-          "class": "contents",
-          "id": "contents"
-        },
-        "depth": 9
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule period1",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "p",
+        "class": "time_schedule color_red5",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule period1",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "p",
+        "class": "time_schedule color_red5",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule period1",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "p",
+        "class": "time_schedule color_blue2",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule period1",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "p",
+        "class": "time_schedule color_blue2",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule period1",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "p",
+        "class": "time_schedule color_blue2",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule period1",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "p",
+        "class": "time_schedule color_blue2",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule period1",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "p",
+        "class": "time_schedule color_blue2",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule period1",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "p",
+        "class": "time_schedule color_blue2",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule_wrap",
+        "role": null,
+        "aria_label": null
+      },
+      {
+        "tag": "div",
+        "class": "schedule",
+        "role": null,
+        "aria_label": null
       }
     ]
   },
-  "message": "Synthetic event card structure captured without private calendar text.",
+  "message": "Exact synthetic schedule card clicked once; post-click structural state captured.",
   "session_adapter_exit_code": 0,
   "persistent_browser_retained": true,
-  "session_command_id": "exp002-persistent-diagnose-card-20260830-09"
+  "session_command_id": "exp002-persistent-probe-card-20260830-10"
 }
