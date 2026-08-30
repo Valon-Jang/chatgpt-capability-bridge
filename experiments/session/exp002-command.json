@@ -1,23 +1,21 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-cleanup-20260830-17",
+  "command_id": "exp002-persistent-probe-delete-confirm-20260830-18",
   "adapter_id": "naver-calendar",
-  "action": "recover_verify_delete_event",
+  "action": "probe_delete_confirmation",
   "arguments": {
-    "title": "CB-EXP002-PERSIST-20260830-T4H7K9",
-    "cleanup": true
+    "title": "CB-EXP002-PERSIST-20260830-T4H7K9"
   },
   "nonce": "20260830-T4H7K9",
   "verification": {
     "required": true,
-    "expected": "Open the actual li.schedule_item in the daily-list surface, delete the existing synthetic event, and verify exact-title absence."
+    "expected": "Open the actual daily-list event, activate its delete control once, and capture only confirmation action controls without confirming deletion."
   },
   "experiment": {
     "reversible": true,
     "cleanup_requested": true,
     "core_freeze": "0.1",
     "persistent_browser_session": true,
-    "cleanup_only": true,
-    "retry": 17
+    "diagnostic_only": true
   }
 }
