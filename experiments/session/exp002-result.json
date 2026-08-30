@@ -1,120 +1,90 @@
 {
   "protocol_version": "0.1",
-  "command_id": "exp002-persistent-diagnose-daily-20260830-13",
+  "command_id": "exp002-persistent-cleanup-20260830-14",
   "adapter_id": "naver-calendar",
-  "action": "diagnose_daily_event_card",
-  "status": "VERIFIED_SUCCESS",
-  "failure_class": null,
+  "action": "recover_verify_delete_event",
+  "status": "FAILED",
+  "failure_class": "ADAPTER_ERROR",
   "execution": {
     "attempted": true,
-    "completed": true
+    "completed": false
   },
   "verification": {
     "performed": true,
-    "passed": true,
+    "passed": false,
     "evidence": {
       "created_title_observed": true,
       "cleanup_absence_observed": false
     }
   },
   "cleanup": {
-    "requested": false,
-    "attempted": false,
-    "completed": true
+    "requested": true,
+    "attempted": true,
+    "completed": false
   },
+  "message": "Trusted two-stage touch completed, but delete control was not found.",
   "diagnostics": {
     "url": "https://m.calendar.naver.com/daily?date=2026-08-30",
-    "daily_title_ancestor_chain": [
+    "controls": [
       {
-        "tag": "div",
-        "attrs": {
-          "class": "schedule period1"
-        },
-        "depth": 0
+        "tag": "a",
+        "class": "logo_link",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "네이버"
       },
       {
-        "tag": "div",
-        "attrs": {
-          "class": "schedule_wrap"
-        },
-        "depth": 1
+        "tag": "button",
+        "class": "btn_date",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "2026. 8."
       },
       {
-        "tag": "div",
-        "attrs": {
-          "class": "col_area"
-        },
-        "depth": 2
+        "tag": "button",
+        "class": "btn_menu",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "메뉴"
       },
       {
-        "tag": "div",
-        "attrs": {
-          "class": "col1 today selected"
-        },
-        "depth": 3
+        "tag": "button",
+        "class": "btn_add_schedule",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "일정 추가"
       },
       {
-        "tag": "div",
-        "attrs": {
-          "class": "row"
-        },
-        "depth": 4
+        "tag": "button",
+        "class": "btn_back",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "이전 화면으로"
       },
       {
-        "tag": "div",
-        "attrs": {
-          "class": "month_wrap custom_month_wrap",
-          "data-month-label": "2026-08"
-        },
-        "depth": 5
+        "tag": "button",
+        "class": "btn_prev",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "어제"
       },
       {
-        "tag": "div",
-        "attrs": {
-          "class": "scroll_area"
-        },
-        "depth": 6
+        "tag": "button",
+        "class": "btn_next",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "다음날"
       },
       {
-        "tag": "div",
-        "attrs": {
-          "class": "month_cont custom_month_cont"
-        },
-        "depth": 7
-      },
-      {
-        "tag": "div",
-        "attrs": {
-          "class": "calender_area"
-        },
-        "depth": 8
-      },
-      {
-        "tag": "div",
-        "attrs": {
-          "class": "contents",
-          "id": "contents"
-        },
-        "depth": 9
-      },
-      {
-        "tag": "div",
-        "attrs": {
-          "class": "wrap month"
-        },
-        "depth": 10
-      },
-      {
-        "tag": "div",
-        "attrs": {
-          "id": "root"
-        },
-        "depth": 11
+        "tag": "button",
+        "class": "btn_add_schedule",
+        "aria_label": null,
+        "title": "",
+        "ui_text": "일정 추가"
       }
     ]
   },
-  "message": "Daily-view synthetic event structure captured.",
-  "session_adapter_exit_code": 0,
+  "session_adapter_exit_code": 9,
   "persistent_browser_retained": true,
-  "session_command_id": "exp002-persistent-diagnose-daily-20260830-13"
+  "session_command_id": "exp002-persistent-cleanup-20260830-14"
 }
