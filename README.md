@@ -173,6 +173,52 @@ Verify result back in Chat
 
 ---
 
+## Protocol v0.1 and Core Freeze
+
+The first reference experiment has now been separated into a **target-independent protocol core** and a **target-specific adapter**.
+
+```text
+chatgpt-capability-bridge/
+├─ README.md
+├─ protocol/
+│  ├─ PROTOCOL.md
+│  ├─ CAPABILITY_MANIFEST.md
+│  ├─ COMMAND_ENVELOPE.md
+│  ├─ AUTH_HANDOFF.md
+│  └─ RESULT_ENVELOPE.md
+├─ adapters/
+│  └─ naver-mail/
+│     └─ ADAPTER.md
+└─ experiments/
+   └─ EXP-001-NAVER-MAIL.md
+```
+
+The protocol core defines:
+
+- runtime capability discovery;
+- capability-gap and bootstrap classification;
+- target-independent command semantics;
+- human authentication handoff;
+- machine-readable verification results;
+- failure classes;
+- a portability-test rule for distinguishing adapter problems from genuine protocol gaps.
+
+Naver-specific mail fields, UI behavior, QR authentication details, browser selectors, browser automation implementation, target completion signals, and IP/session behavior remain outside the generic core.
+
+The Naver reference flow was refit to Protocol v0.1 **without requiring a core change**.
+
+Protocol v0.1 is therefore treated as **Core Freeze v0.1** for the next portability experiment. A second target must first be attempted by adding only a new adapter and target-specific execution details. The core should change only when a documented `CORE_GAP` demonstrates that a missing concept is genuinely target-independent.
+
+- Generic protocol: [`protocol/PROTOCOL.md`](protocol/PROTOCOL.md)
+- Capability discovery contract: [`protocol/CAPABILITY_MANIFEST.md`](protocol/CAPABILITY_MANIFEST.md)
+- Command contract: [`protocol/COMMAND_ENVELOPE.md`](protocol/COMMAND_ENVELOPE.md)
+- Authentication handoff: [`protocol/AUTH_HANDOFF.md`](protocol/AUTH_HANDOFF.md)
+- Verification/result contract: [`protocol/RESULT_ENVELOPE.md`](protocol/RESULT_ENVELOPE.md)
+- Adapter #1: [`adapters/naver-mail/ADAPTER.md`](adapters/naver-mail/ADAPTER.md)
+- Experiment #1: [`experiments/EXP-001-NAVER-MAIL.md`](experiments/EXP-001-NAVER-MAIL.md)
+
+---
+
 ## Core idea
 
 Instead of waiting for every target service to expose a dedicated ChatGPT integration:
@@ -430,12 +476,13 @@ The overall pattern of discovering and composing existing ChatGPT-accessible cap
 
 **Experimental / proof of concept.**
 
-Two important findings are currently documented:
+Three findings are currently documented:
 
 1. **Capability Discovery:** the active Chat runtime exposed more GitHub mutation capability for existing repositories than the standard public GitHub-app description suggested, while still lacking repository-creation capability.
 2. **Capability Composition:** those available GitHub actions were composed into a browser execution bridge that successfully performed and verified a real Naver Mail send from ordinary Chat.
+3. **Core/Adapter separation:** the Naver reference flow was refit into frozen Protocol v0.1 without moving target-specific mail, authentication, browser, or session details into the generic core.
 
-The next goal is to separate the generic bridge protocol from the Naver Mail adapter and test whether the same lifecycle can reliably support additional unsupported services without adding target-specific ChatGPT integrations.
+The next research gate is **EXP-002: Adapter Portability**. A meaningfully different target/action should be implemented with a new adapter while keeping Protocol v0.1 unchanged. If a core change is required, it must be justified as a documented `CORE_GAP` rather than silently added during the test.
 
 ---
 
