@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 def load_base():
-    p=Path(os.environ.get('CB_ADAPTER_LIB',Path(__file__).with_name('adapter.py'))
+    p=Path(os.environ.get('CB_ADAPTER_LIB',Path(__file__).with_name('adapter.py')))
     s=importlib.util.spec_from_file_location('cb_base',p);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
 
 def visible(xs):
@@ -68,17 +68,14 @@ def cleanup(d,b,c,od,timeout):
     if not found:
         r['execution']['completed']=True;r['cleanup']['completed']=True;r['verification']['evidence']['cleanup_absence_observed']=True;r['verification']['passed']=True;r['status']='VERIFIED_SUCCESS';r['failure_class']=None;r['message']='No residual synthetic event observable.';b.write_json(rp,r);return 0
     r['cleanup']['attempted']=True
-    # Stage 1: month view card -> daily view.
     e=title_node(d,title)
     if e is None:r['failure_class']='ADAPTER_ERROR';r['message']='Synthetic title node missing in month view.';b.write_json(rp,r);return 8
     tap(d,e);time.sleep(1.1)
-    # Stage 2: same event in daily view -> event detail.
     if '/daily' in (d.current_url or ''):
         if not b.wait_for_exact_text(d,title,8):r['failure_class']='ADAPTER_ERROR';r['message']='Daily view opened but synthetic event was not visible.';b.write_json(rp,r);return 8
         e2=title_node(d,title)
         if e2 is None:r['failure_class']='ADAPTER_ERROR';r['message']='Synthetic title node missing in daily view.';b.write_json(rp,r);return 8
         tap(d,e2);time.sleep(1.0)
-    # Follow detail -> edit -> trash/delete. Detail may be same-route overlay.
     edit_clicked=click_text(d,['수정'],4)
     if edit_clicked:time.sleep(.7)
     if not click_delete(d):
