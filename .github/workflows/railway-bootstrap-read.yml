@@ -1,0 +1,48 @@
+name: Railway Bootstrap Read
+
+on:
+  push:
+    paths:
+      - '.github/workflows/railway-bootstrap-read.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch Railway public bootstrap data
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://chatgpt-capability-bridge-production-4306.up.railway.app'
+          mkdir -p .bridge/railway-bootstrap
+          curl -fsS --retry 8 --retry-delay 2 --retry-all-errors --connect-timeout 10 --max-time 60 \
+            "$BASE/public-key" -o .bridge/railway-bootstrap/public-key.pem
+          grep -q 'BEGIN PUBLIC KEY' .bridge/railway-bootstrap/public-key.pem
+          grep -q 'END PUBLIC KEY' .bridge/railway-bootstrap/public-key.pem
+          curl -fsS --retry 4 --retry-delay 2 --retry-all-errors --connect-timeout 10 --max-time 30 \
+            "$BASE/health" -o .bridge/railway-bootstrap/health.json
+          curl -fsS --retry 4 --retry-delay 2 --retry-all-errors --connect-timeout 10 --max-time 30 \
+            "$BASE/status" -o .bridge/railway-bootstrap/status.json
+
+      - name: Commit bootstrap readback
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .bridge/railway-bootstrap/public-key.pem .bridge/railway-bootstrap/health.json .bridge/railway-bootstrap/status.json
+          if git diff --cached --quiet; then
+            echo 'No bootstrap changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Bootstrap Railway public key [skip ci]'
+          git push
