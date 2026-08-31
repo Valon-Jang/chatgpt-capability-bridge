@@ -1,0 +1,127 @@
+name: GeekNews Persistent Browser Session
+
+on:
+  push:
+    paths:
+      - "experiments/geeknews/session/start.json"
+
+concurrency:
+  group: geeknews-persistent-browser
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  session:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      DISPLAY: ":99"
+      CB_COMMAND_PATH: experiments/geeknews/session/command.json
+      CB_RESULT_PATH: experiments/geeknews/session/result.json
+      CB_STATUS_PATH: experiments/geeknews/session/status.json
+      CB_ADAPTER_PATH: adapters/geeknews/adapter.py
+      CB_SESSION_ADAPTER_PATH: adapters/geeknews/session_adapter.py
+      CB_DEBUGGER_ADDRESS: 127.0.0.1:9222
+      CB_POLL_SECONDS: "5"
+      CB_SOFT_LIMIT_SECONDS: "20700"
+      CB_AUTH_TIMEOUT_SECONDS: "900"
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install browser handoff dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y xvfb x11vnc novnc websockify curl jq
+          python -m pip install --upgrade pip
+          python -m pip install selenium cryptography
+          curl -L --fail --retry 3 -o /tmp/cloudflared.deb \
+            https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+          sudo dpkg -i /tmp/cloudflared.deb
+          google-chrome --version
+          cloudflared --version
+
+      - name: Start retained Chrome and temporary VNC
+        id: browser
+        shell: bash
+        run: |
+          set -euo pipefail
+          Xvfb :99 -screen 0 1365x900x24 -ac >/tmp/xvfb.log 2>&1 &
+          sleep 2
+          google-chrome \
+            --no-sandbox \
+            --disable-dev-shm-usage \
+            --disable-gpu \
+            --window-size=1365,900 \
+            --lang=ko-KR \
+            --user-data-dir=/tmp/cb-geeknews-profile \
+            --remote-debugging-address=127.0.0.1 \
+            --remote-debugging-port=9222 \
+            --no-first-run \
+            --no-default-browser-check \
+            https://news.hada.io/login >/tmp/chrome.log 2>&1 &
+          for _ in $(seq 1 45); do
+            curl -sf http://127.0.0.1:9222/json/version >/dev/null && break
+            sleep 1
+          done
+          curl -sf http://127.0.0.1:9222/json/version >/dev/null
+
+          VNC_PASSWORD="$(openssl rand -hex 6)"
+          x11vnc -storepasswd "$VNC_PASSWORD" /tmp/geeknews-vnc.pass >/dev/null
+          x11vnc -display :99 -rfbauth /tmp/geeknews-vnc.pass -forever -shared -rfbport 5900 >/tmp/x11vnc.log 2>&1 &
+          websockify --web=/usr/share/novnc/ 6080 localhost:5900 >/tmp/websockify.log 2>&1 &
+          cloudflared tunnel --no-autoupdate --url http://127.0.0.1:6080 >/tmp/cloudflared.log 2>&1 &
+
+          TUNNEL_URL=""
+          for _ in $(seq 1 60); do
+            TUNNEL_URL="$(grep -Eo 'https://[-a-z0-9]+\.trycloudflare\.com' /tmp/cloudflared.log | head -n1 || true)"
+            [ -n "$TUNNEL_URL" ] && break
+            sleep 1
+          done
+          test -n "$TUNNEL_URL"
+          echo "vnc_password=$VNC_PASSWORD" >> "$GITHUB_OUTPUT"
+          echo "tunnel_url=$TUNNEL_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Publish encrypted login handoff
+        shell: bash
+        env:
+          VNC_PASSWORD: ${{ steps.browser.outputs.vnc_password }}
+          TUNNEL_URL: ${{ steps.browser.outputs.tunnel_url }}
+        run: |
+          set -euo pipefail
+          python scripts/geeknews_auth_handoff.py \
+            --start experiments/geeknews/session/start.json \
+            --url "$TUNNEL_URL" \
+            --vnc-password "$VNC_PASSWORD" \
+            --output experiments/geeknews/session/auth-handoff.enc.b64
+          git config user.name "capability-bridge-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add experiments/geeknews/session/auth-handoff.enc.b64
+          git commit -m "Publish encrypted GeekNews login handoff [skip ci]" || true
+          git push
+
+      - name: Wait for user login
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/wait_for_geeknews_auth.py \
+            --debugger-address 127.0.0.1:9222 \
+            --timeout 900
+
+      - name: Consume user-approved GeekNews commands
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python scripts/persistent_session_worker.py
