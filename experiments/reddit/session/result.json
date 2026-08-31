@@ -1,9 +1,9 @@
 {
   "status": "VERIFIED_SUCCESS",
   "failure_class": null,
-  "message": "Reddit comment draft filled; nothing was submitted.",
-  "action": "draft_comment",
-  "command_id": "reddit-draft-test-20260901-0005",
+  "message": "Reddit reply draft filled; nothing was submitted.",
+  "action": "draft_reply",
+  "command_id": "reddit-reply-draft-test-20260901-0006",
   "execution": {
     "attempted": true,
     "completed": true
@@ -13,12 +13,14 @@
     "passed": true,
     "evidence": {
       "post_url": "https://old.reddit.com/r/LocalLLaMA/comments/1w35sc1/could_this_affect_m5_ultra_priceavailability/",
-      "draft_body": "[draft connectivity test — not submitted]",
-      "draft_text_sha256": "8932cbd86e14c15f1afe9177bf98f8079a819c565c13a9e1559627f45d9e4d85",
+      "target_author": "WithoutReason1729",
+      "target_comment_snippet": null,
+      "draft_body": "[reply draft connectivity test — not submitted]",
+      "draft_text_sha256": "928592cd0d7a9d0f152a8df703128141def28c1273f4cb3648e54b1b0b1437ed",
       "submit_available": true
     }
   },
   "session_adapter_exit_code": 0,
   "persistent_browser_retained": true,
-  "session_command_id": "reddit-draft-test-20260901-0005"
+  "session_command_id": "reddit-reply-draft-test-20260901-0006"
 }
