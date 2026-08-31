@@ -1,8 +1,9 @@
 {
-  "command_id": "reddit-draft-test-20260901-0005",
-  "action": "draft_comment",
+  "command_id": "reddit-reply-draft-test-20260901-0006",
+  "action": "draft_reply",
   "arguments": {
     "post_url": "https://www.reddit.com/r/LocalLLaMA/comments/1w35sc1/could_this_affect_m5_ultra_priceavailability/",
-    "body": "[draft connectivity test — not submitted]"
+    "target_author": "WithoutReason1729",
+    "body": "[reply draft connectivity test — not submitted]"
   }
 }
