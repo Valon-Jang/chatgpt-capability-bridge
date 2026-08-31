@@ -1,4 +1,7 @@
 {
-  "command_id": "geeknews-auth-status-20260831-2320",
-  "action": "auth_status"
+  "command_id": "geeknews-inspect-topic-32322-20260831-2321",
+  "action": "inspect_page",
+  "arguments": {
+    "url": "https://news.hada.io/topic?id=32322"
+  }
 }
