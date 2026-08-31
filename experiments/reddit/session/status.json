@@ -1,8 +1,6 @@
 {
-  "session_state": "SESSION_IDLE",
-  "updated_at_epoch": 1788190194,
+  "session_state": "HOSTED_RUNNER_LIMIT_APPROACHING",
+  "updated_at_epoch": 1788209706,
   "last_command_id": "community-geeknews-auth-20260901-0008",
-  "last_result_status": "FAILED",
-  "last_failure_class": "AUTH_BOUNDARY",
   "browser_retained": true
 }
