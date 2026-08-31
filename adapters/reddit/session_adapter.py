@@ -6,6 +6,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import subprocess
 import sys
 import time
 import traceback
@@ -53,6 +54,35 @@ def approved(command: dict, body: str):
     if not expected or expected != actual:
         return False, 'Approved text fingerprint does not match the current body.'
     return True, ''
+
+
+def delegate_other_site(c: dict, a, od: Path) -> int | None:
+    site = (c.get('site') or 'reddit').lower()
+    if site == 'reddit':
+        return None
+    mapping = {
+        'geeknews': ('adapters/geeknews/adapter.py', 'adapters/geeknews/session_adapter.py'),
+    }
+    target = mapping.get(site)
+    if target is None:
+        return None
+    base_path, session_path = target
+    forwarded = dict(c)
+    forwarded.pop('site', None)
+    tmp = Path('/tmp/cb-active-community-delegate')
+    tmp.mkdir(parents=True, exist_ok=True)
+    command_path = tmp / f'{site}-command.json'
+    command_path.write_text(json.dumps(forwarded, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    env = os.environ.copy()
+    env['CB_ADAPTER_LIB'] = str(Path.cwd() / base_path)
+    return subprocess.call([
+        sys.executable,
+        str(Path.cwd() / session_path),
+        '--command', str(command_path),
+        '--output-dir', str(od),
+        '--debugger-address', a.debugger_address,
+        '--auth-timeout', str(a.auth_timeout),
+    ], env=env)
 
 
 def auth_status(d, b, c, rp, r):
@@ -195,10 +225,13 @@ def main():
     ap.add_argument('--debugger-address', default='127.0.0.1:9222')
     ap.add_argument('--auth-timeout', type=int, default=60)
     a = ap.parse_args()
-    b = load_base()
     c = json.loads(Path(a.command).read_text(encoding='utf-8'))
     od = Path(a.output_dir)
     od.mkdir(parents=True, exist_ok=True)
+    delegated = delegate_other_site(c, a, od)
+    if delegated is not None:
+        return delegated
+    b = load_base()
     rp = od / 'result.json'
     r = b.result_template(c)
     o = webdriver.ChromeOptions()
