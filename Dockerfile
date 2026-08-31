@@ -18,6 +18,5 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 COPY persistent-browser/server.py /app/server.py
 
 RUN mkdir -p /data
-VOLUME ["/data"]
 EXPOSE 8080
 CMD ["python", "/app/server.py"]
