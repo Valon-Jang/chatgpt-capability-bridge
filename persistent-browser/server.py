@@ -110,7 +110,6 @@ def start_browser_runtime() -> None:
                     "--no-sandbox",
                     "--disable-dev-shm-usage",
                     "--disable-gpu",
-                    "--no-first-run",
                     "--no-default-browser-check",
                     "--lang=ko-KR",
                     "--remote-debugging-address=127.0.0.1",
