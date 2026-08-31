@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-       chromium chromium-driver xvfb ca-certificates fonts-noto-cjk \
+       chromium chromium-driver xvfb dbus ca-certificates fonts-noto-cjk \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -20,4 +20,4 @@ COPY persistent-browser/secure_server.py /app/secure_server.py
 
 RUN mkdir -p /data
 EXPOSE 8080
-CMD ["python", "/app/secure_server.py"]
+CMD ["sh", "-c", "dbus-uuidgen --ensure=/etc/machine-id && mkdir -p /run/dbus && dbus-daemon --system --fork && exec python /app/secure_server.py"]
