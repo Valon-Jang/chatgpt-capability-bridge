@@ -1,8 +1,6 @@
 {
-  "session_state": "SESSION_IDLE",
-  "updated_at_epoch": 1788189608,
-  "last_command_id": "reddit-clear-drafts-20260901-0007",
-  "last_result_status": "VERIFIED_SUCCESS",
-  "last_failure_class": null,
+  "session_state": "COMMAND_RUNNING",
+  "updated_at_epoch": 1788190189,
+  "command_id": "community-geeknews-auth-20260901-0008",
   "browser_retained": true
 }
