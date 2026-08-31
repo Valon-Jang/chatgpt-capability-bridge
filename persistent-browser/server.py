@@ -30,6 +30,7 @@ PUBLIC_KEY_PATH = DATA_DIR / "bridge-public.pem"
 QR_PATH = DATA_DIR / "naver-qr.png"
 STATUS_PATH = DATA_DIR / "status.json"
 LAST_ID_PATH = DATA_DIR / "last-command-id.txt"
+CHROME_LOG_PATH = Path(os.environ.get("BRIDGE_CHROME_LOG_PATH", "/tmp/chromium-startup.log"))
 
 COMMAND_URL = os.environ.get(
     "BRIDGE_COMMAND_URL",
@@ -91,6 +92,19 @@ def ensure_keypair() -> None:
     )
 
 
+def clear_stale_profile_locks() -> list[str]:
+    removed: list[str] = []
+    for name in ("SingletonLock", "SingletonSocket", "SingletonCookie"):
+        path = PROFILE_DIR / name
+        try:
+            if path.is_symlink() or path.exists():
+                path.unlink()
+                removed.append(name)
+        except OSError as exc:
+            print(f"[bridge] stale-lock cleanup failed for {name}: {type(exc).__name__}: {exc}", flush=True)
+    return removed
+
+
 def start_browser_runtime() -> None:
     global _xvfb_proc, _chrome_proc, _driver
     with _runtime_lock:
@@ -104,28 +118,37 @@ def start_browser_runtime() -> None:
             time.sleep(0.8)
         if _chrome_proc is None or _chrome_proc.poll() is not None:
             PROFILE_DIR.mkdir(parents=True, exist_ok=True)
+            removed = clear_stale_profile_locks()
+            if removed:
+                print(f"[bridge] removed stale Chromium profile locks: {','.join(removed)}", flush=True)
             try:
                 version = subprocess.check_output([CHROME_BIN, "--version"], text=True, stderr=subprocess.STDOUT).strip()
             except Exception as exc:
                 version = f"version-read-failed:{type(exc).__name__}:{exc}"
             print(f"[bridge] chromium={version}", flush=True)
-            _chrome_proc = subprocess.Popen(
-                [
-                    CHROME_BIN,
-                    "--no-sandbox",
-                    "--disable-dev-shm-usage",
-                    "--disable-gpu",
-                    "--no-default-browser-check",
-                    "--lang=ko-KR",
-                    "--remote-debugging-address=127.0.0.1",
-                    "--remote-debugging-port=9222",
-                    f"--user-data-dir={PROFILE_DIR}",
-                    "--window-position=0,0",
-                    "--window-size=1440,900",
-                    "about:blank",
-                ],
-                env=os.environ.copy(),
-            )
+            chrome_log = CHROME_LOG_PATH.open("wb", buffering=0)
+            try:
+                _chrome_proc = subprocess.Popen(
+                    [
+                        CHROME_BIN,
+                        "--no-sandbox",
+                        "--disable-dev-shm-usage",
+                        "--disable-gpu",
+                        "--no-default-browser-check",
+                        "--lang=ko-KR",
+                        "--remote-debugging-address=127.0.0.1",
+                        "--remote-debugging-port=9222",
+                        f"--user-data-dir={PROFILE_DIR}",
+                        "--window-position=0,0",
+                        "--window-size=1440,900",
+                        "about:blank",
+                    ],
+                    stdout=chrome_log,
+                    stderr=subprocess.STDOUT,
+                    env=os.environ.copy(),
+                )
+            finally:
+                chrome_log.close()
         deadline = now() + 30
         while now() < deadline:
             try:
@@ -136,7 +159,12 @@ def start_browser_runtime() -> None:
                 pass
             time.sleep(0.3)
         else:
-            raise RuntimeError(f"Chrome CDP endpoint did not become ready; exit_code={_chrome_proc.poll() if _chrome_proc else None}")
+            exit_code = _chrome_proc.poll() if _chrome_proc else None
+            try:
+                log_tail = CHROME_LOG_PATH.read_text(encoding="utf-8", errors="replace")[-4000:].replace("\n", " | ")
+            except OSError:
+                log_tail = "unavailable"
+            raise RuntimeError(f"Chrome CDP endpoint did not become ready; exit_code={exit_code}; log_tail={log_tail}")
         if _driver is None:
             opts = webdriver.ChromeOptions()
             opts.add_experimental_option("debuggerAddress", DEBUGGER_ADDRESS)
