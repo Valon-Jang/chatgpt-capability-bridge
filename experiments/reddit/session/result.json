@@ -1,0 +1,22 @@
+{
+  "status": "VERIFIED_SUCCESS",
+  "failure_class": null,
+  "message": "Reddit authenticated browser session is active.",
+  "action": "auth_status",
+  "command_id": "reddit-auth-status-20260901-0001",
+  "execution": {
+    "attempted": true,
+    "completed": true
+  },
+  "verification": {
+    "performed": true,
+    "passed": true,
+    "evidence": {
+      "logged_in": true,
+      "url": "https://www.reddit.com/"
+    }
+  },
+  "session_adapter_exit_code": 0,
+  "persistent_browser_retained": true,
+  "session_command_id": "reddit-auth-status-20260901-0001"
+}
