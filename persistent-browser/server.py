@@ -104,6 +104,11 @@ def start_browser_runtime() -> None:
             time.sleep(0.8)
         if _chrome_proc is None or _chrome_proc.poll() is not None:
             PROFILE_DIR.mkdir(parents=True, exist_ok=True)
+            try:
+                version = subprocess.check_output([CHROME_BIN, "--version"], text=True, stderr=subprocess.STDOUT).strip()
+            except Exception as exc:
+                version = f"version-read-failed:{type(exc).__name__}:{exc}"
+            print(f"[bridge] chromium={version}", flush=True)
             _chrome_proc = subprocess.Popen(
                 [
                     CHROME_BIN,
@@ -119,8 +124,6 @@ def start_browser_runtime() -> None:
                     "--window-size=1440,900",
                     "about:blank",
                 ],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.STDOUT,
                 env=os.environ.copy(),
             )
         deadline = now() + 30
@@ -133,7 +136,7 @@ def start_browser_runtime() -> None:
                 pass
             time.sleep(0.3)
         else:
-            raise RuntimeError("Chrome CDP endpoint did not become ready")
+            raise RuntimeError(f"Chrome CDP endpoint did not become ready; exit_code={_chrome_proc.poll() if _chrome_proc else None}")
         if _driver is None:
             opts = webdriver.ChromeOptions()
             opts.add_experimental_option("debuggerAddress", DEBUGGER_ADDRESS)
