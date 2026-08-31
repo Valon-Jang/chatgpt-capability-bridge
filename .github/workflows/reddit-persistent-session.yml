@@ -6,7 +6,7 @@ on:
       - "experiments/reddit/session/start.json"
 
 concurrency:
-  group: reddit-persistent-browser
+  group: reddit-persistent-browser-v2
   cancel-in-progress: true
 
 permissions:
