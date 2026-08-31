@@ -1,7 +1,5 @@
 {
-  "command_id": "reddit-clear-drafts-20260901-0007",
-  "action": "inspect_page",
-  "arguments": {
-    "url": "https://www.reddit.com/r/LocalLLaMA/"
-  }
+  "command_id": "community-geeknews-auth-20260901-0008",
+  "site": "geeknews",
+  "action": "auth_status"
 }
