@@ -1,0 +1,22 @@
+{
+  "status": "VERIFIED_SUCCESS",
+  "failure_class": null,
+  "message": "GeekNews authenticated browser session is active.",
+  "action": "auth_status",
+  "command_id": "geeknews-auth-status-20260831-2320",
+  "execution": {
+    "attempted": true,
+    "completed": true
+  },
+  "verification": {
+    "performed": true,
+    "passed": true,
+    "evidence": {
+      "logged_in": true,
+      "url": "https://news.hada.io/"
+    }
+  },
+  "session_adapter_exit_code": 0,
+  "persistent_browser_retained": true,
+  "session_command_id": "geeknews-auth-status-20260831-2320"
+}
