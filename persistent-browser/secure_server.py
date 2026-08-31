@@ -3,14 +3,11 @@ from __future__ import annotations
 
 import hashlib
 import hmac
-import html
-import json
 import os
 import re
 import threading
 import time
 import traceback
-from urllib.parse import quote
 
 from flask import Response, jsonify, request
 
@@ -18,6 +15,7 @@ import server as base
 
 LOGIN_TOKEN_PATH = base.DATA_DIR / "login-access-token.txt"
 TOKEN_RE = re.compile(r"^[A-Za-z0-9_-]{32,128}$")
+BASIC_USER = "bridge"
 
 
 def _login_token() -> str:
@@ -32,12 +30,23 @@ def _login_token() -> str:
 
 def _token_ok() -> bool:
     expected = _login_token()
-    supplied = request.args.get("token", "")
-    return bool(expected and supplied and hmac.compare_digest(expected, supplied))
+    auth = request.authorization
+    return bool(
+        expected
+        and auth
+        and auth.username == BASIC_USER
+        and auth.password
+        and hmac.compare_digest(expected, auth.password)
+    )
 
 
-def _forbidden() -> Response:
-    return Response("Not found", status=404, mimetype="text/plain")
+def _unauthorized() -> Response:
+    return Response(
+        "Authentication required",
+        status=401,
+        mimetype="text/plain",
+        headers={"WWW-Authenticate": 'Basic realm="chatgpt-capability-bridge"'},
+    )
 
 
 def secure_status_endpoint():
@@ -57,7 +66,7 @@ def secure_status_endpoint():
 
 def secure_login_page():
     if not _token_ok():
-        return _forbidden()
+        return _unauthorized()
     try:
         if base.prepare_qr():
             return Response(
@@ -65,12 +74,11 @@ def secure_login_page():
                 mimetype="text/html",
             )
         stamp = int(base.now())
-        token = quote(_login_token(), safe="")
         return Response(
             f"""<!doctype html><html><head><meta charset='utf-8'><meta http-equiv='refresh' content='8'></head>
             <body style='font-family:sans-serif;max-width:900px;margin:30px auto'>
             <h2>Naver QR login</h2><p>Scan with the Naver app and complete the confirmation. This page refreshes automatically.</p>
-            <img src='/qr.png?token={html.escape(token)}&v={stamp}' style='max-width:100%;border:1px solid #ccc'>
+            <img src='/qr.png?v={stamp}' style='max-width:100%;border:1px solid #ccc'>
             </body></html>""",
             mimetype="text/html",
         )
@@ -80,7 +88,7 @@ def secure_login_page():
 
 def secure_qr_image():
     if not _token_ok():
-        return _forbidden()
+        return _unauthorized()
     if not base.QR_PATH.exists():
         base.prepare_qr()
     if not base.QR_PATH.exists():
