@@ -1,7 +1,7 @@
 {
-  "command_id": "reddit-inspect-localllama-20260901-0002",
+  "command_id": "reddit-inspect-post-20260901-0003",
   "action": "inspect_page",
   "arguments": {
-    "url": "https://www.reddit.com/r/LocalLLaMA/"
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1w35sc1/could_this_affect_m5_ultra_priceavailability/"
   }
 }
