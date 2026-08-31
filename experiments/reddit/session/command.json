@@ -1,4 +1,7 @@
 {
-  "command_id": "reddit-auth-status-20260901-0001",
-  "action": "auth_status"
+  "command_id": "reddit-inspect-localllama-20260901-0002",
+  "action": "inspect_page",
+  "arguments": {
+    "url": "https://www.reddit.com/r/LocalLLaMA/"
+  }
 }
