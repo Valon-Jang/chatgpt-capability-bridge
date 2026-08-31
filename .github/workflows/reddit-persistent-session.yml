@@ -27,6 +27,7 @@ jobs:
       CB_POLL_SECONDS: "5"
       CB_SOFT_LIMIT_SECONDS: "20700"
       CB_AUTH_TIMEOUT_SECONDS: "900"
+      DEBIAN_FRONTEND: noninteractive
 
     steps:
       - uses: actions/checkout@v4
@@ -36,14 +37,14 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install browser handoff dependencies
+        timeout-minutes: 4
         shell: bash
         run: |
           set -euo pipefail
-          sudo apt-get update
-          sudo apt-get install -y xvfb x11vnc novnc websockify curl jq
-          python -m pip install --upgrade pip
-          python -m pip install selenium cryptography
-          curl -L --fail --retry 3 -o /tmp/cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+          timeout 120s sudo apt-get -o Acquire::Retries=3 update
+          timeout 120s sudo apt-get install -y --no-install-recommends xvfb x11vnc novnc websockify curl jq
+          python -m pip install --disable-pip-version-check --no-input selenium cryptography
+          curl -L --fail --retry 3 --connect-timeout 15 --max-time 90 -o /tmp/cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
           sudo dpkg -i /tmp/cloudflared.deb
       - name: Start retained Chrome and temporary VNC
         id: browser
