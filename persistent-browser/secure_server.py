@@ -5,6 +5,7 @@ import hashlib
 import hmac
 import html
 import json
+import os
 import re
 import threading
 import time
@@ -20,6 +21,9 @@ TOKEN_RE = re.compile(r"^[A-Za-z0-9_-]{32,128}$")
 
 
 def _login_token() -> str:
+    env_token = os.environ.get("BRIDGE_LOGIN_ACCESS_TOKEN", "").strip()
+    if env_token:
+        return env_token
     try:
         return LOGIN_TOKEN_PATH.read_text(encoding="utf-8").strip()
     except OSError:
@@ -33,7 +37,6 @@ def _token_ok() -> bool:
 
 
 def _forbidden() -> Response:
-    # Deliberately return 404 rather than advertising an authentication surface.
     return Response("Not found", status=404, mimetype="text/plain")
 
 
@@ -85,7 +88,6 @@ def secure_qr_image():
     return Response(base.QR_PATH.read_bytes(), mimetype="image/png")
 
 
-# Replace only public-facing views. The underlying browser/mail implementation stays unchanged.
 base.app.view_functions["status_endpoint"] = secure_status_endpoint
 base.app.view_functions["login_page"] = secure_login_page
 base.app.view_functions["qr_image"] = secure_qr_image
@@ -155,7 +157,6 @@ def worker_loop() -> None:
                     pass
                 base.write_status("auth_required", error="AUTH_REQUIRED", **command_meta)
             else:
-                # Keep detailed diagnostics on disk only; the public /status endpoint filters them.
                 base.write_status("failed", error=msg, traceback=traceback.format_exc(limit=3), **command_meta)
         time.sleep(base.POLL_SECONDS)
 
