@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import hashlib
 import hmac
 import html
 import json
@@ -96,6 +97,7 @@ def worker_loop() -> None:
     last_id = base.LAST_ID_PATH.read_text(encoding="utf-8").strip() if base.LAST_ID_PATH.exists() else ""
     base.write_status("idle", browser_ready=True)
     while True:
+        text = None
         try:
             text = base.fetch_command_text()
             if not text or text == "PENDING" or text.startswith("#"):
@@ -139,15 +141,22 @@ def worker_loop() -> None:
             base.write_status(**result)
         except Exception as exc:
             msg = f"{type(exc).__name__}: {exc}"
+            command_meta = {}
+            if text:
+                encoded = text.encode("utf-8")
+                command_meta = {
+                    "command_sha256": hashlib.sha256(encoded).hexdigest(),
+                    "command_bytes": len(encoded),
+                }
             if "AUTH_REQUIRED" in msg:
                 try:
                     base.prepare_qr()
                 except Exception:
                     pass
-                base.write_status("auth_required", error="AUTH_REQUIRED")
+                base.write_status("auth_required", error="AUTH_REQUIRED", **command_meta)
             else:
                 # Keep detailed diagnostics on disk only; the public /status endpoint filters them.
-                base.write_status("failed", error=msg, traceback=traceback.format_exc(limit=3))
+                base.write_status("failed", error=msg, traceback=traceback.format_exc(limit=3), **command_meta)
         time.sleep(base.POLL_SECONDS)
 
 
