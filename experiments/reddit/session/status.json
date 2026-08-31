@@ -1,6 +1,8 @@
 {
-  "session_state": "COMMAND_RUNNING",
-  "updated_at_epoch": 1788189403,
-  "command_id": "reddit-inspect-old-post-20260901-0004",
+  "session_state": "SESSION_IDLE",
+  "updated_at_epoch": 1788189417,
+  "last_command_id": "reddit-inspect-old-post-20260901-0004",
+  "last_result_status": "VERIFIED_SUCCESS",
+  "last_failure_class": null,
   "browser_retained": true
 }
