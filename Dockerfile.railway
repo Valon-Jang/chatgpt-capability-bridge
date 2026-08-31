@@ -16,7 +16,8 @@ WORKDIR /app
 COPY persistent-browser/requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 COPY persistent-browser/server.py /app/server.py
+COPY persistent-browser/secure_server.py /app/secure_server.py
 
 RUN mkdir -p /data
 EXPOSE 8080
-CMD ["python", "/app/server.py"]
+CMD ["python", "/app/secure_server.py"]
