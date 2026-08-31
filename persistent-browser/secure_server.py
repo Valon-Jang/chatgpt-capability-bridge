@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import hashlib
 import hmac
-import os
 import re
 import threading
 import time
@@ -16,28 +15,15 @@ import server as base
 LOGIN_TOKEN_PATH = base.DATA_DIR / "login-access-token.txt"
 TOKEN_RE = re.compile(r"^[A-Za-z0-9_-]{32,128}$")
 BASIC_USER = "bridge"
-
-
-def _login_token() -> str:
-    env_token = os.environ.get("BRIDGE_LOGIN_ACCESS_TOKEN", "").strip()
-    if env_token:
-        return env_token
-    try:
-        return LOGIN_TOKEN_PATH.read_text(encoding="utf-8").strip()
-    except OSError:
-        return ""
+BASIC_PASSWORD_SHA256 = "4d5f2fb1f112b4f125d3d86f3c8c2661b103c57257d77e18526cfc605421fb52"
 
 
 def _token_ok() -> bool:
-    expected = _login_token()
     auth = request.authorization
-    return bool(
-        expected
-        and auth
-        and auth.username == BASIC_USER
-        and auth.password
-        and hmac.compare_digest(expected, auth.password)
-    )
+    if not auth or auth.username != BASIC_USER or not auth.password:
+        return False
+    supplied_hash = hashlib.sha256(auth.password.encode("utf-8")).hexdigest()
+    return hmac.compare_digest(BASIC_PASSWORD_SHA256, supplied_hash)
 
 
 def _unauthorized() -> Response:
