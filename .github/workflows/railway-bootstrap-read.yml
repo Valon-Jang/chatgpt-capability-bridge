@@ -45,4 +45,5 @@ jobs:
             exit 0
           fi
           git commit -m 'Bootstrap Railway public key [skip ci]'
-          git push
+          git pull --rebase origin main
+          git push origin HEAD:main
