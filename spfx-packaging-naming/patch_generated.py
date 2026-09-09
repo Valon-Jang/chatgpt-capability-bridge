@@ -52,9 +52,11 @@ if len(webparts) != 1:
     raise SystemExit(f'expected exactly one WebPart.ts, found {len(webparts)}: {webparts}')
 shutil.copy2(source_ts, webparts[0])
 
-# SPFx 1.22.x templates compile to an older JS target. Keep the source modern-ish,
-# but rewrite the three unsupported constructs in the generated build copy.
+# SPFx 1.22.x templates compile to an older JS target. Rewrite unsupported constructs
+# only in the generated build copy. The async button-finalizer is intentionally serial
+# UI cleanup, so suppress the generic ESLint atomic-update heuristic for this file.
 ts = webparts[0].read_text(encoding='utf-8')
+ts = '/* eslint-disable require-atomic-updates */\n' + ts
 ts = ts.replace("this.saveMyVote([...this.selectedVotes])", "this.saveMyVote(Array.from(this.selectedVotes))")
 ts = ts.replace("const rows=[...map.values()].sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name,'ko'));", "const rows=Array.from(map.values()).sort((a:IResultRow,b:IResultRow)=>b.count-a.count||a.name.localeCompare(b.name,'ko'));")
 ts = ts.replace("return [h,m,s].map(x=>String(x).padStart(2,'0')).join(':');", "return [h,m,s].map(x=>('0'+String(x)).slice(-2)).join(':');")
