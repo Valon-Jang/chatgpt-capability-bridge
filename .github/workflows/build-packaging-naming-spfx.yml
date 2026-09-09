@@ -20,7 +20,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
-          cache: npm
 
       - name: Install SPFx CLI
         run: npm install --global @microsoft/spfx-cli@latest
