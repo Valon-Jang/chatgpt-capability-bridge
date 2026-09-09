@@ -19,7 +19,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.24.x'
+          go-version: '1.26.x'
           cache: false
 
       - name: Reassemble artifact-tool workbook
@@ -41,7 +41,8 @@ jobs:
         working-directory: vba-packaging-naming
         run: |
           if [ ! -f go.mod ]; then go mod init packaging-naming-vba-build; fi
-          go get github.com/kay-ws/ovba-writer@latest
+          go get github.com/kay-ws/ovba-writer/vbaproject@latest
+          go mod tidy
           go run patch_vba.go vbaProject.template.bin Module1.bas ThisWorkbook.cls vbaProject.patched.bin
           test -s vbaProject.patched.bin
 
