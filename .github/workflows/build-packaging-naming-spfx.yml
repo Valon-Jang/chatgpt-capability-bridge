@@ -24,7 +24,7 @@ jobs:
       - name: Install SPFx CLI
         run: npm install --global @microsoft/spfx-cli@latest
 
-      - name: Scaffold SPFx 1.23.2 project
+      - name: Scaffold current stable SPFx project
         run: |
           rm -rf generated
           spfx create \
@@ -35,7 +35,6 @@ jobs:
             --component-description "Teams native packaging technology naming event" \
             --solution-name packaging-naming \
             --target-dir generated \
-            --spfx-version 1.23.2 \
             --package-manager npm
 
       - name: Locate generated project
