@@ -1,0 +1,77 @@
+name: Build Packaging Naming VBA Workbook
+
+on:
+  push:
+    branches:
+      - build/packaging-naming-vba
+    paths:
+      - 'vba-packaging-naming/**'
+      - '.github/workflows/build-packaging-naming-vba.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.x'
+
+      - name: Decode artifact-tool workbook
+        working-directory: vba-packaging-naming
+        run: |
+          base64 -d base.xlsx.b64 > base.xlsx
+          test -s base.xlsx
+          unzip -t base.xlsx
+
+      - name: Download clean Excel VBA project template
+        working-directory: vba-packaging-naming
+        run: |
+          curl -fL --retry 3 https://raw.githubusercontent.com/Beakerboy/MS-OVBA/main/tests/blank/vbaProject.bin -o vbaProject.template.bin
+          test -s vbaProject.template.bin
+
+      - name: Patch and verify VBA project
+        working-directory: vba-packaging-naming
+        run: |
+          if [ ! -f go.mod ]; then go mod init packaging-naming-vba-build; fi
+          go get github.com/kay-ws/ovba-writer@latest
+          go run patch_vba.go vbaProject.template.bin Module1.bas ThisWorkbook.cls vbaProject.patched.bin
+          test -s vbaProject.patched.bin
+
+      - name: Package macro-enabled workbook
+        working-directory: vba-packaging-naming
+        run: |
+          python3 package_xlsm.py
+          unzip -t Packaging_Naming_VBA.xlsm
+
+      - name: Final package verification
+        working-directory: vba-packaging-naming
+        run: |
+          python3 - <<'PY'
+          import zipfile, hashlib
+          p='Packaging_Naming_VBA.xlsm'
+          with zipfile.ZipFile(p) as z:
+              names=set(z.namelist())
+              req={'xl/vbaProject.bin','xl/workbook.xml','xl/_rels/workbook.xml.rels','[Content_Types].xml'}
+              assert req <= names
+              wb=z.read('xl/workbook.xml').decode('utf-8')
+              assert wb.count('veryHidden') >= 4
+              assert 'ThisWorkbook' in wb
+              v=z.read('xl/vbaProject.bin')
+              assert len(v)>1000
+          print('FINAL_VERIFY_PASS', hashlib.sha256(open(p,'rb').read()).hexdigest())
+          PY
+          sha256sum Packaging_Naming_VBA.xlsm | tee Packaging_Naming_VBA.xlsm.sha256
+
+      - name: Upload workbook
+        uses: actions/upload-artifact@v4
+        with:
+          name: Packaging-Naming-VBA
+          path: |
+            vba-packaging-naming/Packaging_Naming_VBA.xlsm
+            vba-packaging-naming/Packaging_Naming_VBA.xlsm.sha256
+          if-no-files-found: error
