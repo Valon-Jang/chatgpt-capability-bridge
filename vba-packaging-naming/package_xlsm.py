@@ -21,12 +21,22 @@ with tempfile.TemporaryDirectory() as td:
 
     shutil.copy2(VBA, root/'xl'/'vbaProject.bin')
 
-    # Macro-enabled content types.
+    # Macro-enabled content types. artifact_tool may declare workbook.xml only
+    # through the generic XML Default, so add an explicit workbook Override.
     p=root/'[Content_Types].xml'
     tree=ET.parse(p); doc=tree.getroot()
+    workbook_override=None
     for o in doc.findall(f'{{{CT_NS}}}Override'):
         if o.get('PartName')=='/xl/workbook.xml':
-            o.set('ContentType','application/vnd.ms-excel.sheet.macroEnabled.main+xml')
+            workbook_override=o
+            break
+    if workbook_override is None:
+        workbook_override=ET.SubElement(doc, f'{{{CT_NS}}}Override', {
+            'PartName':'/xl/workbook.xml',
+            'ContentType':'application/vnd.ms-excel.sheet.macroEnabled.main+xml'
+        })
+    else:
+        workbook_override.set('ContentType','application/vnd.ms-excel.sheet.macroEnabled.main+xml')
     if not any(o.get('PartName')=='/xl/vbaProject.bin' for o in doc.findall(f'{{{CT_NS}}}Override')):
         ET.SubElement(doc, f'{{{CT_NS}}}Override', {
             'PartName':'/xl/vbaProject.bin',
