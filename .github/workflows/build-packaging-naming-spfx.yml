@@ -1,0 +1,82 @@
+name: Build Packaging Naming SPFx
+
+on:
+  push:
+    branches:
+      - build/packaging-naming-teams-tab
+    paths:
+      - 'spfx-packaging-naming/**'
+      - '.github/workflows/build-packaging-naming-spfx.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+          cache: npm
+
+      - name: Install SPFx CLI
+        run: npm install --global @microsoft/spfx-cli@latest
+
+      - name: Scaffold SPFx 1.23.2 project
+        run: |
+          rm -rf generated
+          spfx create \
+            --template webpart-noframework \
+            --library-name packaging-naming \
+            --component-name "Packaging Naming" \
+            --component-alias PackagingNaming \
+            --component-description "Teams native packaging technology naming event" \
+            --solution-name packaging-naming \
+            --target-dir generated \
+            --spfx-version 1.23.2 \
+            --package-manager npm
+
+      - name: Locate generated project
+        id: locate
+        shell: bash
+        run: |
+          APP_PACKAGE="$(find generated -maxdepth 3 -name package.json -not -path '*/node_modules/*' | head -n 1)"
+          if [ -z "$APP_PACKAGE" ]; then
+            echo "No generated package.json found" >&2
+            find generated -maxdepth 3 -type f | sort | head -200
+            exit 1
+          fi
+          APP_DIR="$(dirname "$APP_PACKAGE")"
+          echo "app_dir=$APP_DIR" >> "$GITHUB_OUTPUT"
+          echo "Generated app: $APP_DIR"
+
+      - name: Patch app behavior and Teams host
+        run: python3 spfx-packaging-naming/patch_generated.py "${{ steps.locate.outputs.app_dir }}"
+
+      - name: Build production bundle
+        working-directory: ${{ steps.locate.outputs.app_dir }}
+        run: npx heft build --production
+
+      - name: Package SPPKG
+        working-directory: ${{ steps.locate.outputs.app_dir }}
+        run: npx heft package-solution --production
+
+      - name: Verify package
+        shell: bash
+        run: |
+          PKG="${{ steps.locate.outputs.app_dir }}/sharepoint/solution/packaging-naming.sppkg"
+          test -s "$PKG"
+          ls -lh "$PKG"
+          sha256sum "$PKG" | tee packaging-naming.sppkg.sha256
+
+      - name: Upload install package
+        uses: actions/upload-artifact@v4
+        with:
+          name: packaging-naming-teams-tab
+          path: |
+            ${{ steps.locate.outputs.app_dir }}/sharepoint/solution/packaging-naming.sppkg
+            packaging-naming.sppkg.sha256
+          if-no-files-found: error
