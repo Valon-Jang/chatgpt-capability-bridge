@@ -25,6 +25,8 @@ jobs:
       - name: Reassemble artifact-tool workbook
         working-directory: vba-packaging-naming
         run: |
+          wc -c base.part1 base.part2 base.part3 base.part4 base.part5
+          sha256sum base.part1 base.part2 base.part3 base.part4 base.part5
           cat base.part1 base.part2 base.part3 base.part4 base.part5 | tr -d '\r\n ' | base64 -d > base.xlsx
           echo 'a54b116a8fc0bfab503c751c453fd1a66d91f09c22bd0fc3eee801ac05df53f5  base.xlsx' | sha256sum -c -
           unzip -t base.xlsx
