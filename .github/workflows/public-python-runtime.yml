@@ -32,6 +32,7 @@ jobs:
           shiboken6==6.8.3
           faster-whisper==1.2.1
           ctranslate2==4.6.0
+          setuptools==80.9.0
           numpy==2.2.6
           scipy==1.15.3
           webrtcvad-wheels==2.0.14
@@ -74,7 +75,7 @@ jobs:
           model=WhisperModel(str(root/'models/base'),device='cpu',compute_type='int8',cpu_threads=4,local_files_only=True)
           seg,info=model.transcribe(np.zeros(16000,dtype=np.float32),language='en',beam_size=1,vad_filter=False)
           list(seg)
-          out={'platform':'Windows 2022 GitHub hosted runner','qt_load':'PASS','model_load_cpu_int8':'PASS','one_second_silence_inference':'PASS','capture_device':'NOT_TESTED','human_speech_accuracy':'NOT_TESTED','user_laptop':'NOT_TESTED','internal_qwen':'NOT_TESTED','versions':{p:importlib.metadata.version(p) for p in ['PySide6-Essentials','faster-whisper','ctranslate2','PyAudioWPatch','numpy','scipy']}}
+          out={'platform':'Windows 2022 GitHub hosted runner','qt_load':'PASS','model_load_cpu_int8':'PASS','one_second_silence_inference':'PASS','capture_device':'NOT_TESTED','human_speech_accuracy':'NOT_TESTED','user_laptop':'NOT_TESTED','internal_qwen':'NOT_TESTED','versions':{p:importlib.metadata.version(p) for p in ['PySide6-Essentials','faster-whisper','ctranslate2','PyAudioWPatch','numpy','scipy','setuptools']}}
           (root/'NATIVE_DEPENDENCY_CHECK.json').write_text(json.dumps(out,indent=2),encoding='utf-8')
           manifest={p.relative_to(root).as_posix():__import__('hashlib').sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
           (root/'RUNTIME_SHA256.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
@@ -97,7 +98,7 @@ jobs:
           python-version: '3.13'
       - name: Fetch public Linux wheels for isolated GUI and STT verification
         run: |
-          python -m pip download --only-binary=:all: --disable-pip-version-check --dest wheels PySide6-Essentials==6.8.3 shiboken6==6.8.3 faster-whisper==1.2.1 ctranslate2==4.6.0 webrtcvad-wheels==2.0.14 huggingface-hub==0.34.4
+          python -m pip download --only-binary=:all: --disable-pip-version-check --dest wheels PySide6-Essentials==6.8.3 shiboken6==6.8.3 faster-whisper==1.2.1 ctranslate2==4.6.0 setuptools==80.9.0 webrtcvad-wheels==2.0.14 huggingface-hub==0.34.4
       - uses: actions/upload-artifact@v4
         with:
           name: linux-verification-wheels-20260914
