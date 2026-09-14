@@ -1,0 +1,106 @@
+name: Public Python STT runtime 20260914
+on:
+  push:
+    branches: [build/public-python-runtime-20260914]
+    paths: [.github/workflows/public-python-runtime.yml]
+permissions:
+  contents: read
+concurrency:
+  group: public-python-stt-runtime-20260914
+  cancel-in-progress: false
+jobs:
+  windows-runtime:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download official public runtime and dependencies
+        shell: pwsh
+        env:
+          HF_HUB_DISABLE_XET: '1'
+          HF_HUB_DISABLE_TELEMETRY: '1'
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force runtime/python/Lib/site-packages, runtime/models/base | Out-Null
+          Invoke-WebRequest 'https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip' -OutFile python.zip
+          Expand-Archive python.zip runtime/python
+          @('python312.zip','.','Lib/site-packages','..','import site') | Set-Content runtime/python/python312._pth -Encoding ascii
+          @'
+          PySide6-Essentials==6.8.3
+          shiboken6==6.8.3
+          faster-whisper==1.2.1
+          ctranslate2==4.6.0
+          numpy==2.2.6
+          scipy==1.15.3
+          webrtcvad-wheels==2.0.14
+          PyAudioWPatch==0.2.12.8
+          huggingface-hub==0.34.4
+          psutil==7.0.0
+          '@ | Set-Content requirements.txt -Encoding ascii
+          python -m pip install --only-binary=:all: --disable-pip-version-check --target runtime/python/Lib/site-packages -r requirements.txt
+          if ($LASTEXITCODE -ne 0) { throw 'Dependency installation failed' }
+          python -m pip install huggingface-hub==0.34.4
+          if ($LASTEXITCODE -ne 0) { throw 'Model acquisition dependency failed' }
+          @'
+          import json, pathlib, hashlib, platform, sys
+          from huggingface_hub import HfApi, snapshot_download
+          root=pathlib.Path('runtime')
+          repo='Systran/faster-whisper-base'
+          revision=HfApi().model_info(repo).sha
+          snapshot_download(repo_id=repo,revision=revision,local_dir=root/'models/base',allow_patterns=['*.bin','*.json','*.txt','*.md','LICENSE*'])
+          p=root/'RUNTIME_PROVENANCE.json'
+          p.write_text(json.dumps({'python_source':'https://www.python.org/ftp/python/3.12.10/python-3.12.10-embed-amd64.zip','python_archive_sha256':hashlib.sha256(pathlib.Path('python.zip').read_bytes()).hexdigest(),'model_repository':repo,'model_revision':revision,'dependency_spec':pathlib.Path('requirements.txt').read_text(),'build_platform':platform.platform(),'status':'DEPENDENCIES_ONLY_NOT_APPLICATION_ACCEPTANCE'},indent=2),encoding='utf-8')
+          '@ | Set-Content download_model.py -Encoding utf8
+          python download_model.py
+          if ($LASTEXITCODE -ne 0) { throw 'Model download failed' }
+          Get-ChildItem runtime -Recurse -File | Where-Object { $_.Extension -in @('.ttf','.otf','.woff','.woff2','.eot') } | Remove-Item -Force
+          Get-ChildItem runtime -Recurse -Directory -Filter __pycache__ | Remove-Item -Recurse -Force
+          if (Test-Path runtime/models/base/.cache) { Remove-Item runtime/models/base/.cache -Recurse -Force }
+      - name: Native Windows model and Qt load check
+        shell: pwsh
+        env:
+          HF_HUB_OFFLINE: '1'
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          @'
+          import json, pathlib, sys, importlib.metadata, numpy as np
+          from PySide6.QtWidgets import QApplication, QLabel
+          import pyaudiowpatch, webrtcvad
+          from faster_whisper import WhisperModel
+          root=pathlib.Path('runtime')
+          app=QApplication([]); w=QLabel('Dependency load only'); w.resize(320,100); w.show(); app.processEvents()
+          model=WhisperModel(str(root/'models/base'),device='cpu',compute_type='int8',cpu_threads=4,local_files_only=True)
+          seg,info=model.transcribe(np.zeros(16000,dtype=np.float32),language='en',beam_size=1,vad_filter=False)
+          list(seg)
+          out={'platform':'Windows 2022 GitHub hosted runner','qt_load':'PASS','model_load_cpu_int8':'PASS','one_second_silence_inference':'PASS','capture_device':'NOT_TESTED','human_speech_accuracy':'NOT_TESTED','user_laptop':'NOT_TESTED','internal_qwen':'NOT_TESTED','versions':{p:importlib.metadata.version(p) for p in ['PySide6-Essentials','faster-whisper','ctranslate2','PyAudioWPatch','numpy','scipy']}}
+          (root/'NATIVE_DEPENDENCY_CHECK.json').write_text(json.dumps(out,indent=2),encoding='utf-8')
+          manifest={p.relative_to(root).as_posix():__import__('hashlib').sha256(p.read_bytes()).hexdigest() for p in root.rglob('*') if p.is_file()}
+          (root/'RUNTIME_SHA256.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
+          print(json.dumps(out))
+          '@ | Set-Content check.py -Encoding utf8
+          ./runtime/python/python.exe check.py
+          if ($LASTEXITCODE -ne 0) { throw 'Native dependency check failed' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-python-stt-runtime-20260914
+          path: runtime/
+          retention-days: 3
+          compression-level: 6
+  linux-verification-wheels:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Fetch public Linux wheels for isolated GUI and STT verification
+        run: |
+          python -m pip download --only-binary=:all: --disable-pip-version-check --dest wheels PySide6-Essentials==6.8.3 shiboken6==6.8.3 faster-whisper==1.2.1 ctranslate2==4.6.0 webrtcvad-wheels==2.0.14 huggingface-hub==0.34.4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-verification-wheels-20260914
+          path: wheels/
+          retention-days: 1
+          compression-level: 0
