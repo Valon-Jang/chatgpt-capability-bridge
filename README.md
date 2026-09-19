@@ -1,5 +1,21 @@
 # chatgpt-capability-bridge
 
+<!-- portfolio-navigation:start -->
+## Repository navigation
+
+[Public project portfolio](https://github.com/Valon-Jang/Valon-Jang/blob/main/PORTFOLIO.md)
+
+| Find | Source of truth and scope |
+|---|---|
+| Role | Experimental capability-composition protocol and reference implementations. Recorded experiment success is limited to its tested service, runtime, and authentication conditions. |
+| Contract | [Protocol v0.1](protocol/PROTOCOL.md) · [command envelope](protocol/COMMAND_ENVELOPE.md) · [result envelope](protocol/RESULT_ENVELOPE.md) · [authentication handoff](protocol/AUTH_HANDOFF.md) |
+| Implementation | [Service adapters](adapters/) · [orchestration scripts](scripts/) · [persistent browser source](persistent-browser/). Keep target-specific behavior outside the frozen protocol core. |
+| Verification evidence | [EXP-001](experiments/EXP-001-NAVER-MAIL.md) and [EXP-002](experiments/EXP-002-NAVER-CALENDAR.md) are retained research records, not a fresh test of every adapter. |
+| Deployment configuration | [Railway configuration](railway.toml) · [Railway Dockerfile](Dockerfile.railway). These describe a deployment path; they do not prove that a live service is currently healthy. |
+| Execution and retained history | [Workflows](.github/workflows/) define execution triggers; experiment/session files are operational state and evidence, not general installation inputs. Read the documented limits below before selecting a new experiment. |
+
+<!-- portfolio-navigation:end -->
+
 > **No target-service plugin. No target API. Still actionable from ordinary ChatGPT Chat.**
 
 `chatgpt-capability-bridge` is an experimental methodology for discovering, composing, and extending the **effective capabilities of ordinary ChatGPT Chat** when richer execution surfaces or target-specific integrations are unavailable.
