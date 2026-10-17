@@ -1,0 +1,11 @@
+{
+  "project": "HomeLoop",
+  "test_id": "HL-URL-CROSS-CHAT-20261017-B8F4",
+  "test_purpose": "Prove a new ordinary ChatGPT conversation can fetch this public URL and report test_id without prior chat context.",
+  "response_kind": "static_public_read_probe",
+  "is_live_homeloop_server": false,
+  "real_household_data_included": false,
+  "writes_enabled": false,
+  "publish_date": "2026-10-17",
+  "next_test": "In a new conversation, paste only this URL and ask it to read test_id and is_live_homeloop_server."
+}
