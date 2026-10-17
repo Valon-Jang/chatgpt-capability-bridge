@@ -28,6 +28,7 @@ jobs:
           echo "HTTP_STATUS=${code}"
           if [ "${exit_code}" -eq 0 ] && [ "${code}" = "200" ]; then
             echo 'HEALTH_ENDPOINT=REACHABLE'
+            python3 -c 'import json; d=json.load(open("/tmp/homeloop-health-probe")); print("APP="+str(d.get("app", "unknown"))[:32]); print("VERSION="+str(d.get("version", "unknown"))[:32])'
           else
             echo 'HEALTH_ENDPOINT=NOT_REACHABLE'
           fi
