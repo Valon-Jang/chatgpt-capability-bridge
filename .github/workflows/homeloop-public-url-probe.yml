@@ -1,0 +1,35 @@
+name: HomeLoop Public URL Reachability (no credentials)
+on:
+  push:
+    paths:
+      - '.github/workflows/homeloop-public-url-probe.yml'
+      - 'experiments/homeloop-public-url-probe-trigger.txt'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Probe HomeLoop health without recording response body
+        shell: bash
+        env:
+          BASE_URL: "https://macintosh-mostly-councils-plane.trycloudflare.com"
+        run: |
+          set -eu
+          echo 'START: HomeLoop URL reachability'
+          if getent ahostsv4 macintosh-mostly-councils-plane.trycloudflare.com >/dev/null 2>&1; then echo 'DNS=PASS'; else echo 'DNS=FAIL'; fi
+          set +e
+          code=$(curl --location --silent --show-error --output /tmp/homeloop-health-probe --write-out '%{http_code}' --connect-timeout 8 --max-time 25 "${BASE_URL}/health")
+          exit_code=$?
+          set -e
+          echo "CURL_EXIT=${exit_code}"
+          echo "HTTP_STATUS=${code}"
+          if [ "${exit_code}" -eq 0 ] && [ "${code}" = "200" ]; then
+            echo 'HEALTH_ENDPOINT=REACHABLE'
+          else
+            echo 'HEALTH_ENDPOINT=NOT_REACHABLE'
+          fi
+          rm -f /tmp/homeloop-health-probe
+          test "${exit_code}" -eq 0 && test "${code}" = "200"
